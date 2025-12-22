@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>安倍AIボイスメーカー🏺</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; line-height: 1.6; color: #333; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+        header { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); padding: 1rem 2rem; position: sticky; top: 0; z-index: 100; }
+        nav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; }
+        nav a { color: white; text-decoration: none; font-weight: bold; padding: 0.5rem 1rem; border-radius: 25px; transition: background 0.3s; }
+        nav a:hover { background: rgba(255,255,255,0.2); }
+        .hero { text-align: center; padding: 4rem 2rem; color: white; }
+        .hero h1 { font-size: 3rem; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .hero p { font-size: 1.2rem; max-width: 600px; margin: 0 auto 2rem; }
+        .tts-section { background: white; padding: 3rem 2rem; margin: 2rem auto; max-width: 800px; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .tts-input { width: 100%; height: 120px; padding: 1rem; font-size: 1.1rem; border: 2px solid #ddd; border-radius: 10px; resize: vertical; margin-bottom: 1rem; }
+        .controls { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
+        .controls input, select { padding: 0.5rem; border: 1px solid #ddd; border-radius: 5px; flex: 1; min-width: 100px; }
+        button { background: #667eea; color: white; border: none; padding: 1rem 2rem; border-radius: 25px; font-size: 1.1rem; cursor: pointer; transition: transform 0.2s; }
+        button:hover { transform: scale(1.05); }
+        button:disabled { background: #ccc; cursor: not-allowed; transform: none; }
+        #audio-player { width: 100%; margin-top: 1rem; }
+        .content-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 1200px; margin: 3rem auto; padding: 0 2rem; }
+        .content-card { background: rgba(255,255,255,0.9); border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: transform 0.3s; }
+        .content-card:hover { transform: translateY(-10px); }
+        .content-card iframe { width: 100%; height: 200px; border: none; }
+        .content-card h3 { padding: 1rem; background: #667eea; color: white; }
+        .content-card p { padding: 1rem; }
+        .membership { background: #ff6b6b; color: white; text-align: center; padding: 3rem 2rem; margin: 3rem 0; border-radius: 20px; max-width: 600px; margin: 3rem auto; }
+        footer { text-align: center; padding: 2rem; color: rgba(255,255,255,0.8); }
+        .loading { display: none; text-align: center; color: #667eea; font-style: italic; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="#home">🏠 Home</a>
+            <a href="#tts">🎤 ボイスメーカー</a>
+            <a href="#content">📺 コンテンツ</a>
+            <a href="#membership">💎 メンバーシップ</a>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <h1>安倍AIボイスメーカー🏺</h1>
+        <p>安倍晋三モデルでテキストをリアルボイスに！ YouTube/Xコンテンツもチェック。将来的にグッズ&メンバーシップ実装予定。</p>
+        <a href="#tts" class="button">今すぐ試す</a>
+    </section>
+
+    <section id="tts" class="tts-section">
+        <h2>🎤 安倍晋三ボイスメーカー</h2>
+        <textarea id="text-input" class="tts-input" placeholder="ここにテキストを入力... 例: できない理由を考えるのではなく！"></textarea>
+        <div class="controls">
+            <input type="range" id="speed" min="0.5" max="2.0" step="0.1" value="1.0"><label>速度: <span id="speed-val">1.0</span></label>
+            <input type="range" id="pitch" min="-0.5" max="0.5" step="0.1" value="0.0"><label>ピッチ: <span id="pitch-val">0.0</span></label>
+        </div>
+        <button id="generate-btn">合成生成</button>
+        <div id="loading" class="loading">合成中... (数秒お待ちください)</div>
+        <audio id="audio-player" controls></audio>
+        <div id="status"></div>
+    </section>
+
+    <section id="content" class="content-grid">
+        <h2 style="grid-column: 1/-1; text-align: center; padding: 2rem;">📺 自前コンテンツ紹介</h2>
+        <div class="content-card">
+            <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID?autoplay=0" title="YouTube Video 1"></iframe>
+            <h3>YouTube: 安倍AI動画集</h3>
+            <p>安倍語録をAIボイスで再現！</p>
+        </div>
+        <div class="content-card">
+            <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID2" title="YouTube Video 2"></iframe>
+            <h3>YouTube: 政治トーク</h3>
+            <p>最新政治ニュースを安倍風解説。</p>
+        </div>
+        <div class="content-card">
+            <a href="https://x.com/YOUR_X_HANDLE" target="_blank">
+                <iframe src="https://platform.twitter.com/widgets/tweet_button.html" style="border:none;"></iframe> <!-- X embed -->
+            </a>
+            <h3>X (Twitter): 最新ポスト</h3>
+            <p>フォローでAIボイス更新通知！</p>
+        </div>
+    </section>
+
+    <section id="membership" class="membership">
+        <h2>💎 メンバーシップ (近日公開)</h2>
+        <p>プレミアムボイス/限定コンテンツ/グッズ先行販売/Stripe決済で月額¥500〜</p>
+        <button onclick="alert('近日公開予定！ Stripe統合中...')">参加予約</button>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 AbeShinzo Voice Portal. Powered by AivisSpeech-Engine.</p>
+    </footer>
+
+    <script>
+        // TTS API (Vercel/Netlify Serverless or Fly.io プロキシ)
+        const API_URL = '/api/tts';
+        // const API_URL = 'https://abeshinzo0708-abe-voice-server.hf.space';  // 相対パス (デプロイ後 https://yoursite.com/api/tts)
+
+        // コントロール
+        document.getElementById('speed').addEventListener('input', (e) => {
+            document.getElementById('speed-val').textContent = e.target.value;
+        });
+        document.getElementById('pitch').addEventListener('input', (e) => {
+            document.getElementById('pitch-val').textContent = e.target.value;
+        });
+
+        // 生成ボタン
+        document.getElementById('generate-btn').addEventListener('click', async () => {
+            const text = document.getElementById('text-input').value.trim();
+            if (!text) return alert('テキストを入力してください');
+
+            const btn = document.getElementById('generate-btn');
+            const loading = document.getElementById('loading');
+            const status = document.getElementById('status');
+            const player = document.getElementById('audio-player');
+
+            btn.disabled = true;
+            loading.style.display = 'block';
+            status.textContent = '';
+
+            try {
+                const start = performance.now();
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        text,
+                        speaker: 1099527840,  // AbeShinzo ID
+                        speed: parseFloat(document.getElementById('speed').value),
+                        pitch: parseFloat(document.getElementById('pitch').value)
+                    })
+                });
+
+                if (!response.ok) throw new Error(`APIエラー: ${response.status}`);
+
+                const blob = await response.blob();
+                const url = URL.createObjectURL(blob);
+                player.src = url;
+                player.play();
+
+                const elapsed = (performance.now() - start) / 1000;
+                status.innerHTML = `<strong>✅ 合成完了! (${elapsed.toFixed(2)}s)</strong>`;
+
+            } catch (error) {
+                status.textContent = `❌ エラー: ${error.message}`;
+            } finally {
+                btn.disabled = false;
+                loading.style.display = 'none';
+            }
+        });
+
+        // スムーススクロール
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelector(anchor.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
