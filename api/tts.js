@@ -93,13 +93,8 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'POST,OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
-  if (req.method === 'OPTIONS') {
-    return res.status(204).end();
-  }
-
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'POST only' });
-  }
+  if (req.method === 'OPTIONS') return res.status(204).end();
+  if (req.method !== 'POST') return res.status(405).json({ error: 'POST only' });
 
   let body;
   try {
@@ -114,43 +109,29 @@ export default async function handler(req, res) {
   const speed = toNumber(body?.speed, 1.0);
   const pitch = toNumber(body?.pitch, 0.0);
 
-  if (!text) {
-    return res.status(400).json({ error: 'text is required' });
-  }
+  if (!text) return res.status(400).json({ error: 'text is required' });
 
   // HF Space が private / token必須なら Vercel に HF_TOKEN を設定
   const HF_TOKEN = process.env.HF_TOKEN;
   const authHeaders = HF_TOKEN ? { Authorization: `Bearer ${HF_TOKEN}` } : {};
 
   try {
-    // ------------------------------------------------------------
-    // Step1: audio_query
-    // 重要: upstream が query parameter で text/speaker を要求しているため
-    //       JSON body ではなく URL クエリで渡す
-    // ------------------------------------------------------------
-    const qs = new URLSearchParams({
+    // Step1: audio_query (text & speaker は query で渡す)
+    const audioQueryQs = new URLSearchParams({
       text,
       speaker: String(speaker)
     });
 
-    const audioQueryUrl = `${BASE_URL}/audio_query?${qs.toString()}`;
-
     const queryRes = await fetchWithRetry(
-      audioQueryUrl,
+      `${BASE_URL}/audio_query?${audioQueryQs.toString()}`,
       {
         method: 'POST',
-        headers: {
-          ...authHeaders
-          // Content-Type は付けない（body送ってないため）
-        }
-        // body: 送らない
+        headers: { ...authHeaders }
       },
       { retries: 3, timeoutMs: 20000 }
     );
 
-    if (!queryRes.ok) {
-      return await respondUpstreamError(res, 'audio_query', queryRes);
-    }
+    if (!queryRes.ok) return await respondUpstreamError(res, 'audio_query', queryRes);
 
     let query;
     try {
@@ -160,16 +141,17 @@ export default async function handler(req, res) {
       return res.status(502).json({ error: 'audio_query returned invalid JSON' });
     }
 
-    // パラメータ調整
+    // AudioQuery を調整
     query.speedScale = speed;
     query.pitchScale = pitch;
 
-    // ------------------------------------------------------------
-    // Step2: synthesis
-    // こちらは複雑なJSON（audio_queryの戻り）を投げるので body: JSON のまま
-    // ------------------------------------------------------------
+    // Step2: synthesis (speaker は query で必須、body は AudioQuery JSON)
+    const synthesisQs = new URLSearchParams({
+      speaker: String(speaker)
+    });
+
     const synthRes = await fetchWithRetry(
-      `${BASE_URL}/synthesis`,
+      `${BASE_URL}/synthesis?${synthesisQs.toString()}`,
       {
         method: 'POST',
         headers: {
@@ -182,9 +164,7 @@ export default async function handler(req, res) {
       { retries: 3, timeoutMs: 30000 }
     );
 
-    if (!synthRes.ok) {
-      return await respondUpstreamError(res, 'synthesis', synthRes);
-    }
+    if (!synthRes.ok) return await respondUpstreamError(res, 'synthesis', synthRes);
 
     const buffer = Buffer.from(await synthRes.arrayBuffer());
     res.setHeader('Content-Type', 'audio/wav');
