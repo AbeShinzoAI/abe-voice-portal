@@ -83,24 +83,19 @@
       letter-spacing: 0.02em;
       white-space: nowrap;
     }
-    .logo{
+    .brand span{
+      font-size: 15px;
+    }
+
+    /* ロゴ画像（ここが差し替えポイント） */
+    .brand-icon{
       width: 34px;
       height: 34px;
       border-radius: 12px;
-      background: linear-gradient(135deg, var(--p), var(--p3));
-      box-shadow: 0 10px 25px rgba(255,77,109,0.20);
-      position: relative;
+      object-fit: cover;
       flex: none;
-    }
-    .logo::after{
-      content:"";
-      position:absolute;
-      inset: 9px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.8);
-    }
-    .brand span{
-      font-size: 15px;
+      box-shadow: 0 10px 25px rgba(255,77,109,0.20);
+      background: #fff;
     }
 
     /* スマホで崩れない：ナビを「横スクロール可能」にする */
@@ -115,12 +110,12 @@
 
     .nav-links{
       display:flex;
-      flex-wrap: nowrap;         /* 折り返し禁止 */
+      flex-wrap: nowrap;
       gap: 8px;
       list-style:none;
       margin:0;
       padding:0;
-      width: max-content;        /* 中身幅で伸びる */
+      width: max-content;
     }
 
     .nav-links a{
@@ -214,7 +209,7 @@
 
       overflow-x: auto;
       overscroll-behavior-x: contain;
-      scroll-snap-type: x mandatory; /* snap */  /* [web:21] */
+      scroll-snap-type: x mandatory;
       scroll-behavior: smooth;
       -webkit-overflow-scrolling: touch;
     }
@@ -297,11 +292,24 @@
         radial-gradient(900px 240px at 90% 20%, rgba(76,201,240,0.12), transparent 60%);
       border-bottom: 1px solid rgba(0,0,0,0.06);
     }
-    .panel-header h2{
+
+    /* 見出し + マイクアイコン（ここが差し替えポイント） */
+    .tts-title{
       margin:0;
       font-size: clamp(17px, 2.4vw, 21px);
       letter-spacing: 0.01em;
+      display:flex;
+      align-items:center;
+      gap: 10px;
     }
+    .tts-icon{
+      width: 22px;
+      height: 22px;
+      object-fit: contain;
+      flex: none;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,0.10));
+    }
+
     .help{
       margin: 8px 0 0;
       color: var(--muted);
@@ -321,7 +329,7 @@
       outline:none;
       resize: vertical;
       background: #fff;
-      color: #111827; /* ← 白文字化対策 */
+      color: #111827;
       caret-color: #111827;
     }
     .tts-input::placeholder{ color: rgba(17,24,39,0.45); }
@@ -489,7 +497,16 @@
     <div class="container">
       <nav aria-label="Site navigation">
         <a class="brand" href="#home" aria-label="Home">
-          <span class="logo" aria-hidden="true"></span>
+          <!-- ここをあなたの画像に差し替え -->
+          <img
+            class="brand-icon"
+            src="images/logo.png"
+            srcset="images/logo@2x.png 2x"
+            alt="晋バルサンch"
+            width="34"
+            height="34"
+            decoding="async"
+          />
           <span>晋バルサンch</span>
         </a>
 
@@ -575,8 +592,20 @@
       <div class="container">
         <div class="panel">
           <div class="panel-header">
-            <h2>🎤 安倍AIボイスメーカー</h2>
-            <p class="help">速度=1.0、ピッチ=0.0 固定（スライダー廃止）。</p>
+            <h2 class="tts-title">
+              <!-- ここをあなたの画像に差し替え -->
+              <img
+                class="tts-icon"
+                src="images/mic.png"
+                srcset="images/mic@2x.png 2x"
+                alt="マイク"
+                width="22"
+                height="22"
+                decoding="async"
+              />
+              <span>安倍AIボイスメーカー</span>
+            </h2>
+            <p class="help">速度=1.0、ピッチ=0.0 固定。</p>
           </div>
 
           <div class="panel-body">
@@ -686,7 +715,6 @@
         player.src = url;
         player.play();
 
-        // 合成時間は表示しない
         status.textContent = '✅ 合成完了！';
       } catch (error) {
         status.textContent = `❌ エラー: ${error.message}`;
@@ -723,8 +751,7 @@
       slideTimer = setInterval(() => {
         const slides = getSlides();
         if (!slides.length) return;
-        const next = (index + 1) % slides.length;
-        goTo(next, true);
+        goTo(index + 1, true);
       }, 3200);
     }
 
@@ -733,18 +760,16 @@
       slideTimer = null;
     }
 
-    function pauseAutoplay(ms = 6000){
+    function pauseAutoplay(ms = 7000){
       stopAutoplay();
       if (pauseTimer) clearTimeout(pauseTimer);
       pauseTimer = setTimeout(() => startAutoplay(), ms);
     }
 
-    // ユーザーが触ったら一時停止（邪魔しない）
     ['pointerdown','touchstart','wheel','keydown'].forEach(ev => {
       track.addEventListener(ev, () => pauseAutoplay(7000), { passive: true });
     });
 
-    // スクロール位置から現在index推定（手動スワイプ対応）
     let scrollDebounce = null;
     track.addEventListener('scroll', () => {
       if (scrollDebounce) clearTimeout(scrollDebounce);
@@ -761,17 +786,16 @@
       }, 80);
     }, { passive: true });
 
-    // 初期位置 & autoplay開始
     window.addEventListener('load', () => {
       goTo(0, false);
       startAutoplay();
     });
+
     window.addEventListener('resize', () => {
-      // リサイズでoffsetが変わるので補正
       goTo(index, false);
     });
 
-    // ===== スムーススクロール（既存挙動維持）=====
+    // ===== スムーススクロール =====
     document.querySelectorAll('nav a').forEach(anchor => {
       anchor.addEventListener('click', (e) => {
         const href = anchor.getAttribute('href');
