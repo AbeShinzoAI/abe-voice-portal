@@ -18,14 +18,11 @@ function parseBody(req) {
   if (typeof req.body === 'string') {
     return req.body.length ? JSON.parse(req.body) : {};
   }
-  // Vercel環境によっては Buffer のことがある
   if (Buffer.isBuffer(req.body)) {
     const s = req.body.toString('utf8');
     return s.length ? JSON.parse(s) : {};
   }
-  // すでにobjectとしてパース済みのケース
   if (typeof req.body === 'object') return req.body;
-
   return {};
 }
 
@@ -50,7 +47,6 @@ async function fetchWithRetry(url, options, retry = {}) {
 
       if (res.ok) return res;
 
-      // 一時的な障害だけリトライ
       if (!retryStatuses.includes(res.status) || i === retries) return res;
 
       await sleep(backoffBaseMs * Math.pow(2, i));
@@ -84,7 +80,6 @@ async function respondUpstreamError(res, stepName, upstreamRes) {
     upstreamBody
   });
 
-  // だいたい upstream 側の問題なので 502 にする（デバッグもしやすい）
   return res.status(502).json({
     error: `${stepName} failed`,
     upstreamStatus,
@@ -94,7 +89,6 @@ async function respondUpstreamError(res, stepName, upstreamRes) {
 }
 
 export default async function handler(req, res) {
-  // 必要ならCORS（同一オリジンだけなら不要だけど、困らないように付けておく）
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST,OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
@@ -124,21 +118,32 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'text is required' });
   }
 
-  // HF Space が private / token必須なら Vercel に HF_TOKEN を設定する
+  // HF Space が private / token必須なら Vercel に HF_TOKEN を設定
   const HF_TOKEN = process.env.HF_TOKEN;
   const authHeaders = HF_TOKEN ? { Authorization: `Bearer ${HF_TOKEN}` } : {};
 
   try {
+    // ------------------------------------------------------------
     // Step1: audio_query
+    // 重要: upstream が query parameter で text/speaker を要求しているため
+    //       JSON body ではなく URL クエリで渡す
+    // ------------------------------------------------------------
+    const qs = new URLSearchParams({
+      text,
+      speaker: String(speaker)
+    });
+
+    const audioQueryUrl = `${BASE_URL}/audio_query?${qs.toString()}`;
+
     const queryRes = await fetchWithRetry(
-      `${BASE_URL}/audio_query`,
+      audioQueryUrl,
       {
         method: 'POST',
         headers: {
-          ...authHeaders,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ text, speaker })
+          ...authHeaders
+          // Content-Type は付けない（body送ってないため）
+        }
+        // body: 送らない
       },
       { retries: 3, timeoutMs: 20000 }
     );
@@ -159,7 +164,10 @@ export default async function handler(req, res) {
     query.speedScale = speed;
     query.pitchScale = pitch;
 
+    // ------------------------------------------------------------
     // Step2: synthesis
+    // こちらは複雑なJSON（audio_queryの戻り）を投げるので body: JSON のまま
+    // ------------------------------------------------------------
     const synthRes = await fetchWithRetry(
       `${BASE_URL}/synthesis`,
       {
