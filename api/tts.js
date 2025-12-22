@@ -1,44 +1,65 @@
-// Vercel Edge Runtime (高速)
 export default async function handler(req, res) {
-  if (req.method !== 'POST') return res.status(405).json({ error: 'POST only' });
-
-  const { text, speaker = 1099527840, speed = 1.0, pitch = 0.0 } = await req.json();
-
-  const HF_TOKEN = process.env.HF_TOKEN;  // Vercel Secrets
-  if (!HF_TOKEN) return res.status(500).json({ error: 'Token missing' });
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'POST only' });
+  }
 
   try {
-    // Step1: audio_query
-    const queryRes = await fetch('https://abeshinzo0708-abe-voice-server.hf.space/audio_query', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${HF_TOKEN}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ text, speaker })
-    });
-    const query = await queryRes.json();
+    const body = typeof req.body === 'string'
+      ? JSON.parse(req.body)
+      : req.body;
 
-    // パラメータ調整
+    const {
+      text,
+      speaker = 1099527840,
+      speed = 1.0,
+      pitch = 0.0
+    } = body || {};
+
+    if (!text) {
+      return res.status(400).json({ error: 'text is required' });
+    }
+
+    // audio_query
+    const queryRes = await fetch(
+      'https://abeshinzo0708-abe-voice-server.hf.space/audio_query',
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, speaker })
+      }
+    );
+
+    if (!queryRes.ok) {
+      throw new Error('audio_query failed');
+    }
+
+    const query = await queryRes.json();
     query.speedScale = speed;
     query.pitchScale = pitch;
 
-    // Step2: synthesis
-    const synthRes = await fetch('https://abeshinzo0708-abe-voice-server.hf.space/synthesis', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${HF_TOKEN}`,
-        'Content-Type': 'application/json',
-        'Accept': 'audio/wav'
-      },
-      body: JSON.stringify(query)
-    });
+    // synthesis
+    const synthRes = await fetch(
+      'https://abeshinzo0708-abe-voice-server.hf.space/synthesis',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'audio/wav'
+        },
+        body: JSON.stringify(query)
+      }
+    );
 
-    const audio = await synthRes.blob();
+    if (!synthRes.ok) {
+      throw new Error('synthesis failed');
+    }
+
+    const buffer = Buffer.from(await synthRes.arrayBuffer());
     res.setHeader('Content-Type', 'audio/wav');
-    res.status(200).send(audio);
+    res.status(200).send(buffer);
 
-  } catch (e) {
-    res.status(500).json({ error: e.message });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
   }
 }
