@@ -1,3 +1,6 @@
+マイク画像はやめて絵文字（🎤）に戻し、上部ロゴ画像（`<img src="images/logo.png" srcset="... 2x">`）はそのままの完全版です。[1][2]
+
+```html
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -87,7 +90,7 @@
       font-size: 15px;
     }
 
-    /* ロゴ画像（ここが差し替えポイント） */
+    /* ロゴ画像 */
     .brand-icon{
       width: 34px;
       height: 34px;
@@ -98,7 +101,7 @@
       background: #fff;
     }
 
-    /* スマホで崩れない：ナビを「横スクロール可能」にする */
+    /* スマホで崩れない：ナビを横スクロール可能に */
     .nav-scroller{
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
@@ -293,7 +296,7 @@
       border-bottom: 1px solid rgba(0,0,0,0.06);
     }
 
-    /* 見出し + マイクアイコン（ここが差し替えポイント） */
+    /* タイトル行（マイク絵文字に戻す） */
     .tts-title{
       margin:0;
       font-size: clamp(17px, 2.4vw, 21px);
@@ -302,12 +305,11 @@
       align-items:center;
       gap: 10px;
     }
-    .tts-icon{
-      width: 22px;
-      height: 22px;
-      object-fit: contain;
+    .tts-emoji{
+      font-size: 20px;
+      line-height: 1;
       flex: none;
-      filter: drop-shadow(0 6px 10px rgba(0,0,0,0.10));
+      transform: translateY(1px);
     }
 
     .help{
@@ -317,7 +319,7 @@
     }
     .panel-body{ padding: 14px 16px 16px; }
 
-    /* TTS textarea: 常に黒文字・白背景で見やすく */
+    /* TTS textarea: 常に黒文字・白背景 */
     .tts-input{
       width:100%;
       min-height: 130px;
@@ -497,7 +499,6 @@
     <div class="container">
       <nav aria-label="Site navigation">
         <a class="brand" href="#home" aria-label="Home">
-          <!-- ここをあなたの画像に差し替え -->
           <img
             class="brand-icon"
             src="images/logo.png"
@@ -593,16 +594,7 @@
         <div class="panel">
           <div class="panel-header">
             <h2 class="tts-title">
-              <!-- ここをあなたの画像に差し替え -->
-              <img
-                class="tts-icon"
-                src="images/mic.png"
-                srcset="images/mic@2x.png 2x"
-                alt="マイク"
-                width="22"
-                height="22"
-                decoding="async"
-              />
+              <span class="tts-emoji" aria-hidden="true">🎤</span>
               <span>安倍AIボイスメーカー</span>
             </h2>
             <p class="help">速度=1.0、ピッチ=0.0 固定。</p>
@@ -649,7 +641,6 @@
 
           <article class="card">
             <div class="media">
-              <!-- Xの埋め込みは用途に応じて差し替え推奨（現状はプレースホルダ） -->
               <iframe src="https://platform.twitter.com/widgets/tweet_button.html" title="X embed"></iframe>
             </div>
             <h3>X (Twitter): 最新ポスト</h3>
@@ -680,7 +671,7 @@
   </footer>
 
   <script>
-    // ===== TTS（機能は維持）=====
+    // ===== TTS =====
     const API_URL = '/api/tts';
 
     document.getElementById('generate-btn').addEventListener('click', async () => {
@@ -807,3 +798,15 @@
   </script>
 </body>
 </html>
+```
+
+[1](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/srcset)
+[2](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/img)
+[3](https://developer.mozilla.org/en-US/docs/Web/HTML/Guides/Responsive_images)
+[4](https://mdn2.netlify.app/en-US/docs/Web/API/HTMLImageElement/srcset)
+[5](https://stackoverflow.com/questions/42345192/srcset-do-i-still-need-to-write-1x-2x-3x-if-ive-specified-the-width-of-each)
+[6](https://dev.to/activenode/srcset-sizes-picture-media-what-you-might-not-have-known-31nf)
+[7](https://rocketvalidator.com/html-validation/bad-value-x-for-attribute-srcset-on-element-img-must-contain-one-or-more-image-candidate-strings)
+[8](https://html.spec.whatwg.org/multipage/images.html)
+[9](https://coderpad.io/blog/development/the-definitive-guide-to-responsive-images-on-the-web/)
+[10](https://boltdesignsystem.com/pattern-lab/patterns/20-elements-image/index.html)
