@@ -36,6 +36,14 @@
 
     *{ box-sizing:border-box; }
     html{ scroll-behavior:smooth; }
+
+    /* ★ 揺れ対策：ページ全体が横にスクロールできないようにする */
+    html, body{
+      width: 100%;
+      overflow-x: hidden;          /* 横はみ出しを隠す */ /* [web:138] */
+      overscroll-behavior-x: none; /* 横方向のスクロール連鎖/オーバースクロール抑制 */ /* [web:164] */
+    }
+
     body{
       margin:0;
       font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
@@ -49,6 +57,9 @@
         linear-gradient(135deg, var(--bgA), var(--bgB) 55%, var(--bgC));
       min-height: 100vh;
     }
+
+    /* 保険：画像起因の横はみ出しを防ぐ */
+    img{ max-width: 100%; height: auto; }
 
     a{ color:inherit; }
     .container{
@@ -72,6 +83,7 @@
       justify-content:space-between;
       gap: 12px;
       padding: 10px 0;
+      min-width: 0; /* flex全体のはみ出し保険 */
     }
 
     .brand{
@@ -82,6 +94,7 @@
       font-weight: 950;
       letter-spacing: 0.02em;
       white-space: nowrap;
+      flex: 0 0 auto; /* ★ はみ出しにくくする */
     }
     .brand span{
       font-size: 15px;
@@ -105,6 +118,10 @@
       scrollbar-width: none;
       max-width: 100%;
       padding-bottom: 2px;
+
+      /* ★ flex itemが内容幅で横に押し広げるのを防ぐ */
+      flex: 1 1 auto;
+      min-width: 0;
     }
     .nav-scroller::-webkit-scrollbar{ display:none; }
 
@@ -151,6 +168,7 @@
       justify-content:space-between;
       gap: 12px;
       margin-bottom: 12px;
+      min-width: 0;
     }
     .hero h1{
       margin:0;
@@ -293,7 +311,6 @@
       border-bottom: 1px solid rgba(0,0,0,0.06);
     }
 
-    /* タイトル行（マイク絵文字に戻す） */
     .tts-title{
       margin:0;
       font-size: clamp(17px, 2.4vw, 21px);
@@ -316,7 +333,6 @@
     }
     .panel-body{ padding: 14px 16px 16px; }
 
-    /* TTS textarea: 常に黒文字・白背景 */
     .tts-input{
       width:100%;
       min-height: 130px;
@@ -388,6 +404,7 @@
       display:grid;
       grid-template-columns: repeat(12, 1fr);
       gap: 14px;
+      min-width: 0;
     }
     .card{
       grid-column: span 6;
@@ -397,6 +414,7 @@
       box-shadow: var(--shadow2);
       overflow:hidden;
       transition: transform .12s ease, filter .12s ease;
+      min-width: 0;
     }
     .card:hover{ transform: translateY(-2px); filter: brightness(1.01); }
 
@@ -691,8 +709,8 @@
           body: JSON.stringify({
             text,
             speaker: 1099527840, // AbeShinzo ID
-            speed: 1.0,          // 固定
-            pitch: 0.0           // 固定
+            speed: 1.0,
+            pitch: 0.0
           })
         });
 
@@ -795,15 +813,3 @@
   </script>
 </body>
 </html>
-```
-
-[1](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/srcset)
-[2](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/img)
-[3](https://developer.mozilla.org/en-US/docs/Web/HTML/Guides/Responsive_images)
-[4](https://mdn2.netlify.app/en-US/docs/Web/API/HTMLImageElement/srcset)
-[5](https://stackoverflow.com/questions/42345192/srcset-do-i-still-need-to-write-1x-2x-3x-if-ive-specified-the-width-of-each)
-[6](https://dev.to/activenode/srcset-sizes-picture-media-what-you-might-not-have-known-31nf)
-[7](https://rocketvalidator.com/html-validation/bad-value-x-for-attribute-srcset-on-element-img-must-contain-one-or-more-image-candidate-strings)
-[8](https://html.spec.whatwg.org/multipage/images.html)
-[9](https://coderpad.io/blog/development/the-definitive-guide-to-responsive-images-on-the-web/)
-[10](https://boltdesignsystem.com/pattern-lab/patterns/20-elements-image/index.html)
