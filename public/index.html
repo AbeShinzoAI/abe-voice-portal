@@ -144,33 +144,17 @@
 
     .section{ padding: 16px 0 30px; }
 
+    /* Hero（見出し文は削除、CTAとギャラリーだけ） */
     .hero{ padding: 18px 0 10px; }
-    .hero-top{
-      display:flex;
-      align-items:flex-end;
-      justify-content:space-between;
-      gap: 12px;
-      margin-bottom: 12px;
-      min-width: 0;
-    }
-    .hero h1{
-      margin:0;
-      font-size: clamp(24px, 4.2vw, 44px);
-      line-height: 1.05;
-      letter-spacing: 0.02em;
-    }
-    .hero p{
-      margin: 6px 0 0;
-      color: var(--muted);
-      font-size: 14px;
-      max-width: 60ch;
-    }
-    .cta{
+
+    .hero-cta{
       display:flex;
       flex-wrap: wrap;
       gap: 10px;
-      justify-content: flex-end;
+      justify-content: center;
+      margin-bottom: 12px;
     }
+
     .btn{
       display:inline-flex;
       align-items:center;
@@ -193,21 +177,21 @@
       box-shadow: 0 16px 35px rgba(255,77,109,0.22);
     }
 
-    /* ===== Gallery ===== */
+    /* ===== Gallery（外枠を撤去） ===== */
     .gallery{
-      background: var(--card2);
-      border: 1px solid var(--border);
-      border-radius: var(--r2);
-      box-shadow: var(--shadow);
-      overflow: hidden;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      border-radius: 0;
+      overflow: visible;
     }
 
     .gallery-track{
       display:grid;
       grid-auto-flow: column;
-      grid-auto-columns: clamp(260px, 78vw, 420px);
+      grid-auto-columns: clamp(260px, 78vw, 560px);
       gap: 10px;
-      padding: 10px;
+      padding: 6px 2px;
 
       overflow-x: auto;
       overscroll-behavior-x: contain;
@@ -215,23 +199,24 @@
       scroll-behavior: smooth;
       -webkit-overflow-scrolling: touch;
 
-      /* ★ PCの横スクロールバーを消す（線形インジケータだけ） */
-      scrollbar-width: none;     /* Firefox */       /* see MDN */ /* [web:195] */
+      /* PCの横スクロールバーを消す（線形インジケータだけ） */
+      scrollbar-width: none;     /* Firefox */
       -ms-overflow-style: none;  /* legacy Edge/IE */
     }
-    .gallery-track::-webkit-scrollbar{ display: none; } /* Chrome/Safari */ /* [web:196] */
+    .gallery-track::-webkit-scrollbar{ display: none; }
 
-    /* クリック可能なスライド（<a>） */
+    /* クリック可能スライド（<a>） */
     .shot{
       position: relative;
       display:block;
       border-radius: 18px;
       overflow: hidden;
       scroll-snap-align: center;
-      aspect-ratio: 16 / 9;
-      min-height: unset;
-      border: 1px solid rgba(0,0,0,0.06);
       text-decoration: none;
+      outline: none;
+
+      /* ★ 16:9 固定 */
+      aspect-ratio: 16 / 9;
 
       background:
         radial-gradient(600px 220px at 30% 20%, rgba(76,201,240,0.18), transparent 60%),
@@ -239,7 +224,6 @@
         linear-gradient(135deg, rgba(255,183,3,0.12), rgba(255,77,109,0.08));
       box-shadow: 0 10px 24px rgba(0,0,0,0.06);
       transition: transform .12s ease, filter .12s ease;
-      outline: none;
     }
     .shot:hover{ transform: translateY(-2px); filter: brightness(1.02); }
     .shot:focus-visible{
@@ -271,7 +255,7 @@
       justify-content:space-between;
       gap: 12px;
       color: #fff;
-      pointer-events: none; /* クリックはリンク全体に */
+      pointer-events: none;
     }
     .cap-title{
       margin:0;
@@ -295,15 +279,15 @@
       backdrop-filter: blur(10px);
     }
 
-    /* 線状インジケータ */
+    /* 線形インジケータ（外枠なしに合わせてシンプルに） */
     .gallery-dots{
       display:flex;
       gap: 10px;
       justify-content:center;
       align-items:center;
-      padding: 12px 12px 14px;
-      border-top: 1px solid rgba(0,0,0,0.06);
-      background: rgba(255,255,255,0.55);
+      padding: 12px 12px 0;
+      background: transparent;
+      border: none;
     }
     .dot{
       appearance:none;
@@ -522,8 +506,6 @@
 
     @media (max-width: 860px){
       .card{ grid-column: span 12; }
-      .hero-top{ flex-direction: column; align-items:flex-start; }
-      .cta{ justify-content:flex-start; }
     }
 
     @media (prefers-reduced-motion: reduce){
@@ -568,20 +550,14 @@
     <!-- HERO -->
     <section id="home" class="hero section">
       <div class="container">
-        <div class="hero-top">
-          <div>
-            <h1>晋バルサンch</h1>
-            <p>最新コンテンツをサクッと見て、気になったらボイスメーカーで遊べるポータル。</p>
-          </div>
-          <div class="cta">
-            <a class="btn primary" href="#tts">ボイスメーカーへ</a>
-            <a class="btn" href="#content">動画を見る</a>
-          </div>
+        <div class="hero-cta">
+          <a class="btn primary" href="#tts">ボイスメーカーへ</a>
+          <a class="btn" href="#content">動画を見る</a>
         </div>
 
         <div class="gallery" aria-label="Featured gallery">
           <div class="gallery-track" id="gallery-track" tabindex="0" aria-label="Gallery">
-            <!-- ★ href を差し替えて使ってください（例：YouTube動画URL、XのURLなど） -->
+            <!-- href を差し替えて使ってください -->
             <a class="shot" data-slide="0" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" aria-label="今日のおすすめを開く">
               <img src="images/feature-01.webp" alt="注目コンテンツ1のサムネイル" loading="lazy">
               <div class="shot-cap">
@@ -641,7 +617,7 @@
               <span class="tts-emoji" aria-hidden="true">🎤</span>
               <span>安倍AIボイスメーカー</span>
             </h2>
-            <p class="help">速度=1.0、ピッチ=0.0 固定。</p>
+            <p class="help">安倍ちゃんにあんなことやこんなことを喋らせよう</p>
           </div>
 
           <div class="panel-body">
@@ -705,7 +681,7 @@
 
   <footer>
     <div class="container">
-      <p>&copy; 2025 AbeShinzo Voice Portal. Powered by AivisSpeech-Engine.</p>
+      <p>&copy; 2025 Abe Artificial Intelligence</p>
     </div>
   </footer>
 
@@ -754,7 +730,7 @@
       }
     });
 
-    // ===== ギャラリー：自然なループ + PCでも自動再生 + 線状ボタン =====
+    // ===== ギャラリー：自然なループ + PCでも自動再生 + 線形ボタン =====
     const track = document.getElementById('gallery-track');
     const dotsWrap = document.getElementById('gallery-dots');
 
@@ -772,7 +748,6 @@
       originals = Array.from(track.querySelectorAll('.shot')).filter(s => !s.dataset.clone);
       originalCount = originals.length;
 
-      // クローンを末尾に追加
       const frag = document.createDocumentFragment();
       originals.forEach((s, i) => {
         const c = s.cloneNode(true);
@@ -834,7 +809,7 @@
       setActiveDot(0);
       scrollToSlide(allSlides[cloneStartIndex + 0], true);
 
-      // 着地後に本物先頭へ瞬時に戻す
+      // 着地後に本物先頭へ瞬時に戻す（見た目が同じなので違和感が出にくい）
       window.setTimeout(() => {
         index = 0;
         setActiveDot(0);
