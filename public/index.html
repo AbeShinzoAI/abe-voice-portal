@@ -35,7 +35,7 @@
     *{ box-sizing:border-box; }
     html{ scroll-behavior:smooth; }
 
-    /* ★ 揺れ対策 */
+    /* 揺れ対策 */
     html, body{
       width: 100%;
       overflow-x: hidden;
@@ -205,10 +205,7 @@
     .gallery-track{
       display:grid;
       grid-auto-flow: column;
-
-      /* ★ PCでも必ず横に溢れるように固定寄りにする（自動スライドが効く） */
       grid-auto-columns: clamp(260px, 78vw, 420px);
-
       gap: 10px;
       padding: 10px;
 
@@ -217,26 +214,37 @@
       scroll-snap-type: x mandatory;
       scroll-behavior: smooth;
       -webkit-overflow-scrolling: touch;
-    }
 
-    .gallery-track::-webkit-scrollbar{ height: 10px; }
-    .gallery-track::-webkit-scrollbar-thumb{
-      background: rgba(0,0,0,0.10);
-      border-radius: 999px;
+      /* ★ PCの横スクロールバーを消す（線形インジケータだけ） */
+      scrollbar-width: none;     /* Firefox */       /* see MDN */ /* [web:195] */
+      -ms-overflow-style: none;  /* legacy Edge/IE */
     }
+    .gallery-track::-webkit-scrollbar{ display: none; } /* Chrome/Safari */ /* [web:196] */
 
+    /* クリック可能なスライド（<a>） */
     .shot{
       position: relative;
+      display:block;
       border-radius: 18px;
       overflow: hidden;
       scroll-snap-align: center;
       min-height: 220px;
       border: 1px solid rgba(0,0,0,0.06);
+      text-decoration: none;
+
       background:
         radial-gradient(600px 220px at 30% 20%, rgba(76,201,240,0.18), transparent 60%),
         radial-gradient(600px 220px at 70% 40%, rgba(255,77,109,0.18), transparent 60%),
         linear-gradient(135deg, rgba(255,183,3,0.12), rgba(255,77,109,0.08));
+      box-shadow: 0 10px 24px rgba(0,0,0,0.06);
+      transition: transform .12s ease, filter .12s ease;
+      outline: none;
     }
+    .shot:hover{ transform: translateY(-2px); filter: brightness(1.02); }
+    .shot:focus-visible{
+      box-shadow: 0 0 0 4px rgba(255,77,109,0.25), 0 14px 30px rgba(0,0,0,0.10);
+    }
+
     .shot img{
       width:100%;
       height:100%;
@@ -251,7 +259,8 @@
       background: linear-gradient(180deg, rgba(0,0,0,0.00), rgba(0,0,0,0.45) 80%);
       pointer-events:none;
     }
-    .shot figcaption{
+
+    .shot-cap{
       position:absolute;
       left: 14px;
       right: 14px;
@@ -261,6 +270,7 @@
       justify-content:space-between;
       gap: 12px;
       color: #fff;
+      pointer-events: none; /* クリックはリンク全体に */
     }
     .cap-title{
       margin:0;
@@ -271,7 +281,7 @@
     .cap-sub{
       margin: 2px 0 0;
       font-size: 12px;
-      opacity: 0.9;
+      opacity: 0.92;
     }
     .badge{
       flex:none;
@@ -284,7 +294,7 @@
       backdrop-filter: blur(10px);
     }
 
-    /* ★ 線状インジケータ（押すと該当スライドへ） */
+    /* 線状インジケータ */
     .gallery-dots{
       display:flex;
       gap: 10px;
@@ -306,6 +316,10 @@
       transition: transform .12s ease, background .12s ease;
     }
     .dot:hover{ transform: translateY(-1px); }
+    .dot:focus-visible{
+      outline: none;
+      box-shadow: 0 0 0 4px rgba(255,77,109,0.18), inset 0 0 0 1px rgba(0,0,0,0.06);
+    }
     .dot[aria-current="true"]{
       background: linear-gradient(135deg, var(--p), var(--p2));
       box-shadow: 0 10px 20px rgba(255,77,109,0.18);
@@ -514,7 +528,7 @@
     @media (prefers-reduced-motion: reduce){
       html{ scroll-behavior:auto; }
       *{ transition:none !important; }
-      .card:hover, .btn:hover, .btn-primary:hover{ transform:none; }
+      .card:hover, .btn:hover, .btn-primary:hover, .shot:hover{ transform:none; }
       .gallery-track{ scroll-behavior: auto; }
     }
   </style>
@@ -566,53 +580,52 @@
 
         <div class="gallery" aria-label="Featured gallery">
           <div class="gallery-track" id="gallery-track" tabindex="0" aria-label="Gallery">
-            <!-- originals -->
-            <figure class="shot" data-slide="0">
+            <!-- ★ href を差し替えて使ってください（例：YouTube動画URL、XのURLなど） -->
+            <a class="shot" data-slide="0" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" aria-label="今日のおすすめを開く">
               <img src="images/feature-01.webp" alt="注目コンテンツ1のサムネイル" loading="lazy">
-              <figcaption>
+              <div class="shot-cap">
                 <div>
                   <p class="cap-title">今日のおすすめ</p>
                   <p class="cap-sub">まずはここから</p>
                 </div>
                 <span class="badge">PICK</span>
-              </figcaption>
-            </figure>
+              </div>
+            </a>
 
-            <figure class="shot" data-slide="1">
+            <a class="shot" data-slide="1" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" aria-label="新作まとめを開く">
               <img src="images/feature-02.webp" alt="注目コンテンツ2のサムネイル" loading="lazy">
-              <figcaption>
+              <div class="shot-cap">
                 <div>
                   <p class="cap-title">新作まとめ</p>
                   <p class="cap-sub">ショート/切り抜き</p>
                 </div>
                 <span class="badge">NEW</span>
-              </figcaption>
-            </figure>
+              </div>
+            </a>
 
-            <figure class="shot" data-slide="2">
+            <a class="shot" data-slide="2" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" aria-label="人気回を開く">
               <img src="images/feature-03.webp" alt="注目コンテンツ3のサムネイル" loading="lazy">
-              <figcaption>
+              <div class="shot-cap">
                 <div>
                   <p class="cap-title">人気回</p>
                   <p class="cap-sub">みんなが見てる</p>
                 </div>
                 <span class="badge">HOT</span>
-              </figcaption>
-            </figure>
+              </div>
+            </a>
 
-            <figure class="shot" data-slide="3">
+            <a class="shot" data-slide="3" href="#tts" aria-label="ボイスメーカーへ移動">
               <img src="images/feature-04.webp" alt="ボイスメーカーのイメージ" loading="lazy">
-              <figcaption>
+              <div class="shot-cap">
                 <div>
                   <p class="cap-title">ボイスメーカー</p>
                   <p class="cap-sub">テキスト入れて即再生</p>
                 </div>
                 <span class="badge">TRY</span>
-              </figcaption>
-            </figure>
+              </div>
+            </a>
           </div>
 
-          <!-- ★ 線状ボタン（JSで生成） -->
           <div class="gallery-dots" id="gallery-dots" aria-label="Gallery navigation"></div>
         </div>
       </div>
@@ -747,25 +760,23 @@
     let autoplayTimer = null;
     let pauseTimer = null;
 
-    // 現在の「表示すべきオリジナルindex」
     let index = 0;
 
-    // ループ判定用
     let originalCount = 0;
     let originals = [];
     let allSlides = [];
-    let cloneStartIndex = 0; // allSlides上で「クローン列が始まるindex」
+    let cloneStartIndex = 0;
 
     function buildLoop(){
       originals = Array.from(track.querySelectorAll('.shot')).filter(s => !s.dataset.clone);
       originalCount = originals.length;
 
-      // クローンを末尾に追加（最後の次に最初が来る見た目）
+      // クローンを末尾に追加
       const frag = document.createDocumentFragment();
       originals.forEach((s, i) => {
         const c = s.cloneNode(true);
         c.dataset.clone = "1";
-        c.dataset.slide = String(i); // 元のindex
+        c.dataset.slide = String(i);
         frag.appendChild(c);
       });
       track.appendChild(frag);
@@ -809,7 +820,6 @@
       scrollToSlide(allSlides[index], smooth);
     }
 
-    // 「次へ」: 最後の次はクローンの先頭へ滑らかに進み、着地後に本物先頭へ瞬時に戻す
     function goNext(){
       if (!originalCount) return;
 
@@ -819,22 +829,18 @@
         return;
       }
 
-      // 最後 →（滑らかに）→ 先頭クローン
+      // 最後 → 先頭クローンへ滑らかに
       setActiveDot(0);
       scrollToSlide(allSlides[cloneStartIndex + 0], true);
 
-      // スクロールが終わった後に「瞬時」に本物の先頭へ戻す（見た目が同じなので違和感が出にくい）
-      // scrollend は未対応ブラウザもあるのでタイムアウト方式
+      // 着地後に本物先頭へ瞬時に戻す
       window.setTimeout(() => {
-        // “瞬時”に戻す
         index = 0;
         setActiveDot(0);
 
-        // いったんscroll-behaviorを無効化して確実にジャンプ
         const prev = track.style.scrollBehavior;
         track.style.scrollBehavior = 'auto';
         scrollToSlide(allSlides[0], false);
-        // 戻す
         track.style.scrollBehavior = prev || '';
       }, 420);
     }
@@ -855,12 +861,12 @@
       pauseTimer = setTimeout(startAutoplay, ms);
     }
 
-    // 手で触ったら一時停止（PC/スマホ両対応）
+    // ユーザー操作が入ったら一時停止
     ['pointerdown','touchstart','wheel','keydown','mouseenter','focusin'].forEach(ev => {
       track.addEventListener(ev, () => pauseAutoplay(7000), { passive: true });
     });
 
-    // 手動スクロール時：いちばん近い「オリジナルindex」にインジケータを合わせる
+    // 手動スクロールのときもインジケータを追従
     let scrollDebounce = null;
     track.addEventListener('scroll', () => {
       if (!originalCount) return;
@@ -869,7 +875,6 @@
       scrollDebounce = setTimeout(() => {
         const x = track.scrollLeft;
 
-        // 近いスライドを探す（クローン領域にいても data-slide で元indexに戻す）
         let bestEl = allSlides[0];
         let bestDist = Infinity;
         for (const s of allSlides){
@@ -894,11 +899,10 @@
     });
 
     window.addEventListener('resize', () => {
-      // レイアウト変化でoffsetが変わるので再補正
       goToOriginal(index, false);
     });
 
-    // ===== スムーススクロール（nav）=====
+    // nav スムーススクロール
     document.querySelectorAll('nav a').forEach(anchor => {
       anchor.addEventListener('click', (e) => {
         const href = anchor.getAttribute('href');
