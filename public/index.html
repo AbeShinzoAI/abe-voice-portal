@@ -152,6 +152,7 @@
       background: linear-gradient(135deg, var(--p), var(--p2));
       box-shadow: 0 16px 35px rgba(255,77,109,0.22);
     }
+
     /* ===== Gallery（フル幅＋左揃えスナップ） ===== */
     .gallery{
       background: transparent;
@@ -244,6 +245,7 @@
       border: 1px solid rgba(255,255,255,0.24);
       backdrop-filter: blur(10px);
     }
+
     /* 左右ボタン */
     .gallery-controls{
       position: absolute;
@@ -278,6 +280,7 @@
       background: rgba(255,255,255,0.95);
       transform: scale(1.1);
     }
+
     /* ドットインジケータ */
     .gallery-dots{
       display:flex;
@@ -308,6 +311,7 @@
       background: linear-gradient(135deg, var(--p), var(--p2));
       box-shadow: 0 10px 20px rgba(255,77,109,0.18);
     }
+
     .panel{
       background: var(--card);
       border: 1px solid var(--border);
@@ -530,13 +534,9 @@
       </nav>
     </div>
   </header>
+
   <main>
     <section id="home" class="hero section">
-      <div class="container">
-        <div class="hero-cta">
-          <a class="btn primary" href="#tts">ボイスメーカーへ</a>
-          <a class="btn" href="#content">動画を見る</a>
-        </div>
         <div class="gallery" aria-label="Featured gallery">
           <div class="gallery-track" id="gallery-track" tabindex="0" aria-label="Gallery">
             <!-- 1 -->
@@ -628,6 +628,7 @@
               </div>
             </a>
           </div>
+
           <div class="gallery-controls">
             <button class="gallery-prev" aria-label="前のスライド">←</button>
             <button class="gallery-next" aria-label="次のスライド">→</button>
@@ -636,8 +637,12 @@
         </div>
       </div>
     </section>
+    <div class="container">
+        <div class="hero-cta">
+          <a class="btn primary" href="#tts">ボイスメーカーへ</a>
+          <a class="btn" href="#content">動画を見る</a>
+        </div>
 
-    <!-- 以下は変更なし（省略して同じ） -->
     <section id="content" class="section">
       <div class="container">
         <h2 class="section-title">最新情報</h2>
@@ -661,7 +666,7 @@
               <iframe src="https://platform.twitter.com/widgets/tweet_button.html" title="X embed"></iframe>
             </div>
             <h3>X (Twitter): 最新ポスト</h3>
-            <p><a href="https://x.com/RougaiBarusan" target="_blank" rel="noopener noreferrer">フォロー</a>で更新通知。</p>
+            <p><a href="https://x.com/YOUR_X_HANDLE" target="_blank" rel="noopener noreferrer">フォロー</a>で更新通知。</p>
           </article>
         </div>
       </div>
@@ -700,13 +705,15 @@
       </div>
     </section>
   </main>
+
   <footer>
     <div class="container">
       <p>&copy; 2025 Abe Artificial Intelligence</p>
     </div>
   </footer>
+
   <script>
-    // TTS と Gallery のスクリプトは前回と同じ（変更なし）
+    // ===== TTS（変更なし）=====
     const API_URL = '/api/tts';
     document.getElementById('generate-btn').addEventListener('click', async () => {
       const text = document.getElementById('text-input').value.trim();
@@ -743,6 +750,7 @@
       }
     });
 
+    // ===== Gallery（無限ループ版：ここが変更点）=====
     const track = document.getElementById('gallery-track');
     const dotsWrap = document.getElementById('gallery-dots');
     const prevBtn = document.querySelector('.gallery-prev');
@@ -750,9 +758,14 @@
 
     let autoplayTimer = null;
     let pauseTimer = null;
+
     let index = 0;
     let originals = [];
     let originalCount = 0;
+
+    let firstClone = null;
+    let lastClone = null;
+    let allSlides = []; // クローン込み
 
     function buildDots(){
       dotsWrap.innerHTML = '';
@@ -782,6 +795,10 @@
       });
     }
 
+    function jumpTo(el){
+      track.scrollTo({ left: el.offsetLeft, behavior: 'auto' });
+    }
+
     function goTo(i, smooth = true){
       index = i;
       setActiveDot(index);
@@ -789,11 +806,25 @@
     }
 
     function goNext(){
-      goTo((index + 1) % originalCount, true);
+      // 最後→（末尾に置いた）先頭クローンへスムーズに1枚分進む
+      if (index === originalCount - 1){
+        index = 0;
+        setActiveDot(index);
+        scrollToSlide(firstClone, true);
+        return;
+      }
+      goTo(index + 1, true);
     }
 
     function goPrev(){
-      goTo((index - 1 + originalCount) % originalCount, true);
+      // 最初→（先頭に置いた）末尾クローンへスムーズに1枚分戻る
+      if (index === 0){
+        index = originalCount - 1;
+        setActiveDot(index);
+        scrollToSlide(lastClone, true);
+        return;
+      }
+      goTo(index - 1, true);
     }
 
     function startAutoplay(){
@@ -825,31 +856,73 @@
       goNext();
     });
 
+    function setupInfiniteLoop(){
+      originals = Array.from(track.querySelectorAll('.shot'));
+      originalCount = originals.length;
+
+      // 端をクローンして無限ループ化（末尾クローンを先頭へ、先頭クローンを末尾へ）
+      lastClone = originals[originalCount - 1].cloneNode(true);
+      firstClone = originals[0].cloneNode(true);
+
+      lastClone.dataset.clone = 'last';
+      firstClone.dataset.clone = 'first';
+      lastClone.setAttribute('aria-hidden', 'true');
+      firstClone.setAttribute('aria-hidden', 'true');
+
+      track.insertBefore(lastClone, originals[0]);
+      track.appendChild(firstClone);
+
+      allSlides = Array.from(track.querySelectorAll('.shot'));
+    }
+
     let scrollDebounce = null;
     track.addEventListener('scroll', () => {
       if (scrollDebounce) clearTimeout(scrollDebounce);
+
       scrollDebounce = setTimeout(() => {
         const x = track.scrollLeft;
-        let bestEl = originals[0];
+
+        // クローン込みで「いま最も近いスライド」を探す
+        let bestEl = allSlides[0];
         let bestDist = Infinity;
-        for (const s of originals){
+        for (const s of allSlides){
           const d = Math.abs(s.offsetLeft - x);
           if (d < bestDist){
             bestDist = d;
             bestEl = s;
           }
         }
+
+        // クローン位置に来たら、本物へ瞬間ジャンプ（見た目は途切れない）
+        if (bestEl.dataset.clone === 'first'){
+          index = 0;
+          setActiveDot(index);
+          jumpTo(originals[0]);
+          return;
+        }
+        if (bestEl.dataset.clone === 'last'){
+          index = originalCount - 1;
+          setActiveDot(index);
+          jumpTo(originals[originalCount - 1]);
+          return;
+        }
+
+        // 通常スライド
         const slideIndex = Number(bestEl.dataset.slide);
-        index = slideIndex;
-        setActiveDot(index);
+        if (!Number.isNaN(slideIndex)){
+          index = slideIndex;
+          setActiveDot(index);
+        }
       }, 80);
     }, { passive: true });
 
     window.addEventListener('load', () => {
-      originals = Array.from(track.querySelectorAll('.shot'));
-      originalCount = originals.length;
+      setupInfiniteLoop();
       buildDots();
+
+      // 初期位置を「本物の1枚目」に合わせる（先頭には末尾クローンがいるため）
       goTo(0, false);
+
       startAutoplay();
     });
 
@@ -857,6 +930,7 @@
       goTo(index, false);
     });
 
+    // ===== ナビのスムーススクロール（変更なし）=====
     document.querySelectorAll('nav a').forEach(anchor => {
       anchor.addEventListener('click', (e) => {
         const href = anchor.getAttribute('href');
