@@ -758,12 +758,13 @@ async function fetchSchedule() {
       return;
     }
 
-    // ★ここが変更点★
-    // 過去も含めてすべて表示し、日付の降順（新しいものが上）でソート
+    // 新しい日付が上に来るように降順ソート
     const sortedEvents = events.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     statusEl.textContent = '配信スケジュール（最新順）';
     statusEl.style.color = 'var(--p)';
+
+    const now = new Date();
 
     sortedEvents.forEach(event => {
       const li = document.createElement('li');
@@ -776,21 +777,24 @@ async function fetchSchedule() {
         minute: '2-digit'
       });
 
-      // 過去のイベントは少し薄めに表示（視認性向上）
-      const isPast = new Date(event.date) < new Date();
-      const opacityStyle = isPast ? 'opacity: 0.65;' : '';
+      // ★ここが変更点★
+      // 開始時刻を過ぎていても「終了」と表示しない
+      // （配信は数時間続くことが多いので、開始後すぐは「配信中」とみなす）
+      const isClearlyPast = new Date(event.date) < new Date(Date.now() - 24*60*60*1000); // 24時間以上前なら過去扱い
+      const opacityStyle = isClearlyPast ? 'opacity: 0.65;' : '';
+      const pastLabel = isClearlyPast ? '<span style="color: var(--muted); font-size: 12px;">（終了）</span>' : '';
 
       li.innerHTML = `
         <div style="${opacityStyle}">
           <strong>${event.title}</strong><br>
           <small>${startTime} ・ ${event.platform || 'ライブ'}</small>
-          ${isPast ? '<span style="color: var(--muted); font-size: 12px;">（終了）</span>' : ''}
+          ${pastLabel}
         </div>
       `;
       listEl.appendChild(li);
 
-      // 視聴ボタンは未来のものだけ表示（過去配信のリンクは意味がないことが多いため）
-      if (event.url && !isPast) {
+      // 視聴ボタンは「24時間以上前でないもの」すべてに表示（配信中も含む）
+      if (event.url && !isClearlyPast) {
         const btn = document.createElement('a');
         btn.className = 'btn primary';
         btn.href = event.url;
@@ -801,9 +805,9 @@ async function fetchSchedule() {
       }
     });
 
-    // 未来のイベントが1つもなければデフォルトボタンのみ表示
-    const hasFuture = sortedEvents.some(e => new Date(e.date) >= new Date());
-    if (!hasFuture) {
+    // 未来＋配信中のイベントがなければデフォルトボタン表示
+    const hasActive = sortedEvents.some(e => new Date(e.date) >= new Date(Date.now() - 24*60*60*1000));
+    if (!hasActive) {
       buttonsContainer.style.display = 'none';
       defaultLink.style.display = 'flex';
     }
