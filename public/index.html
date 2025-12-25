@@ -797,7 +797,9 @@ async function fetchSchedule() {
       if (!event.title && !event.date) return;
 
       const startTime = new Date(event.date);
-      const isPast = startTime < now;
+      // ★ここが変更点★ 開始時刻から48時間以上経過したら過去扱い
+      const hoursSinceStart = (now - startTime) / (1000 * 60 * 60);
+      const isClearlyPast = hoursSinceStart >= 48;
 
       const timeStr = startTime.toLocaleString('ja-JP', {
         month: 'numeric',
@@ -808,10 +810,10 @@ async function fetchSchedule() {
       });
 
       const platform = event.platform || 'ライブ';
-      const url = event.url || 'https://www.youtube.com/@%E3%83%88%E3%83%AA%E3%83%A2%E3%83%AD%E3%82%B9TV/streams';
+      const url = event.url || 'https://www.youtube.com/@%E3%83%88%E3%83%AA%E3%83%A0%E3%83%AD%E3%82%B9TV/streams';
 
       const card = document.createElement('a');
-      card.className = `live-card ${isPast ? 'past' : ''}`;
+      card.className = `live-card ${isClearlyPast ? 'past' : ''}`;
       card.href = url;
       card.target = '_blank';
       card.rel = 'noopener noreferrer';
@@ -823,7 +825,10 @@ async function fetchSchedule() {
         </div>
         <div class="live-card-body">
           <p class="live-card-time">${timeStr}</p>
-          <p class="live-card-status">クリックで視聴ページへ</p>
+          <p class="live-card-status">
+            クリックで視聴ページへ
+            ${isClearlyPast ? '<span style="color: var(--muted); margin-left: 6px;">（終了）</span>' : ''}
+          </p>
         </div>
       `;
 
