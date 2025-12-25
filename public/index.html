@@ -679,6 +679,102 @@
       </div>
     </section>
 
+    <section id="live-notice" class="section">
+  <div class="container">
+    <div class="panel">
+      <div class="panel-header">
+        <h2 class="tts-title">
+          <span class="tts-emoji" aria-hidden="true">📡</span>
+          <span>ライブ配信のお知らせ</span>
+        </h2>
+        <p class="help">最新スケジュール（JSONから自動取得）</p>
+      </div>
+      <div class="panel-body">
+        <p id="live-status">読み込み中...</p>
+        <ul id="live-list"></ul>
+        <div id="live-buttons" style="margin-top: 14px; display: none; gap: 10px; flex-wrap: wrap;"></div>
+        <a id="default-link" class="btn primary" href="https://www.youtube.com/@%E3%83%88%E3%83%AA%E3%83%A2%E3%83%AD%E3%82%B9TV/streams" target="_blank" rel="noopener noreferrer" style="display:none;">チャンネルをチェック</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+// === ここだけ修正してください ===
+const SCHEDULE_JSON_URL = "schedule.json"; // ← あなたのJSONファイルの相対パスまたは絶対URL
+// =====================================
+
+async function fetchSchedule() {
+  try {
+    const response = await fetch(SCHEDULE_JSON_URL + '?t=' + Date.now()); // キャッシュ回避
+    if (!response.ok) throw new Error('ファイルが見つかりません');
+    const events = await response.json();
+
+    const statusEl = document.getElementById('live-status');
+    const listEl = document.getElementById('live-list');
+    const buttonsContainer = document.getElementById('live-buttons');
+    const defaultLink = document.getElementById('default-link');
+    listEl.innerHTML = '';
+    buttonsContainer.innerHTML = '';
+    defaultLink.style.display = 'none';
+    buttonsContainer.style.display = 'none';
+
+    // 未来のイベントのみ抽出・ソート
+    const now = new Date();
+    const futureEvents = events
+      .filter(e => new Date(e.date) >= now)
+      .sort((a, b) => new Date(a.date) - new Date(b.date));
+
+    if (futureEvents.length === 0) {
+      statusEl.textContent = '現在予定されているライブはありません。';
+      statusEl.innerHTML += '<br>毎晩20時頃から全自動ライブをお届けしています！';
+      defaultLink.style.display = 'inline-flex';
+      return;
+    }
+
+    statusEl.textContent = '⏰ 予定されているライブ';
+
+    futureEvents.forEach(event => {
+      const li = document.createElement('li');
+      const startTime = new Date(event.date).toLocaleString('ja-JP', {
+        month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'
+      });
+      li.innerHTML = `
+        <strong>${event.title}</strong><br>
+        <small>${startTime} 開始予定 ・ ${event.platform || ''}</small>
+      `;
+      listEl.appendChild(li);
+    });
+
+    // 各イベントのボタンを表示（複数あってもOK）
+    futureEvents.forEach(event => {
+      if (event.url) {
+        const btn = document.createElement('a');
+        btn.className = 'btn';
+        btn.href = event.url;
+        btn.target = '_blank';
+        btn.rel = 'noopener noreferrer';
+        btn.textContent = `${event.platform || 'ライブ'}を見る`;
+        buttonsContainer.appendChild(btn);
+      }
+    });
+
+    if (buttonsContainer.children.length > 0) {
+      buttonsContainer.style.display = 'flex';
+    } else {
+      defaultLink.style.display = 'inline-flex';
+    }
+
+  } catch (err) {
+    document.getElementById('live-status').innerHTML = '⚠️ スケジュール取得失敗<br>schedule.jsonを確認してください';
+    console.error(err);
+  }
+}
+
+// ページ読み込み時に実行
+window.addEventListener('load', fetchSchedule);
+</script>
+
     <section id="tts" class="section">
       <div class="container">
         <div class="panel">
@@ -949,3 +1045,4 @@
   </script>
 </body>
 </html>
+
