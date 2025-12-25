@@ -756,6 +756,7 @@
     font-size: 13px;
     color: var(--muted);
   }
+  /* ★修正：過去カードのみ「（終了）」を表示（CSSで制御） */
   .live-card.past .live-card-status::after {
     content: "（終了）";
     color: var(--muted);
@@ -764,11 +765,11 @@
 
   @media (max-width: 600px) {
     #live-cards {
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important; /* スマホで最小幅を小さく */
-      padding: 0 8px; /* 余白調整で途切れ防止 */
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+      padding: 0 8px;
     }
     .live-card {
-      min-width: 0; /* 柔軟に収まるよう */
+      min-width: 0;
     }
   }
 </style>
@@ -835,10 +836,7 @@ async function fetchSchedule() {
         </div>
         <div class="live-card-body">
           <p class="live-card-time">${timeStr}</p>
-          <p class="live-card-status">
-            クリックで視聴ページへ
-            ${isClearlyPast ? '<span style="color: var(--muted); margin-left: 6px;">（終了）</span>' : ''}
-          </p>
+          <p class="live-card-status">クリックで視聴ページへ</p>
         </div>
       `;
 
