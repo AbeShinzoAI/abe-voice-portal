@@ -1,3 +1,5 @@
+html
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -691,7 +693,7 @@
         </div>
         <div class="panel-body">
           <p id="live-status" style="font-size: 18px; font-weight: 950; color: var(--p); margin-bottom: 20px; text-align: center;">読み込み中...</p>
-          <div id="live-cards" style="display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));"></div>
+          <div id="live-cards" style="display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));"></div>
           <p id="no-schedule" style="text-align: center; color: var(--muted); font-size: 15px; display: none;">
             現在予定されているライブはありません。<br>
             毎晩20時頃から全自動ライブをお届けしています！<br><br>
@@ -761,6 +763,16 @@
     color: var(--muted);
     margin-left: 6px;
   }
+
+  @media (max-width: 600px) {
+    #live-cards {
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important; /* スマホで最小幅を小さく */
+      padding: 0 8px; /* 余白調整で途切れ防止 */
+    }
+    .live-card {
+      min-width: 0; /* 柔軟に収まるよう */
+    }
+  }
 </style>
 
 <script>
@@ -797,7 +809,7 @@ async function fetchSchedule() {
       if (!event.title && !event.date) return;
 
       const startTime = new Date(event.date);
-      // ★ここが変更点★ 開始時刻から48時間以上経過したら過去扱い
+      // 開始時刻から48時間以上経過したら過去扱い
       const hoursSinceStart = (now - startTime) / (1000 * 60 * 60);
       const isClearlyPast = hoursSinceStart >= 48;
 
@@ -827,7 +839,7 @@ async function fetchSchedule() {
           <p class="live-card-time">${timeStr}</p>
           <p class="live-card-status">
             クリックで視聴ページへ
-            ${isClearlyPast ? '<span style="color: var(--muted); margin-left: 6px;"></span>' : ''}
+            ${isClearlyPast ? '<span style="color: var(--muted); margin-left: 6px;">（終了）</span>' : ''}
           </p>
         </div>
       `;
@@ -843,8 +855,6 @@ async function fetchSchedule() {
 }
 
 window.addEventListener('load', fetchSchedule);
-</script>
-
 </script>
 
     <section id="tts" class="section">
