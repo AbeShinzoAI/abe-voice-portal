@@ -751,39 +751,46 @@ async function fetchSchedule() {
     defaultLink.style.display = 'none';
     buttonsContainer.style.display = 'flex';
 
-    const now = new Date();
-    const futureEvents = events
-      .filter(e => new Date(e.date) >= now)
-      .sort((a, b) => new Date(a.date) - new Date(b.date));
-
-    if (futureEvents.length === 0) {
-      statusEl.textContent = '現在予定されているライブはありません';
+    if (!events || events.length === 0) {
+      statusEl.textContent = 'スケジュールが登録されていません';
       statusEl.style.color = 'var(--muted)';
       defaultLink.style.display = 'flex';
-      buttonsContainer.style.display = 'none';
       return;
     }
 
-    statusEl.textContent = '⏰ 近日中の配信スケジュール';
+    // ★ここが変更点★
+    // 過去も含めてすべて表示し、日付の降順（新しいものが上）でソート
+    const sortedEvents = events.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    statusEl.textContent = '配信スケジュール（最新順）';
     statusEl.style.color = 'var(--p)';
 
-    futureEvents.forEach(event => {
+    sortedEvents.forEach(event => {
       const li = document.createElement('li');
       const startTime = new Date(event.date).toLocaleString('ja-JP', {
+        year: 'numeric',
         month: 'numeric',
         day: 'numeric',
         weekday: 'short',
         hour: '2-digit',
         minute: '2-digit'
       });
+
+      // 過去のイベントは少し薄めに表示（視認性向上）
+      const isPast = new Date(event.date) < new Date();
+      const opacityStyle = isPast ? 'opacity: 0.65;' : '';
+
       li.innerHTML = `
-        <strong>${event.title}</strong><br>
-        <small>${startTime} ・ ${event.platform || 'ライブ'}</small>
+        <div style="${opacityStyle}">
+          <strong>${event.title}</strong><br>
+          <small>${startTime} ・ ${event.platform || 'ライブ'}</small>
+          ${isPast ? '<span style="color: var(--muted); font-size: 12px;">（終了）</span>' : ''}
+        </div>
       `;
       listEl.appendChild(li);
 
-      // ボタン追加
-      if (event.url) {
+      // 視聴ボタンは未来のものだけ表示（過去配信のリンクは意味がないことが多いため）
+      if (event.url && !isPast) {
         const btn = document.createElement('a');
         btn.className = 'btn primary';
         btn.href = event.url;
@@ -793,6 +800,13 @@ async function fetchSchedule() {
         buttonsContainer.appendChild(btn);
       }
     });
+
+    // 未来のイベントが1つもなければデフォルトボタンのみ表示
+    const hasFuture = sortedEvents.some(e => new Date(e.date) >= new Date());
+    if (!hasFuture) {
+      buttonsContainer.style.display = 'none';
+      defaultLink.style.display = 'flex';
+    }
 
   } catch (err) {
     document.getElementById('live-status').innerHTML = '⚠️ スケジュール取得失敗<br><small>schedule.jsonを確認してください</small>';
