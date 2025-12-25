@@ -687,54 +687,84 @@
             <span class="tts-emoji" aria-hidden="true">📡🔴</span>
             <span>ライブ配信のお知らせ</span>
           </h2>
-          <p class="help" style="color: var(--p); font-weight: 900;">最新スケジュール（だいたい1~2日間隔で毎日20時頃から配信中！）</p>
-       </div>
+          <p class="help" style="color: var(--p); font-weight: 900;">カードをクリックで配信ページへ！ 毎晩20時頃から配信中</p>
+        </div>
         <div class="panel-body">
-          <p id="live-status" style="font-size: 18px; font-weight: 950; color: var(--p); margin-bottom: 16px;">読み込み中...</p>
-          <ul id="live-list" style="list-style: none; padding: 0; margin: 0 0 20px;"></ul>
-          <div id="live-buttons" style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px;"></div>
-          <a id="default-link" class="btn primary" href="https://www.youtube.com/@%E3%83%88%E3%83%AA%E3%83%A2%E3%83%AD%E3%82%B9TV/streams" target="_blank" rel="noopener noreferrer" style="display:none; width:100%; justify-content:center;">
-            チャンネルをチェックする
-          </a>
+          <p id="live-status" style="font-size: 18px; font-weight: 950; color: var(--p); margin-bottom: 20px; text-align: center;">読み込み中...</p>
+          <div id="live-cards" style="display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));"></div>
+          <p id="no-schedule" style="text-align: center; color: var(--muted); font-size: 15px; display: none;">
+            現在予定されているライブはありません。<br>
+            毎晩20時頃から全自動ライブをお届けしています！<br><br>
+            <a class="btn primary" href="https://www.youtube.com/@%E3%83%88%E3%83%AA%E3%83%A2%E3%83%AD%E3%82%B9TV/streams" target="_blank" rel="noopener noreferrer">全チャンネルをチェック</a>
+          </p>
         </div>
       </div>
     </div>
   </section>
 
 <style>
-  /* ライブリストのアイテムをカード風に */
-  #live-list li {
+  /* ライブカードデザイン */
+  .live-card {
     background: #fff;
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 14px 16px;
-    margin-bottom: 12px;
+    border-radius: 20px;
+    overflow: hidden;
     box-shadow: var(--shadow2);
-    transition: transform .12s ease;
+    transition: transform .18s ease, box-shadow .18s ease;
+    border: 1px solid var(--border);
+    display: block;
+    text-decoration: none;
+    color: inherit;
   }
-  #live-list li:hover {
-    transform: translateY(-2px);
+  .live-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.12);
   }
-  #live-list li strong {
-    font-size: 16px;
-    color: var(--ink);
+  .live-card.past {
+    opacity: 0.65;
   }
-  #live-list li small {
-    color: var(--p);
-    font-weight: 900;
+  .live-card-header {
+    padding: 16px 18px 12px;
+    background: linear-gradient(135deg, var(--p), var(--p2));
+    color: #fff;
   }
-  /* ボタン群を少し大きく */
-  #live-buttons .btn {
-    padding: 12px 18px;
+  .live-card-title {
+    margin: 0;
+    font-size: 17px;
     font-weight: 950;
+    letter-spacing: 0.01em;
+  }
+  .live-card-platform {
+    display: inline-block;
+    margin-top: 6px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 950;
+    background: rgba(255,255,255,0.25);
+    backdrop-filter: blur(4px);
+  }
+  .live-card-body {
+    padding: 14px 18px 18px;
+  }
+  .live-card-time {
     font-size: 15px;
+    color: var(--ink);
+    font-weight: 900;
+    margin-bottom: 6px;
+  }
+  .live-card-status {
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .live-card.past .live-card-status::after {
+    content: "（終了）";
+    color: var(--muted);
+    margin-left: 6px;
   }
 </style>
 
 <script>
-// === ここだけ修正してください ===
-const SCHEDULE_JSON_URL = 'schedule.json'; // JSONファイルのパス
-// =====================================
+const SCHEDULE_JSON_URL = 'schedule.json';
 
 async function fetchSchedule() {
   try {
@@ -743,33 +773,33 @@ async function fetchSchedule() {
     const events = await response.json();
 
     const statusEl = document.getElementById('live-status');
-    const listEl = document.getElementById('live-list');
-    const buttonsContainer = document.getElementById('live-buttons');
-    const defaultLink = document.getElementById('default-link');
-    listEl.innerHTML = '';
-    buttonsContainer.innerHTML = '';
-    defaultLink.style.display = 'none';
-    buttonsContainer.style.display = 'flex';
-
-    if (!events || events.length === 0) {
-      statusEl.textContent = 'スケジュールが登録されていません';
-      statusEl.style.color = 'var(--muted)';
-      defaultLink.style.display = 'flex';
-      return;
-    }
-
-    // 新しい日付が上に来るように降順ソート
-    const sortedEvents = events.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-    statusEl.textContent = '配信スケジュール（最新順）';
-    statusEl.style.color = 'var(--p)';
+    const cardsContainer = document.getElementById('live-cards');
+    const noScheduleEl = document.getElementById('no-schedule');
+    cardsContainer.innerHTML = '';
+    statusEl.style.display = 'none';
+    noScheduleEl.style.display = 'none';
 
     const now = new Date();
 
+    // 新しい順にソート
+    const sortedEvents = events
+      .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    if (sortedEvents.length === 0) {
+      noScheduleEl.style.display = 'block';
+      return;
+    }
+
+    statusEl.textContent = '近日中の配信スケジュール';
+    statusEl.style.display = 'block';
+
     sortedEvents.forEach(event => {
-      const li = document.createElement('li');
-      const startTime = new Date(event.date).toLocaleString('ja-JP', {
-        year: 'numeric',
+      if (!event.title && !event.date) return;
+
+      const startTime = new Date(event.date);
+      const isPast = startTime < now;
+
+      const timeStr = startTime.toLocaleString('ja-JP', {
         month: 'numeric',
         day: 'numeric',
         weekday: 'short',
@@ -777,43 +807,31 @@ async function fetchSchedule() {
         minute: '2-digit'
       });
 
-      // ★ここが変更点★
-      // 開始時刻を過ぎていても「終了」と表示しない
-      // （配信は数時間続くことが多いので、開始後すぐは「配信中」とみなす）
-      const isClearlyPast = new Date(event.date) < new Date(Date.now() - 24*60*60*1000); // 24時間以上前なら過去扱い
-      const opacityStyle = isClearlyPast ? 'opacity: 0.65;' : '';
-      const pastLabel = isClearlyPast ? '<span style="color: var(--muted); font-size: 12px;">（終了）</span>' : '';
+      const platform = event.platform || 'ライブ';
+      const url = event.url || 'https://www.youtube.com/@%E3%83%88%E3%83%AA%E3%83%A2%E3%83%AD%E3%82%B9TV/streams';
 
-      li.innerHTML = `
-        <div style="${opacityStyle}">
-          <strong>${event.title}</strong><br>
-          <small>${startTime} ・ ${event.platform || 'ライブ'}</small>
-          ${pastLabel}
+      const card = document.createElement('a');
+      card.className = `live-card ${isPast ? 'past' : ''}`;
+      card.href = url;
+      card.target = '_blank';
+      card.rel = 'noopener noreferrer';
+
+      card.innerHTML = `
+        <div class="live-card-header">
+          <h3 class="live-card-title">${event.title || '無題の配信'}</h3>
+          <span class="live-card-platform">${platform}</span>
+        </div>
+        <div class="live-card-body">
+          <p class="live-card-time">${timeStr}</p>
+          <p class="live-card-status">クリックで視聴ページへ</p>
         </div>
       `;
-      listEl.appendChild(li);
 
-      // 視聴ボタンは「24時間以上前でないもの」すべてに表示（配信中も含む）
-      if (event.url && !isClearlyPast) {
-        const btn = document.createElement('a');
-        btn.className = 'btn primary';
-        btn.href = event.url;
-        btn.target = '_blank';
-        btn.rel = 'noopener noreferrer';
-        btn.innerHTML = `${event.platform ? event.platform + 'で' : ''}視聴する`;
-        buttonsContainer.appendChild(btn);
-      }
+      cardsContainer.appendChild(card);
     });
 
-    // 未来＋配信中のイベントがなければデフォルトボタン表示
-    const hasActive = sortedEvents.some(e => new Date(e.date) >= new Date(Date.now() - 24*60*60*1000));
-    if (!hasActive) {
-      buttonsContainer.style.display = 'none';
-      defaultLink.style.display = 'flex';
-    }
-
   } catch (err) {
-    document.getElementById('live-status').innerHTML = '⚠️ スケジュール取得失敗<br><small>schedule.jsonを確認してください</small>';
+    document.getElementById('live-status').textContent = '⚠️ スケジュール取得失敗（schedule.jsonを確認）';
     document.getElementById('live-status').style.color = '#e11d48';
     console.error(err);
   }
