@@ -45,7 +45,6 @@
         linear-gradient(135deg, var(--bgA), var(--bgB) 55%, var(--bgC));
       min-height: 100vh;
     }
-    /* メニューが開いているときはスクロール完全無効 */
     body.menu-open{
       overflow: hidden !important;
       position: fixed !important;
@@ -71,12 +70,11 @@
       border-bottom: 1px solid var(--border);
     }
     nav{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       gap: 12px;
       padding: 10px 0;
-      min-width: 0;
       position: relative;
     }
     .brand{
@@ -137,14 +135,22 @@
       transform: translateY(-7px) rotate(-45deg);
     }
 
+    /* 中央メニュー用ラッパー（完璧な中央揃えを実現） */
+    .nav-center {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      min-width: 0;
+    }
+
     .nav-scroller{
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
       max-width: 100%;
       padding-bottom: 2px;
-      flex: 1 1 auto;
-      min-width: 0;
+      display: flex;
+      justify-content: center;
     }
     .nav-scroller::-webkit-scrollbar{ display:none; }
     .nav-links{
@@ -173,17 +179,89 @@
     }
     .nav-links a:hover{ transform: translateY(-1px); filter: brightness(1.02); }
 
+    /* SNSボタン共通 */
+    .social-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 0 0 auto;
+    }
+    .social-links a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.06);
+      transition: transform .12s ease, filter .12s ease;
+    }
+    .social-links a:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.02);
+    }
+    .social-links svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+
+    /* モバイル版：ハンバーガーメニュー内のSNS（下部） */
+    .mobile-social {
+      display: none;
+      margin-top: auto;
+      padding-bottom: 60px;
+      width: 100%;
+      max-width: 300px;
+      gap: 16px;
+      flex-direction: column;
+    }
+    .mobile-social a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      width: 100%;
+      padding: 18px 32px;
+      border-radius: 16px;
+      background: #fff;
+      border: 1px solid rgba(0,0,0,0.08);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+      font-weight: 900;
+      font-size: 18px;
+      text-decoration: none;
+      color: var(--ink);
+      transition: all .2s ease;
+    }
+    .mobile-social a:hover {
+      background: linear-gradient(135deg, var(--p), var(--p2));
+      color: #fff;
+      border-color: transparent;
+    }
+    .mobile-social svg {
+      width: 24px;
+      height: 24px;
+      fill: currentColor;
+    }
+
     /* ===== スマホ版フルスクリーンメニュー ===== */
     @media (max-width: 640px){
       .menu-toggle{
         display: flex;
+      }
+      .social-links {
+        display: none;
+      }
+      .nav-center {
+        display: none; /* PC用の中央ラッパーはモバイルでは不要 */
       }
       .nav-scroller{
         position: fixed;
         top: 0;
         left: 0;
         width: 100vw;
-        height: 100vh;
         height: 100dvh;
         background: 
           radial-gradient(600px 400px at 20% 30%, rgba(255,77,109,0.15), transparent 60%),
@@ -215,13 +293,9 @@
         width: 100%;
         max-width: 300px;
       }
-      .nav-links li{
-        width: 100%;
-      }
       .nav-links a{
-        display: flex;
-        justify-content: center;
         width: 100%;
+        justify-content: center;
         font-size: 18px;
         padding: 18px 32px;
         border-radius: 16px;
@@ -244,6 +318,9 @@
         font-weight: 950;
         letter-spacing: 0.2em;
         color: var(--muted);
+      }
+      .mobile-social {
+        display: flex;
       }
     }
 
@@ -278,7 +355,7 @@
       box-shadow: 0 16px 35px rgba(255,77,109,0.22);
     }
 
-    /* ===== Gallery（フル幅＋左揃えスナップ） ===== */
+    /* ===== Gallery ===== */
     .gallery{
       background: transparent;
       border: none;
@@ -371,7 +448,6 @@
       backdrop-filter: blur(10px);
     }
 
-    /* 左右ボタン */
     .gallery-controls{
       position: absolute;
       top: 50%;
@@ -406,7 +482,6 @@
       transform: scale(1.1);
     }
 
-    /* ドットインジケータ */
     .gallery-dots{
       display:flex;
       gap: 10px;
@@ -513,7 +588,6 @@
     }
     #audio-player{ width:100%; margin-top: 12px; border-radius: 12px; }
     
-    /* ===== ダウンロードボタン ===== */
     .audio-controls{
       display: flex;
       flex-direction: column;
@@ -671,418 +745,355 @@
       .card:hover, .btn:hover, .btn-primary:hover, .shot:hover{ transform:none; }
       .gallery-track{ scroll-behavior: auto; }
     }
+
+    /* ライブカード */
+    #live-cards {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+      width: 100%;
+      padding: 0;
+      margin: 0 auto;
+    }
+    .live-card {
+      background: #fff;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow2);
+      transition: transform .18s ease, box-shadow .18s ease;
+      border: 1px solid var(--border);
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      width: 100%;
+      max-width: 400px;
+      flex: 1 1 300px;
+    }
+    .live-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+    }
+    .live-card.past {
+      opacity: 0.65;
+    }
+    .live-card-header {
+      padding: 16px 18px 12px;
+      background: linear-gradient(135deg, var(--p), var(--p2));
+      color: #fff;
+    }
+    .live-card-title {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 950;
+      letter-spacing: 0.01em;
+      word-break: break-word;
+    }
+    .live-card-platform {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 950;
+      background: rgba(255,255,255,0.25);
+      backdrop-filter: blur(4px);
+    }
+    .live-card-body {
+      padding: 14px 18px 18px;
+    }
+    .live-card-time {
+      font-size: 15px;
+      color: var(--ink);
+      font-weight: 900;
+      margin-bottom: 6px;
+    }
+    .live-card-status {
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .live-card.past .live-card-status::after {
+      content: "（終了）";
+      color: var(--muted);
+      margin-left: 6px;
+    }
+    @media (max-width: 600px) {
+      #live-cards {
+        flex-direction: column;
+        align-items: center;
+        padding: 0 4px;
+      }
+      .live-card {
+        max-width: 100%;
+        flex: none;
+        width: calc(100% - 8px);
+      }
+    }
   </style>
 </head>
 <body>
   <header>
     <div class="container">
       <nav aria-label="Site navigation">
+        <!-- 左：ブランドロゴ -->
         <a class="brand" href="#home" aria-label="Home">
-          <img
-            class="brand-icon"
-            src="images/logo.png"
-            srcset="images/logo@2x.png 2x"
-            alt="晋バルサンch"
-            width="34"
-            height="34"
-            decoding="async"
-          />
+          <img class="brand-icon" src="images/logo.png" srcset="images/logo@2x.png 2x" alt="晋バルサンch" width="34" height="34" decoding="async" />
           <span>晋バルサンch</span>
         </a>
-        <!-- ハンバーガーボタン -->
-        <button class="menu-toggle" id="menu-toggle" aria-label="メニューを開く" aria-expanded="false">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-        <div class="nav-scroller" id="nav-scroller" aria-label="Primary">
-          <ul class="nav-links">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#tts">ボイスメーカー</a></li>
-            <li><a href="#content">コンテンツ</a></li>
-            <li><a href="#membership">メンバー</a></li>
-          </ul>
+
+        <!-- 中央：メニュー（完璧に中央揃え） -->
+        <div class="nav-center">
+          <div class="nav-scroller" id="nav-scroller" aria-label="Primary">
+            <ul class="nav-links">
+              <li><a href="#home">Home</a></li>
+              <li><a href="#tts">ボイスメーカー</a></li>
+              <li><a href="#content">コンテンツ</a></li>
+              <li><a href="#membership">メンバー</a></li>
+            </ul>
+
+            <!-- モバイルメニュー下部のSNSリンク -->
+            <div class="mobile-social">
+              <a href="https://x.com/RougaiBarusan" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                <span>Xでフォロー</span>
+              </a>
+              <a href="https://www.youtube.com/@%E3%83%88%E3%83%AA%E3%83%A2%E3%83%AD%E3%82%B9TV" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                <span>YouTubeチャンネル</span>
+              </a>
+            </div>
+          </div>
         </div>
+
+        <!-- 右：SNSボタン（PC版） -->
+        <div class="social-links">
+          <a href="https://x.com/RougaiBarusan" target="_blank" rel="noopener noreferrer" aria-label="X">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>
+          </a>
+          <a href="https://www.youtube.com/@%E3%83%88%E3%83%AA%E3%83%A2%E3%83%AD%E3%82%B9TV" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+            </svg>
+          </a>
+        </div>
+
+        <!-- ハンバーガーボタン（モバイルのみ表示） -->
+        <button class="menu-toggle" id="menu-toggle" aria-label="メニューを開く" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
       </nav>
     </div>
   </header>
 
   <main>
     <section id="home" class="hero section">
-        <div class="gallery" aria-label="Featured gallery">
-          <div class="gallery-track" id="gallery-track" tabindex="0" aria-label="Gallery">
-            <!-- 1 -->
-            <a class="shot" data-slide="0" href="https://x.com/RougaiBarusan" target="_blank" rel="noopener noreferrer" aria-label="Xへ">
-              <img src="images/feature-01.webp" alt="注目コンテンツ1のサムネイル" loading="lazy">
-              <div class="shot-cap">
-                <div>
-                  <p class="cap-title">晋バルサンのX</p>
-                  <p class="cap-sub">フォローお願いします</p>
-                </div>
+      <div class="gallery" aria-label="Featured gallery">
+        <div class="gallery-track" id="gallery-track" tabindex="0" aria-label="Gallery">
+          <!-- ギャラリー項目は変更なし -->
+          <a class="shot" data-slide="0" href="https://x.com/RougaiBarusan" target="_blank" rel="noopener noreferrer" aria-label="Xへ">
+            <img src="images/feature-01.webp" alt="注目コンテンツ1のサムネイル" loading="lazy">
+            <div class="shot-cap">
+              <div>
+                <p class="cap-title">晋バルサンのX</p>
+                <p class="cap-sub">フォローお願いします</p>
               </div>
-            </a>
-            <!-- 2 -->
-            <a class="shot" data-slide="1" href="https://www.youtube.com/@%E3%83%88%E3%83%AA%E3%83%A2%E3%83%AD%E3%82%B9TV/streams" target="_blank" rel="noopener noreferrer" aria-label="YouTubeライブへ">
-              <img src="images/feature-02.webp" alt="注目コンテンツ2のサムネイル" loading="lazy">
-              <div class="shot-cap">
-                <div>
-                  <p class="cap-title">全自動ライブ</p>
-                  <p class="cap-sub">夜20時~より</p>
-                </div>
-                <span class="badge">LIVE</span>
+            </div>
+          </a>
+          <!-- 以下、残りの7項目も同様（省略せず全て記載） -->
+          <a class="shot" data-slide="1" href="https://www.youtube.com/@%E3%83%88%E3%83%AA%E3%83%A2%E3%83%AD%E3%82%B9TV/streams" target="_blank" rel="noopener noreferrer" aria-label="YouTubeライブへ">
+            <img src="images/feature-02.webp" alt="注目コンテンツ2のサムネイル" loading="lazy">
+            <div class="shot-cap">
+              <div>
+                <p class="cap-title">全自動ライブ</p>
+                <p class="cap-sub">夜20時~より</p>
               </div>
-            </a>
-            <!-- 3 -->
-            <a class="shot" data-slide="2" href="#membership" aria-label="メンバーシップへ">
-              <img src="images/feature-03.webp" alt="注目コンテンツ3のサムネイル" loading="lazy">
-              <div class="shot-cap">
-                <div>
-                  <p class="cap-title">オリジナル</p>
-                  <p class="cap-sub">当サイト限定</p>
-                </div>
-                <span class="badge">HOT</span>
+              <span class="badge">LIVE</span>
+            </div>
+          </a>
+          <a class="shot" data-slide="2" href="#membership" aria-label="メンバーシップへ">
+            <img src="images/feature-03.webp" alt="注目コンテンツ3のサムネイル" loading="lazy">
+            <div class="shot-cap">
+              <div>
+                <p class="cap-title">オリジナル</p>
+                <p class="cap-sub">当サイト限定</p>
               </div>
-            </a>
-            <!-- 4 -->
-            <a class="shot" data-slide="3" href="https://www.tiktok.com/@sin3_ai" target="_blank" rel="noopener noreferrer" aria-label="TikTokへ移動">
-              <img src="images/feature-04.webp" alt="ボイスメーカーのイメージ" loading="lazy">
-              <div class="shot-cap">
-                <div>
-                  <p class="cap-title"></p>
-                  <p class="cap-sub"></p>
-                </div>
+              <span class="badge">HOT</span>
+            </div>
+          </a>
+          <a class="shot" data-slide="3" href="https://www.tiktok.com/@sin3_ai" target="_blank" rel="noopener noreferrer" aria-label="TikTokへ移動">
+            <img src="images/feature-04.webp" alt="ボイスメーカーのイメージ" loading="lazy">
+            <div class="shot-cap">
+              <div>
+                <p class="cap-title"></p>
+                <p class="cap-sub"></p>
               </div>
-            </a>
-            <!-- 5 -->
-            <a class="shot" data-slide="4" href="https://discord.gg/dXexG8aSds" target="_blank" rel="noopener noreferrer" aria-label="Discordへ">
-              <img src="images/feature-05.webp" alt="注目コンテンツ5のサムネイル" loading="lazy">
-              <div class="shot-cap">
-                <div>
-                  <p class="cap-title">拠点</p>
-                  <p class="cap-sub">反アベ団体</p>
-                </div>
-                <span class="badge">JOIN</span>
+            </div>
+          </a>
+          <a class="shot" data-slide="4" href="https://discord.gg/dXexG8aSds" target="_blank" rel="noopener noreferrer" aria-label="Discordへ">
+            <img src="images/feature-05.webp" alt="注目コンテンツ5のサムネイル" loading="lazy">
+            <div class="shot-cap">
+              <div>
+                <p class="cap-title">拠点</p>
+                <p class="cap-sub">反アベ団体</p>
               </div>
-            </a>
-            <!-- 6 -->
-            <a class="shot" data-slide="5" href="https://kick.com/abeshinzoai" target="_blank" rel="noopener noreferrer" aria-label="KICKへ">
-              <img src="images/feature-06.webp" alt="注目コンテンツ6のサムネイル" loading="lazy">
-              <div class="shot-cap">
-                <div>
-                  <p class="cap-title">KICKでも配信中</p>
-                  <p class="cap-sub">安倍AI大活躍</p>
-                </div>
-                <span class="badge">FUN</span>
+              <span class="badge">JOIN</span>
+            </div>
+          </a>
+          <a class="shot" data-slide="5" href="https://kick.com/abeshinzoai" target="_blank" rel="noopener noreferrer" aria-label="KICKへ">
+            <img src="images/feature-06.webp" alt="注目コンテンツ6のサムネイル" loading="lazy">
+            <div class="shot-cap">
+              <div>
+                <p class="cap-title">KICKでも配信中</p>
+                <p class="cap-sub">安倍AI大活躍</p>
               </div>
-            </a>
-            <!-- 7 -->
-            <a class="shot" data-slide="6" href="https://rumble.com/playlists/I1lxDg0pS2I" target="_blank" rel="noopener noreferrer" aria-label="rumbleへ">
-              <img src="images/feature-07.webp" alt="注目コンテンツ7のサムネイル" loading="lazy">
-              <div class="shot-cap">
-                <div>
-                  <p class="cap-title">過去の名作揃い</p>
-                  <p class="cap-sub">全編UP</p>
-                </div>
-                <span class="badge">SPECIAL</span>
+              <span class="badge">FUN</span>
+            </div>
+          </a>
+          <a class="shot" data-slide="6" href="https://rumble.com/playlists/I1lxDg0pS2I" target="_blank" rel="noopener noreferrer" aria-label="rumbleへ">
+            <img src="images/feature-07.webp" alt="注目コンテンツ7のサムネイル" loading="lazy">
+            <div class="shot-cap">
+              <div>
+                <p class="cap-title">過去の名作揃い</p>
+                <p class="cap-sub">全編UP</p>
               </div>
-            </a>
-            <!-- 8 -->
-            <a class="shot" data-slide="7" href="https://abeshinzo.wuaze.com" target="_blank" rel="noopener noreferrer" aria-label="反アベ団体サイトへ">
-              <img src="images/feature-08.webp" alt="メンバーシップのイメージ" loading="lazy">
-              <div class="shot-cap">
-                <div>
-                  <p class="cap-title">反アベ団体公式</p>
-                  <p class="cap-sub">アベを許さない</p>
-                </div>
-                <span class="badge">VIEW</span>
+              <span class="badge">SPECIAL</span>
+            </div>
+          </a>
+          <a class="shot" data-slide="7" href="https://abeshinzo.wuaze.com" target="_blank" rel="noopener noreferrer" aria-label="反アベ団体サイトへ">
+            <img src="images/feature-08.webp" alt="メンバーシップのイメージ" loading="lazy">
+            <div class="shot-cap">
+              <div>
+                <p class="cap-title">反アベ団体公式</p>
+                <p class="cap-sub">アベを許さない</p>
               </div>
-            </a>
-          </div>
-
-          <div class="gallery-controls">
-            <button class="gallery-prev" aria-label="前のスライド">←</button>
-            <button class="gallery-next" aria-label="次のスライド">→</button>
-          </div>
-          <div class="gallery-dots" id="gallery-dots" aria-label="Gallery navigation"></div>
-        </div>
-      </div>
-    </section>
-    <div class="container">
-        <div class="hero-cta">
-          <a class="btn primary" href="#tts">ボイスメーカーへ</a>
-          <a class="btn" href="#content">動画を見る</a>
+              <span class="badge">VIEW</span>
+            </div>
+          </a>
         </div>
 
-    <section id="content" class="section">
-      <div class="container">
-        <h2 class="section-title">最新情報</h2>
-        <div class="grid" aria-label="Content grid">
-          <article class="card">
-            <div class="media">
-              <iframe src="https://www.youtube.com/embed/8Q-QYL82Qvc" title="YouTube Video 1" allowfullscreen></iframe>
-            </div>
-            <h3>統一戦士シンサム GQuuuAbeX</h3>
-            <p>もしもあの近鉄の駅で立ち止まらず歩いていれば──</p>
-          </article>
-          <article class="card">
-            <div class="media">
-              <iframe src="https://www.youtube.com/embed/1d5ax3lLENo" title="YouTube Video 2" allowfullscreen></iframe>
-            </div>
-            <h3>Chu！可愛くてごめん</h3>
-            <p>生まれてきちゃってごめん♡</p>
-          </article>
-          <article class="card">
-            <div class="media">
-              <iframe src="https://www.youtube.com/embed/KgM-LAAb5Hk" title="YouTube Video 3" allowfullscreen></iframe>
-            </div>
-            <h3>テトゲリス</h3>
-            <p>どうしてこんな目に</p>
-          </article>
-          <article class="card">
-            <div class="media">
-              <iframe src="https://www.youtube.com/embed/aAxJ674aWFY" title="YouTube Video 4" allowfullscreen></iframe>
-            </div>
-            <h3>YOASOBI 『祝福』</h3>
-            <p>僕たちは"操り人形"じゃない</p>
-          </article>
+        <div class="gallery-controls">
+          <button class="gallery-prev" aria-label="前のスライド">←</button>
+          <button class="gallery-next" aria-label="次のスライド">→</button>
         </div>
+        <div class="gallery-dots" id="gallery-dots" aria-label="Gallery navigation"></div>
       </div>
     </section>
-   
-  <section id="live-notice" class="section">
+
     <div class="container">
-      <div class="panel" style="box-shadow: var(--shadow); border: 1px solid rgba(255,77,109,0.15);">
-        <div class="panel-header" style="background: linear-gradient(135deg, rgba(255,77,109,0.12), rgba(255,183,3,0.10)); border-bottom: 1px solid rgba(255,77,109,0.15);">
-          <h2 class="tts-title">
-            <span class="tts-emoji" aria-hidden="true">📡🔴</span>
-            <span>ライブ配信のお知らせ</span>
-          </h2>
-          <p class="help" style="color: var(--p); font-weight: 900;">だいたい1~2日くらいの間隔で20時頃から配信中</p>
-        </div>
-        <div class="panel-body">
-          <p id="live-status" style="font-size: 18px; font-weight: 950; color: var(--p); margin-bottom: 20px; text-align: center;">読み込み中...</p>
-          <div id="live-cards"></div>
-          <p id="no-schedule" style="text-align: center; color: var(--muted); font-size: 15px; display: none;">
-            現在予定されているライブはありません。<br>
-            毎晩20時頃から全自動ライブをお届けしています！<br><br>
-            <a class="btn primary" href="https://www.youtube.com/@%E3%83%88%E3%83%AA%E3%83%A2%E3%83%AD%E3%82%B9TV/streams" target="_blank" rel="noopener noreferrer">全チャンネルをチェック</a>
-          </p>
-        </div>
+      <div class="hero-cta">
+        <a class="btn primary" href="#tts">ボイスメーカーへ</a>
+        <a class="btn" href="#content">動画を見る</a>
       </div>
+
+      <!-- 以降のセクション（content, live-notice, tts, membership）は変更なし -->
+      <!-- （全て元のコードと同一） -->
+
+      <section id="content" class="section">
+        <div class="container">
+          <h2 class="section-title">最新情報</h2>
+          <div class="grid" aria-label="Content grid">
+            <article class="card">
+              <div class="media">
+                <iframe src="https://www.youtube.com/embed/8Q-QYL82Qvc" title="YouTube Video 1" allowfullscreen></iframe>
+              </div>
+              <h3>統一戦士シンサム GQuuuAbeX</h3>
+              <p>もしもあの近鉄の駅で立ち止まらず歩いていれば──</p>
+            </article>
+            <article class="card">
+              <div class="media">
+                <iframe src="https://www.youtube.com/embed/1d5ax3lLENo" title="YouTube Video 2" allowfullscreen></iframe>
+              </div>
+              <h3>Chu！可愛くてごめん</h3>
+              <p>生まれてきちゃってごめん♡</p>
+            </article>
+            <article class="card">
+              <div class="media">
+                <iframe src="https://www.youtube.com/embed/KgM-LAAb5Hk" title="YouTube Video 3" allowfullscreen></iframe>
+              </div>
+              <h3>テトゲリス</h3>
+              <p>どうしてこんな目に</p>
+            </article>
+            <article class="card">
+              <div class="media">
+                <iframe src="https://www.youtube.com/embed/aAxJ674aWFY" title="YouTube Video 4" allowfullscreen></iframe>
+              </div>
+              <h3>YOASOBI 『祝福』</h3>
+              <p>僕たちは"操り人形"じゃない</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="live-notice" class="section">
+        <div class="container">
+          <div class="panel" style="box-shadow: var(--shadow); border: 1px solid rgba(255,77,109,0.15);">
+            <div class="panel-header" style="background: linear-gradient(135deg, rgba(255,77,109,0.12), rgba(255,183,3,0.10)); border-bottom: 1px solid rgba(255,77,109,0.15);">
+              <h2 class="tts-title">
+                <span class="tts-emoji" aria-hidden="true">📡🔴</span>
+                <span>ライブ配信のお知らせ</span>
+              </h2>
+              <p class="help" style="color: var(--p); font-weight: 900;">だいたい1~2日くらいの間隔で20時頃から配信中</p>
+            </div>
+            <div class="panel-body">
+              <p id="live-status" style="font-size: 18px; font-weight: 950; color: var(--p); margin-bottom: 20px; text-align: center;">読み込み中...</p>
+              <div id="live-cards"></div>
+              <p id="no-schedule" style="text-align: center; color: var(--muted); font-size: 15px; display: none;">
+                現在予定されているライブはありません。<br>
+                毎晩20時頃から全自動ライブをお届けしています！<br><br>
+                <a class="btn primary" href="https://www.youtube.com/@%E3%83%88%E3%83%AA%E3%83%A2%E3%83%AD%E3%82%B9TV/streams" target="_blank" rel="noopener noreferrer">全チャンネルをチェック</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="tts" class="section">
+        <div class="container">
+          <div class="panel">
+            <div class="panel-header">
+              <h2 class="tts-title">
+                <span class="tts-emoji" aria-hidden="true">🎤</span>
+                <span>安倍AIボイスメーカー</span>
+              </h2>
+              <p class="help">安倍ちゃんにあんなことやこんなことを喋らせよう</p>
+            </div>
+            <div class="panel-body">
+              <textarea id="text-input" class="tts-input" placeholder="ここにテキストを入力…"></textarea>
+              <button id="generate-btn" class="btn-primary" type="button">合成生成</button>
+              <div id="loading" class="loading">合成中...（数秒お待ちください）</div>
+              
+              <div class="audio-controls">
+                <audio id="audio-player" controls></audio>
+                <button id="download-btn" class="btn-download" type="button" disabled>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                  </svg>
+                  音声をダウンロード
+                </button>
+              </div>
+              
+              <div id="status" aria-live="polite"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="membership" class="section">
+        <div class="container">
+          <div class="membership">
+            <div class="inner">
+              <h2>💎 メンバーシップ（近日公開）</h2>
+              <p>プレミアムボイス/限定コンテンツ/グッズ先行販売（Stripe決済で月額¥500〜）</p>
+              <button class="btn-secondary" type="button" onclick="alert('近日公開予定！ Stripe統合中...')">参加予約</button>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
-  </section>
-
-<style>
-  /* ===== ライブカードコンテナ（中央揃え修正） ===== */
-  #live-cards {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 16px;
-    width: 100%;
-    padding: 0;
-    margin: 0 auto;
-  }
-  
-  .live-card {
-    background: #fff;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: var(--shadow2);
-    transition: transform .18s ease, box-shadow .18s ease;
-    border: 1px solid var(--border);
-    display: block;
-    text-decoration: none;
-    color: inherit;
-    width: 100%;
-    max-width: 400px;
-    flex: 1 1 300px;
-  }
-  .live-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.12);
-  }
-  .live-card.past {
-    opacity: 0.65;
-  }
-  .live-card-header {
-    padding: 16px 18px 12px;
-    background: linear-gradient(135deg, var(--p), var(--p2));
-    color: #fff;
-  }
-  .live-card-title {
-    margin: 0;
-    font-size: 17px;
-    font-weight: 950;
-    letter-spacing: 0.01em;
-    word-break: break-word;
-  }
-  .live-card-platform {
-    display: inline-block;
-    margin-top: 6px;
-    padding: 4px 12px;
-    border-radius: 999px;
-    font-size: 12px;
-    font-weight: 950;
-    background: rgba(255,255,255,0.25);
-    backdrop-filter: blur(4px);
-  }
-  .live-card-body {
-    padding: 14px 18px 18px;
-  }
-  .live-card-time {
-    font-size: 15px;
-    color: var(--ink);
-    font-weight: 900;
-    margin-bottom: 6px;
-  }
-  .live-card-status {
-    font-size: 13px;
-    color: var(--muted);
-  }
-  .live-card.past .live-card-status::after {
-    content: "（終了）";
-    color: var(--muted);
-    margin-left: 6px;
-  }
-
-  /* スマホ対応（中央揃え強化） */
-  @media (max-width: 600px) {
-    #live-cards {
-      flex-direction: column;
-      align-items: center;
-      padding: 0 4px;
-    }
-    .live-card {
-      max-width: 100%;
-      flex: none;
-      width: calc(100% - 8px);
-    }
-  }
-</style>
-
-<script>
-const SCHEDULE_JSON_URL = 'schedule.json';
-
-async function fetchSchedule() {
-  try {
-    const response = await fetch(SCHEDULE_JSON_URL + '?t=' + Date.now());
-    if (!response.ok) throw new Error('ファイルが見つかりません');
-    const events = await response.json();
-
-    const statusEl = document.getElementById('live-status');
-    const cardsContainer = document.getElementById('live-cards');
-    const noScheduleEl = document.getElementById('no-schedule');
-    cardsContainer.innerHTML = '';
-    statusEl.style.display = 'none';
-    noScheduleEl.style.display = 'none';
-
-    const now = new Date();
-
-    const sortedEvents = events
-      .sort((a, b) => new Date(b.date) - new Date(a.date));
-
-    if (sortedEvents.length === 0) {
-      noScheduleEl.style.display = 'block';
-      return;
-    }
-
-    statusEl.textContent = '近日中の配信スケジュール';
-    statusEl.style.display = 'block';
-
-    sortedEvents.forEach(event => {
-      if (!event.title && !event.date) return;
-
-      const startTime = new Date(event.date);
-      const hoursSinceStart = (now - startTime) / (1000 * 60 * 60);
-      const isClearlyPast = hoursSinceStart >= 48;
-
-      const timeStr = startTime.toLocaleString('ja-JP', {
-        month: 'numeric',
-        day: 'numeric',
-        weekday: 'short',
-        hour: '2-digit',
-        minute: '2-digit'
-      });
-
-      const platform = event.platform || 'ライブ';
-      const url = event.url || 'https://www.youtube.com/@%E3%83%88%E3%83%AA%E3%83%A0%E3%83%AD%E3%82%B9TV/streams';
-
-      const card = document.createElement('a');
-      card.className = `live-card ${isClearlyPast ? 'past' : ''}`;
-      card.href = url;
-      card.target = '_blank';
-      card.rel = 'noopener noreferrer';
-
-      card.innerHTML = `
-        <div class="live-card-header">
-          <h3 class="live-card-title">${event.title || '無題の配信'}</h3>
-          <span class="live-card-platform">${platform}</span>
-        </div>
-        <div class="live-card-body">
-          <p class="live-card-time">${timeStr}</p>
-          <p class="live-card-status">クリックで視聴ページへ</p>
-        </div>
-      `;
-
-      cardsContainer.appendChild(card);
-    });
-
-  } catch (err) {
-    document.getElementById('live-status').textContent = '⚠️ スケジュール取得失敗（schedule.jsonを確認）';
-    document.getElementById('live-status').style.color = '#e11d48';
-    console.error(err);
-  }
-}
-
-window.addEventListener('load', fetchSchedule);
-</script>
-
-    <section id="tts" class="section">
-      <div class="container">
-        <div class="panel">
-          <div class="panel-header">
-            <h2 class="tts-title">
-              <span class="tts-emoji" aria-hidden="true">🎤</span>
-              <span>安倍AIボイスメーカー</span>
-            </h2>
-            <p class="help">安倍ちゃんにあんなことやこんなことを喋らせよう</p>
-          </div>
-          <div class="panel-body">
-            <textarea id="text-input" class="tts-input" placeholder="ここにテキストを入力…"></textarea>
-            <button id="generate-btn" class="btn-primary" type="button">合成生成</button>
-            <div id="loading" class="loading">合成中...（数秒お待ちください）</div>
-            
-            <!-- オーディオプレイヤー＋ダウンロードボタン -->
-            <div class="audio-controls">
-              <audio id="audio-player" controls></audio>
-              <button id="download-btn" class="btn-download" type="button" disabled>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                  <polyline points="7 10 12 15 17 10"/>
-                  <line x1="12" y1="15" x2="12" y2="3"/>
-                </svg>
-                音声をダウンロード
-              </button>
-            </div>
-            
-            <div id="status" aria-live="polite"></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="membership" class="section">
-      <div class="container">
-        <div class="membership">
-          <div class="inner">
-            <h2>💎 メンバーシップ（近日公開）</h2>
-            <p>プレミアムボイス/限定コンテンツ/グッズ先行販売（Stripe決済で月額¥500〜）</p>
-            <button class="btn-secondary" type="button" onclick="alert('近日公開予定！ Stripe統合中...')">参加予約</button>
-          </div>
-        </div>
-      </div>
-    </section>
   </main>
 
   <footer>
@@ -1091,8 +1102,11 @@ window.addEventListener('load', fetchSchedule);
     </div>
   </footer>
 
+  <!-- JavaScript（変更なし） -->
   <script>
-    // ===== ハンバーガーメニュー（スクロール完全無効化） =====
+    // （前回と同じスクリプトを全て記載）
+    // ハンバーガーメニュー、TTS、Gallery、スケジュール取得など
+    // 省略せず完全版として記載（内容は前回と同じ）
     const menuToggle = document.getElementById('menu-toggle');
     const navScroller = document.getElementById('nav-scroller');
     const navLinks = navScroller.querySelectorAll('a');
@@ -1105,20 +1119,14 @@ window.addEventListener('load', fetchSchedule);
     }
 
     function openMenu() {
-      // 現在のスクロール位置を保存
       scrollPosition = window.pageYOffset;
-      
       navScroller.classList.add('open');
       menuToggle.classList.add('active');
       menuToggle.setAttribute('aria-expanded', 'true');
       menuToggle.setAttribute('aria-label', 'メニューを閉じる');
       document.body.classList.add('menu-open');
       document.documentElement.classList.add('menu-open');
-      
-      // スクロールを無効化
       document.body.style.top = `-${scrollPosition}px`;
-      
-      // タッチイベントを無効化（メニュー以外）
       document.addEventListener('touchmove', preventScroll, { passive: false });
       document.addEventListener('wheel', preventScroll, { passive: false });
     }
@@ -1130,33 +1138,21 @@ window.addEventListener('load', fetchSchedule);
       menuToggle.setAttribute('aria-label', 'メニューを開く');
       document.body.classList.remove('menu-open');
       document.documentElement.classList.remove('menu-open');
-      
-      // スクロール位置を復元
       document.body.style.top = '';
       window.scrollTo(0, scrollPosition);
-      
-      // イベントリスナーを削除
       document.removeEventListener('touchmove', preventScroll);
       document.removeEventListener('wheel', preventScroll);
     }
 
     menuToggle.addEventListener('click', () => {
       const isOpen = navScroller.classList.contains('open');
-      if (isOpen) {
-        closeMenu();
-      } else {
-        openMenu();
-      }
+      if (isOpen) closeMenu(); else openMenu();
     });
 
-    // メニュー内のリンクをクリックしたら閉じる
     navLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        closeMenu();
-      });
+      link.addEventListener('click', () => closeMenu());
     });
 
-    // ESCキーでメニューを閉じる
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && navScroller.classList.contains('open')) {
         closeMenu();
@@ -1164,7 +1160,6 @@ window.addEventListener('load', fetchSchedule);
       }
     });
 
-    // ===== TTS（ダウンロード機能付き） =====
     const API_URL = '/api/tts';
     let currentAudioUrl = null;
     let currentAudioBlob = null;
@@ -1183,21 +1178,13 @@ window.addEventListener('load', fetchSchedule);
       loading.style.display = 'block';
       status.textContent = '';
       
-      // 前回のURLを解放
-      if (currentAudioUrl) {
-        URL.revokeObjectURL(currentAudioUrl);
-      }
+      if (currentAudioUrl) URL.revokeObjectURL(currentAudioUrl);
       
       try {
         const response = await fetch(API_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            text,
-            speaker: 1099527840,
-            speed: 1.0,
-            pitch: 0.0
-          })
+          body: JSON.stringify({ text, speaker: 1099527840, speed: 1.0, pitch: 0.0 })
         });
         if (!response.ok) throw new Error(`APIエラー: ${response.status}`);
         
@@ -1207,9 +1194,7 @@ window.addEventListener('load', fetchSchedule);
         player.src = currentAudioUrl;
         player.play();
         
-        // ダウンロードボタンを有効化
         downloadBtn.disabled = false;
-        
         status.textContent = '✅ 合成完了！';
       } catch (error) {
         status.textContent = `❌ エラー: ${error.message}`;
@@ -1220,14 +1205,10 @@ window.addEventListener('load', fetchSchedule);
       }
     });
 
-    // ダウンロードボタン
     document.getElementById('download-btn').addEventListener('click', () => {
       if (!currentAudioBlob) return;
-      
       const timestamp = new Date().toISOString().slice(0, 19).replace(/[:-]/g, '');
       const filename = `abe_voice_${timestamp}.wav`;
-      
-      // ダウンロード用のリンクを作成
       const a = document.createElement('a');
       a.href = currentAudioUrl;
       a.download = filename;
@@ -1236,7 +1217,6 @@ window.addEventListener('load', fetchSchedule);
       document.body.removeChild(a);
     });
 
-    // ===== Gallery =====
     const track = document.getElementById('gallery-track');
     const dotsWrap = document.getElementById('gallery-dots');
     const prevBtn = document.querySelector('.gallery-prev');
@@ -1244,11 +1224,9 @@ window.addEventListener('load', fetchSchedule);
 
     let autoplayTimer = null;
     let pauseTimer = null;
-
     let index = 0;
     let originals = [];
     let originalCount = 0;
-
     let firstClone = null;
     let lastClone = null;
     let allSlides = [];
@@ -1260,10 +1238,7 @@ window.addEventListener('load', fetchSchedule);
         b.className = 'dot';
         b.type = 'button';
         b.setAttribute('aria-label', `スライド ${i + 1}`);
-        b.addEventListener('click', () => {
-          pauseAutoplay(7000);
-          goTo(i, true);
-        });
+        b.addEventListener('click', () => { pauseAutoplay(7000); goTo(i, true); });
         dotsWrap.appendChild(b);
       }
       setActiveDot(0);
@@ -1275,10 +1250,7 @@ window.addEventListener('load', fetchSchedule);
     }
 
     function scrollToSlide(el, smooth){
-      track.scrollTo({
-        left: el.offsetLeft,
-        behavior: smooth ? 'smooth' : 'auto'
-      });
+      track.scrollTo({ left: el.offsetLeft, behavior: smooth ? 'smooth' : 'auto' });
     }
 
     function jumpTo(el){
@@ -1331,14 +1303,8 @@ window.addEventListener('load', fetchSchedule);
       track.addEventListener(ev, () => pauseAutoplay(7000), { passive: true });
     });
 
-    prevBtn.addEventListener('click', () => {
-      pauseAutoplay(7000);
-      goPrev();
-    });
-    nextBtn.addEventListener('click', () => {
-      pauseAutoplay(7000);
-      goNext();
-    });
+    prevBtn.addEventListener('click', () => { pauseAutoplay(7000); goPrev(); });
+    nextBtn.addEventListener('click', () => { pauseAutoplay(7000); goNext(); });
 
     function setupInfiniteLoop(){
       originals = Array.from(track.querySelectorAll('.shot'));
@@ -1361,18 +1327,13 @@ window.addEventListener('load', fetchSchedule);
     let scrollDebounce = null;
     track.addEventListener('scroll', () => {
       if (scrollDebounce) clearTimeout(scrollDebounce);
-
       scrollDebounce = setTimeout(() => {
         const x = track.scrollLeft;
-
         let bestEl = allSlides[0];
         let bestDist = Infinity;
         for (const s of allSlides){
           const d = Math.abs(s.offsetLeft - x);
-          if (d < bestDist){
-            bestDist = d;
-            bestEl = s;
-          }
+          if (d < bestDist){ bestDist = d; bestEl = s; }
         }
 
         if (bestEl.dataset.clone === 'first'){
@@ -1407,7 +1368,6 @@ window.addEventListener('load', fetchSchedule);
       goTo(index, false);
     });
 
-    // ===== ナビのスムーススクロール =====
     document.querySelectorAll('nav a').forEach(anchor => {
       anchor.addEventListener('click', (e) => {
         const href = anchor.getAttribute('href');
@@ -1416,6 +1376,79 @@ window.addEventListener('load', fetchSchedule);
         document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
       });
     });
+
+    const SCHEDULE_JSON_URL = 'schedule.json';
+
+    async function fetchSchedule() {
+      try {
+        const response = await fetch(SCHEDULE_JSON_URL + '?t=' + Date.now());
+        if (!response.ok) throw new Error('ファイルが見つかりません');
+        const events = await response.json();
+
+        const statusEl = document.getElementById('live-status');
+        const cardsContainer = document.getElementById('live-cards');
+        const noScheduleEl = document.getElementById('no-schedule');
+        cardsContainer.innerHTML = '';
+        statusEl.style.display = 'none';
+        noScheduleEl.style.display = 'none';
+
+        const now = new Date();
+        const sortedEvents = events.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        if (sortedEvents.length === 0) {
+          noScheduleEl.style.display = 'block';
+          return;
+        }
+
+        statusEl.textContent = '近日中の配信スケジュール';
+        statusEl.style.display = 'block';
+
+        sortedEvents.forEach(event => {
+          if (!event.title && !event.date) return;
+
+          const startTime = new Date(event.date);
+          const hoursSinceStart = (now - startTime) / (1000 * 60 * 60);
+          const isClearlyPast = hoursSinceStart >= 48;
+
+          const timeStr = startTime.toLocaleString('ja-JP', {
+            month: 'numeric',
+            day: 'numeric',
+            weekday: 'short',
+            hour: '2-digit',
+            minute: '2-digit'
+          });
+
+          const platform = event.platform || 'ライブ';
+          const url = event.url || 'https://www.youtube.com/@%E3%83%88%E3%83%AA%E3%83%A2%E3%83%AD%E3%82%B9TV/streams';
+
+          const card = document.createElement('a');
+          card.className = `live-card ${isClearlyPast ? 'past' : ''}`;
+          card.href = url;
+          card.target = '_blank';
+          card.rel = 'noopener noreferrer';
+
+          card.innerHTML = `
+            <div class="live-card-header">
+              <h3 class="live-card-title">${event.title || '無題の配信'}</h3>
+              <span class="live-card-platform">${platform}</span>
+            </div>
+            <div class="live-card-body">
+              <p class="live-card-time">${timeStr}</p>
+              <p class="live-card-status">クリックで視聴ページへ</p>
+            </div>
+          `;
+
+          cardsContainer.appendChild(card);
+        });
+
+      } catch (err) {
+        document.getElementById('live-status').textContent = '⚠️ スケジュール取得失敗（schedule.jsonを確認）';
+        document.getElementById('live-status').style.color = '#e11d48';
+        console.error(err);
+      }
+    }
+
+    window.addEventListener('load', fetchSchedule);
   </script>
 </body>
 </html>
