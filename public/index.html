@@ -835,6 +835,51 @@
         width: calc(100% - 8px);
       }
     }
+
+    /* ===== 新規追加: SNSリンク紹介欄のスタイル ===== */
+    #sns-section {
+      background: linear-gradient(135deg, rgba(255,77,109,0.05), rgba(76,201,240,0.05));
+      border-top: 1px solid var(--border);
+      padding: 30px 0 20px;
+    }
+    .sns-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+      list-style: none;
+      padding: 0;
+      margin: 16px 0 0;
+    }
+    .sns-list li {
+      flex: 1 1 200px;
+      max-width: 300px;
+    }
+    .sns-list a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 14px 20px;
+      border-radius: 16px;
+      background: #fff;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow2);
+      text-decoration: none;
+      font-weight: 900;
+      font-size: 15px;
+      color: var(--ink);
+      transition: transform .12s ease, filter .12s ease;
+    }
+    .sns-list a:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.02);
+    }
+    .sns-list svg {
+      width: 24px;
+      height: 24px;
+      fill: var(--p);
+    }
   </style>
 </head>
 <body>
@@ -1112,6 +1157,95 @@
       </section>
     </div>
   </main>
+
+  <!-- ===== 新規追加: SNSリンク紹介欄 ===== -->
+  <section id="sns-section" class="section">
+  <div class="container">
+    <h2 class="section-title">SNSリンク</h2>
+    <p style="text-align: center; color: var(--muted); font-size: 15px; margin-bottom: 20px;">フォローして最新情報をチェック！</p>
+    <ul class="sns-list">
+      <!-- 既存 -->
+      <li>
+        <a href="https://x.com/RougaiBarusan" target="_blank" rel="noopener noreferrer">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZFgiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmY0ZDZkIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2ZmYjcwMyIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHBhdGggZmlsbD0idXJsKCNncmFkWCkiIGQ9Ik0xOC45MDEgMS4xNTNoMy42OGwtOC4wNCA5LjE5TDI0IDIyLjg0NmgtNy40MDZsLTUuOC03LjU4NC02LjYzOCA3LjU4NEguNDc0bDguNi05LjgzTDAgMS4xNTRoNy41OTRsNS4yNDMgNy4zNSA2LjA2NC03LjM1ek0xNy42MSAyMC42NDRoMi4wNEw2LjY1IDMuMzU2SDQuNTI3bDEzLjA4MyAxNy4yODh6Ii8+Cjwvc3ZnPg==" alt="X (Twitter)" width="24" height="24">
+          X (Twitter)
+        </a>
+      </li>
+      <li>
+        <a href="https://www.youtube.com/@%E3%83%88%E3%83%AA%E3%83%A2%E3%83%AD%E3%82%B9TV/streams" target="_blank" rel="noopener noreferrer">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZFlUIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmNGQ2ZCIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM0Y2M5ZjAiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxwYXRoIGZpbGw9InVybCgjZ3JhZFlUKSIgZD0iTTIzLjQ5OCA2LjE4NmEzLjAxNiAzLjAxNiAwIDAgMC0yLjEyMi0yLjEzNkMxOS41MDUgMy41NDUgMTIgMy41NDUgMTIgMy41NDVzLTcuNTA1IDAtOS4zNzcuNTA1QTMuMDE2IDMuMDE2IDAgMCAwIC41MDIgNi4xODZDMCA4LjA3IDAgMTIgMCAxMnMwIDMuOTMuNTAyIDUuODE0YTMuMDE2IDMuMDE2IDAgMCAwIDIuMTIyIDIuMTM2YzEuODcyLjUwNSA5LjM3Ny41MDUgOS4zNzcuNTA1czcuNTA1IDAgOS4zNzctLjUwNWEzLjAxNiAzLjAxNiAwIDAgMCAyLjEyMi0yLjEzNkMyNCAxNS45MyAyNCAxMiAyNCAxMnMwLTMuOTMtLjUwMi01LjgxNHpNOS41NDUgMTUuNTY4VjguNDMyTDE1LjgxOCAxMmwtNi4yNzMgMy41Njh6Ii8+Cjwvc3ZnPg==" alt="YouTube" width="24" height="24">
+          YouTube（メイン）
+        </a>
+      </li>
+      <li>
+        <a href="https://www.tiktok.com/@sin3_ai" target="_blank" rel="noopener noreferrer">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZFRUIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmNGQ2ZCIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iIzAwMDAwMCIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM0Y2M5ZjAiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxwYXRoIGZpbGw9InVybCgjZ3JhZFRUKSIgZD0iTTEyIDJhMTAgMTAgMCAxIDAgMCAyMCAxMCAxMCAwIDAgMCAwLTIwem00LjUgNy41Yy0uOCAwLTEuNS0uMy0yLS44djUuNWEzLjUgMy41IDAgMSAxLTMuNS0zLjVjLjIgMCAuNCAwIC42LjF2LTEuOGMtLjIgMC0uNC0uMS0uNi0uMWE1LjUgNS41IDAgMSAwIDUuNSA1LjV2LTYuOGMuOC42IDEuOCAxIDMgMVY3LjdjLTEuMiAwLTIuMi0uNC0zLTEuMnoiLz4KPC9zdmc+" alt="TikTok" width="24" height="24">
+          TikTok（メイン）
+        </a>
+      </li>
+      <li>
+        <a href="https://discord.gg/dXexG8aSds" target="_blank" rel="noopener noreferrer">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZERDIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmNGQ2ZCIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM1ODY1RjIiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxwYXRoIGZpbGw9InVybCgjZ3JhZERDKSIgZD0iTTIwLjMgMy43YTE5LjUgMTkuNSAwIDAgMC00LjktMS41LjA3LjA3IDAgMCAwLS4wNy4wNGMtLjIuNC0uNS45LS43IDEuM2ExOCAxOCAwIDAgMC01LjQgMGMtLjItLjQtLjUtLjktLjctMS4zYS4wNy4wNyAwIDAgMC0uMDctLjA0IDE5LjUgMTkuNSAwIDAgMC00LjkgMS41LjA3LjA3IDAgMCAwLS4wMy4wM0MuOCA5LjcuMyAxNS41LjUgMjEuM2EuMS4xIDAgMCAwIC4wNC4wNyAxOS43IDE5LjcgMCAwIDAgNiAzIC4wNy4wNyAwIDAgMCAuMDgtLjAzYy41LS43IDEtMS40IDEuNC0yLjFhLjA3LjA3IDAgMCAwLS4wNC0uMDggMTMgMTMgMCAwIDEtMS45LTEgLjA3LjA3IDAgMCAxLS4wNC0uMWMuMS0uMS4zLS4yLjQtLjNhLjA3LjA3IDAgMCAxIC4wNC0uMDIgMTQuMyAxNC4zIDAgMCAwIDUuMiAxLjZjMS42IDAgMy4yLS40IDQuNy0xLjIgMS4yLS42IDIuMi0xLjQgMy0yLjQuOC0xIDEuNC0yLjEgMS44LTMuMy4yLS42LjMtMS4yLjQtMS44YS4wNy4wNyAwIDAgMC0uMDQtLjA4Yy0xLjMuOS0yLjcgMS42LTQuMiAyYS4wNy4wNyAwIDAgMS0uMDgtLjAzYy0uNC0uNi0uOS0xLjItMS40LTIuMWEuMDcuMDcgMCAwIDAtLjA4LS4wMyAxOS41IDE5LjUgMCAwIDEtMi44LTEuNC4wNy4wNyAwIDAgMS0uMDQtLjA2VjguM2MwLTEgLjMtMiAuOS0yLjhhLjA3LjA3IDAgMCAxIC4wOC0uMDNjLjkuMyAxLjguNyAyLjcgMS4yYS4wNy4wNyAwIDAgMCAuMDggMGMxLjUtLjkgMy4yLTEuNiA1LTJhLjA3LjA3IDAgMCAxIC4wOC4wM2MuNi44IDEuMSAxLjcgMS41IDIuNi4zLjcuNSAxLjQuNiAyLjFhLjA3LjA3IDAgMCAwIC4wNC4wNmMxLjUtLjQgMy0xLjEgNC40LTJhLjA3LjA3IDAgMCAxIC4wOC4wM2MuNC45LjcgMS44LjkgMi44djYuOGEuMDcuMDcgMCAwIDEtLjA0LjA2Yy0xLjUuOS0zIDEuNi00LjYgMmEuMDcuMDcgMCAwIDAtLjA0LjFjLjEuMS4yLjIuMy4zYS4wNy4wNyAwIDAgMS0uMDQuMSAxMyAxMyAwIDAgMS0xLjkgMSAuMDcuMDcgMCAwIDAtLjA0LjA4Yy40LjcuOSAxLjQgMS40IDIuMWEuMDcuMDcgMCAwIDAgLjA4LjAzIDE5LjcgMTkuNyAwIDAgMCA2LTMgLjEuMSAwIDAgMCAuMDQtLjA3Yy4yLTUuOC0uMy0xMS42LTMtMTYuNmEuMDcuMDcgMCAwIDAtLjAzLS4wM3oiLz4KPC9zdmc+" alt="Discord" width="24" height="24">
+          Discord
+        </a>
+      </li>
+      <li>
+        <a href="https://kick.com/abeshinzoai" target="_blank" rel="noopener noreferrer">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZEtpY2siIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmY0ZDZkIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzUzZmMxOCIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHBvbHlnb24gZmlsbD0idXJsKCNncmFkS2ljaykiIHBvaW50cz0iNSAzIDE5IDEyIDUgMjEgNSAzIi8+Cjwvc3ZnPg==" alt="KICK" width="24" height="24">
+          KICK（配信サイト）
+        </a>
+      </li>
+      <li>
+        <a href="https://rumble.com/playlists/I1lxDg0pS2I" target="_blank" rel="noopener noreferrer">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZFJ1bWJsZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNmZmI3MDMiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjZmY0ZDZkIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8Y2lyY2xlIGZpbGw9InVybCgjZ3JhZFJ1bWJsZSkiIGN4PSIxMiIgY3k9IjEyIiByPSIxMCIvPgogIDxjaXJjbGUgZmlsbD0iI2ZmZiIgY3g9IjEyIiBjeT0iMTIiIHI9IjQiLz4KICA8cGF0aCBmaWxsPSIjZmZmIiBkPSJNMTIgOHY4Ii8+Cjwvc3ZnPg==" alt="Rumble" width="24" height="24">
+          Rumble（長尺動画全編アップロード済み）
+        </a>
+      </li>
+      <li>
+        <a href="https://abeshinzo.wuaze.com" target="_blank" rel="noopener noreferrer">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZE9mZmljaWFsIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzRjYzlmMCIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmZjRkNmQiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxjaXJjbGUgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ1cmwoI2dyYWRPZmZpY2lhbCkiIHN0cm9rZS13aWR0aD0iMiIgY3g9IjEyIiBjeT0iMTIiIHI9IjEwIi8+CiAgPGNpcmNsZSBmaWxsPSJ1cmwoI2dyYWRPZmZpY2lhbCkiIGN4PSI4IiBjeT0iOCIgcj0iMiIvPgogIDxjaXJjbGUgZmlsbD0idXJsKCNncmFkT2ZmaWNpYWwpIiBjeD0iMTYiIGN5PSI4IiByPSIyIi8+CiAgPGNpcmNsZSBmaWxsPSJ1cmwoI2dyYWRPZmZpY2lhbCkiIGN4PSIxMiIgY3k9IjEyIiByPSIyIi8+CiAgPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSJ1cmwoI2dyYWRPZmZpY2lhbCkiIHN0cm9rZS13aWR0aD0iMiIgZD0iTTEyIDJhMTAgMTAgMCAwIDEgMCAyMCIvPgo8L3N2Zz4=" alt="反アベ団体公式" width="24" height="24">
+          反アベ団体公式
+        </a>
+      </li>
+      <li>
+        <a href="https://www.nicovideo.jp/user/52518540" target="_blank" rel="noopener noreferrer">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZE5pY28iIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmY0ZDZkIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iNTAlIiBzdG9wLWNvbG9yPSIjZmZiNzAzIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzRjYzlmMCIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3QgZmlsbD0idXJsKCNncmFkTmljbykiIHg9IjIiIHk9IjQiIHdpZHRoPSIyMCIgaGVpZ2h0PSIxNiIgcng9IjQiLz4KICA8dGV4dCB4PSIxMiIgeT0iMTYiIGZvbnQtc2l6ZT0iMTIiIGZvbnQtd2VpZ2h0PSI5MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiNmZmYiPk5pY288L3RleHQ+Cjwvc3ZnPg==" alt="ニコニコ動画" width="24" height="24">
+          ニコニコ動画
+        </a>
+      </li>
+      <li>
+        <a href="https://www.twitch.tv/abeshinzo_" target="_blank" rel="noopener noreferrer">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZFR3aXRjaCIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM5MTRlZmQiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjZmY0ZDZkIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCBmaWxsPSJ1cmwoI2dyYWRUd2l0Y2gpIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHg9IjIiIHk9IjIiIHJ4PSI1Ii8+CiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTEzIDZoLTN2OGgzbDMgMyAzLTN2LTNoM3YtMnoiLz4KPC9zdmc+" alt="Twitch" width="24" height="24">
+          Twitch
+        </a>
+      </li>
+      <li>
+        <a href="https://huggingface.co/AbeShinzo0708" target="_blank" rel="noopener noreferrer">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZEh1Z2dpbmciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmY0ZDZkIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2ZmYjcwMyIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPGNpcmNsZSBmaWxsPSJ1cmwoI2dyYWRIdWdnaW5nKSIgY3g9IjEyIiBjeT0iMTIiIHI9IjEwIi8+CiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTEyIDhhNCA0IDAgMSAxIDAgOCAzIDMgMCAwIDEgMCA4eiIvPgo8L3N2Zz4=" alt="Hugging Face" width="24" height="24">
+          Hugging Face（AIツール置き場）
+        </a>
+      </li>
+      <li>
+        <a href="https://www.youtube.com/@ai-abe-ch" target="_blank" rel="noopener noreferrer">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZFlUMiIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM0Y2M5ZjAiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjZmY0ZDZkIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cGF0aCBmaWxsPSJ1cmwoI2dyYWRZVDIpIiBkPSJNMjMuNDk4IDYuMTg2YTMuMDE2IDMuMDE2IDAgMCAwLTIuMTIyLTIuMTM2QzE5LjUwNSAzLjU0NSAxMiAzLjU0NSAxMiAzLjU0NXMtNy41MDUgMC05LjM3Ny41MDVBMy4wMTYgMy4wMTYgMCAwIDAgLjUwMiA2LjE4NkMwIDguMDcgMCAxMiAwIDEyczAgMy45My41MDIgNS44MTRhMy4wMTYgMy4wMTYgMCAwIDAgMi4xMjIgMi4xMzZjMS44NzIuNTA1IDkuMzc3LjUwNSA5LjM3Ny41MDVzNy41MDUgMCA5LjM3Ny0uNTA1YTMuMDE2IDMuMDE2IDAgMCAwIDIuMTIyLTIuMTM2QzI0IDE1LjkzIDI0IDEyIDI0IDEyczAtMy45My0uNTAyLTUuODE0ek05LjU0NSAxNS41NjhWOC40MzJMMTUuODE4IDEybC02LjI3MyAzLjU2OHoiLz4KPC9zdmc+" alt="YouTube（サブ）" width="24" height="24">
+          YouTube（サブチャンネル）
+        </a>
+      </li>
+      <li>
+        <a href="https://www.tiktok.com/@ai_sin3" target="_blank" rel="noopener noreferrer">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZFRUMiIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM0Y2M5ZjAiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSI1MCUiIHN0b3AtY29sb3I9IiMwMDAwMDAiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjZmY0ZDZkIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cGF0aCBmaWxsPSJ1cmwoI2dyYWRUVDIpIiBkPSJNMTIgMmExMCAxMCAwIDEgMCAwIDIwIDEwIDEwIDAgMCAxIDAgMC0yMG00LjUgNy41Yy0uOCAwLTEuNS0uMy0yLS44djUuNWEzLjUgMy41IDAgMSAxLTMuNS0zLjVjLjIgMCAuNCAwIC42LjF2LTEuOGMtLjIgMC0uNC0uMS0uNi0uMWE1LjUgNS41IDAgMSAwIDUuNSA1LjV2LTYuOGMuOC42IDEuOCAxIDMgMVY3LjdjLTEuMiAwLTIuMi0uNC0zLTEuMnoiLz4KPC9zdmc+" alt="TikTok（サブ）" width="24" height="24">
+          TikTok（サブ）
+        </a>
+      </li>
+      <li>
+        <a href="https://doneru.jp/abeshinzo" target="_blank" rel="noopener noreferrer">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZERvbmVydSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNmZjRkNmQiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNGNjOWYwIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8Y2lyY2xlIGZpbGw9InVybCgjZ3JhZERvbmVydSkiIGN4PSIxMiIgY3k9IjEyIiByPSIxMCIvPgogIDx0ZXh0IHg9IjEyIiB5PSIxNiIgZm9udC1zaXplPSIxMCIgZm9udC13ZWlnaHQ9IjkwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iI2ZmZiI+RG88L3RleHQ+Cjwvc3ZnPg==" alt="Doneru" width="24" height="24">
+          Doneru（投げ銭）
+        </a>
+      </li>
+    </ul>
+  </div>
+  </section>
 
   <footer>
     <div class="container">
