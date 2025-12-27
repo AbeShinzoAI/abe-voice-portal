@@ -66,6 +66,7 @@
       gap: 12px;
       padding: 10px 0;
       min-width: 0;
+      position: relative;
     }
     .brand{
       display:flex;
@@ -87,6 +88,43 @@
       box-shadow: 0 10px 25px rgba(255,77,109,0.20);
       background: #fff;
     }
+
+    /* ===== ハンバーガーボタン ===== */
+    .menu-toggle{
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      width: 44px;
+      height: 44px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transition: transform .15s ease;
+      z-index: 100;
+    }
+    .menu-toggle:hover{ transform: scale(1.05); }
+    .menu-toggle span{
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: var(--ink);
+      border-radius: 2px;
+      transition: transform .2s ease, opacity .2s ease;
+    }
+    .menu-toggle.active span:nth-child(1){
+      transform: translateY(7px) rotate(45deg);
+    }
+    .menu-toggle.active span:nth-child(2){
+      opacity: 0;
+    }
+    .menu-toggle.active span:nth-child(3){
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
     .nav-scroller{
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
@@ -122,6 +160,47 @@
       transition: transform .12s ease, filter .12s ease;
     }
     .nav-links a:hover{ transform: translateY(-1px); filter: brightness(1.02); }
+
+    /* ===== スマホ版メニュー ===== */
+    @media (max-width: 640px){
+      .menu-toggle{
+        display: flex;
+      }
+      .nav-scroller{
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255,255,255,0.98);
+        backdrop-filter: blur(20px);
+        z-index: 90;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity .25s ease, visibility .25s ease;
+        overflow: visible;
+        padding: 0;
+      }
+      .nav-scroller.open{
+        opacity: 1;
+        visibility: visible;
+      }
+      .nav-links{
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        width: auto;
+      }
+      .nav-links a{
+        font-size: 18px;
+        padding: 14px 28px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.10);
+      }
+    }
+
     .section{ padding: 16px 0 30px; }
     .hero{ padding: 18px 0 10px; }
     .hero-cta{
@@ -523,7 +602,13 @@
           />
           <span>晋バルサンch</span>
         </a>
-        <div class="nav-scroller" aria-label="Primary">
+        <!-- ハンバーガーボタン -->
+        <button class="menu-toggle" id="menu-toggle" aria-label="メニューを開く" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <div class="nav-scroller" id="nav-scroller" aria-label="Primary">
           <ul class="nav-links">
             <li><a href="#home">Home</a></li>
             <li><a href="#tts">ボイスメーカー</a></li>
@@ -547,7 +632,6 @@
                   <p class="cap-title">晋バルサンのX</p>
                   <p class="cap-sub">フォローお願いします</p>
                 </div>
-                <!-- <span class="badge"></span> -->
               </div>
             </a>
             <!-- 2 -->
@@ -580,10 +664,9 @@
                   <p class="cap-title"></p>
                   <p class="cap-sub"></p>
                 </div>
-                <!-- <span class="badge">TRY</span> -->
               </div>
             </a>
-            <!-- 5（追加） -->
+            <!-- 5 -->
             <a class="shot" data-slide="4" href="https://discord.gg/dXexG8aSds" target="_blank" rel="noopener noreferrer" aria-label="Discordへ">
               <img src="images/feature-05.webp" alt="注目コンテンツ5のサムネイル" loading="lazy">
               <div class="shot-cap">
@@ -594,7 +677,7 @@
                 <span class="badge">JOIN</span>
               </div>
             </a>
-            <!-- 6（追加） -->
+            <!-- 6 -->
             <a class="shot" data-slide="5" href="https://kick.com/abeshinzoai" target="_blank" rel="noopener noreferrer" aria-label="KICKへ">
               <img src="images/feature-06.webp" alt="注目コンテンツ6のサムネイル" loading="lazy">
               <div class="shot-cap">
@@ -605,7 +688,7 @@
                 <span class="badge">FUN</span>
               </div>
             </a>
-            <!-- 7（追加） -->
+            <!-- 7 -->
             <a class="shot" data-slide="6" href="https://rumble.com/playlists/I1lxDg0pS2I" target="_blank" rel="noopener noreferrer" aria-label="rumbleへ">
               <img src="images/feature-07.webp" alt="注目コンテンツ7のサムネイル" loading="lazy">
               <div class="shot-cap">
@@ -616,7 +699,7 @@
                 <span class="badge">SPECIAL</span>
               </div>
             </a>
-            <!-- 8（追加） -->
+            <!-- 8 -->
             <a class="shot" data-slide="7" href="https://abeshinzo.wuaze.com" target="_blank" rel="noopener noreferrer" aria-label="反アベ団体サイトへ">
               <img src="images/feature-08.webp" alt="メンバーシップのイメージ" loading="lazy">
               <div class="shot-cap">
@@ -673,7 +756,7 @@
               <iframe src="https://www.youtube.com/embed/aAxJ674aWFY" title="YouTube Video 4" allowfullscreen></iframe>
             </div>
             <h3>YOASOBI 『祝福』</h3>
-            <p>僕たちは”操り人形”じゃない</p>
+            <p>僕たちは"操り人形"じゃない</p>
           </article>
         </div>
       </div>
@@ -703,7 +786,6 @@
   </section>
 
 <style>
-  /* ライブカードデザイン */
   .live-card {
     background: #fff;
     border-radius: 20px;
@@ -756,7 +838,6 @@
     font-size: 13px;
     color: var(--muted);
   }
-  /* ★修正：過去カードのみ「（終了）」を表示（CSSで制御） */
   .live-card.past .live-card-status::after {
     content: "（終了）";
     color: var(--muted);
@@ -792,7 +873,6 @@ async function fetchSchedule() {
 
     const now = new Date();
 
-    // 新しい順にソート
     const sortedEvents = events
       .sort((a, b) => new Date(b.date) - new Date(a.date));
 
@@ -808,7 +888,6 @@ async function fetchSchedule() {
       if (!event.title && !event.date) return;
 
       const startTime = new Date(event.date);
-      // 開始時刻から48時間以上経過したら過去扱い
       const hoursSinceStart = (now - startTime) / (1000 * 60 * 60);
       const isClearlyPast = hoursSinceStart >= 48;
 
@@ -894,7 +973,39 @@ window.addEventListener('load', fetchSchedule);
   </footer>
 
   <script>
-    // ===== TTS（変更なし）=====
+    // ===== ハンバーガーメニュー =====
+    const menuToggle = document.getElementById('menu-toggle');
+    const navScroller = document.getElementById('nav-scroller');
+    const navLinks = navScroller.querySelectorAll('a');
+
+    menuToggle.addEventListener('click', () => {
+      const isOpen = navScroller.classList.toggle('open');
+      menuToggle.classList.toggle('active', isOpen);
+      menuToggle.setAttribute('aria-expanded', String(isOpen));
+      menuToggle.setAttribute('aria-label', isOpen ? 'メニューを閉じる' : 'メニューを開く');
+    });
+
+    // メニュー内のリンクをクリックしたら閉じる
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        navScroller.classList.remove('open');
+        menuToggle.classList.remove('active');
+        menuToggle.setAttribute('aria-expanded', 'false');
+        menuToggle.setAttribute('aria-label', 'メニューを開く');
+      });
+    });
+
+    // ESCキーでメニューを閉じる
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && navScroller.classList.contains('open')) {
+        navScroller.classList.remove('open');
+        menuToggle.classList.remove('active');
+        menuToggle.setAttribute('aria-expanded', 'false');
+        menuToggle.focus();
+      }
+    });
+
+    // ===== TTS =====
     const API_URL = '/api/tts';
     document.getElementById('generate-btn').addEventListener('click', async () => {
       const text = document.getElementById('text-input').value.trim();
@@ -931,7 +1042,7 @@ window.addEventListener('load', fetchSchedule);
       }
     });
 
-    // ===== Gallery（無限ループ版：ここが変更点）=====
+    // ===== Gallery =====
     const track = document.getElementById('gallery-track');
     const dotsWrap = document.getElementById('gallery-dots');
     const prevBtn = document.querySelector('.gallery-prev');
@@ -946,7 +1057,7 @@ window.addEventListener('load', fetchSchedule);
 
     let firstClone = null;
     let lastClone = null;
-    let allSlides = []; // クローン込み
+    let allSlides = [];
 
     function buildDots(){
       dotsWrap.innerHTML = '';
@@ -987,7 +1098,6 @@ window.addEventListener('load', fetchSchedule);
     }
 
     function goNext(){
-      // 最後→（末尾に置いた）先頭クローンへスムーズに1枚分進む
       if (index === originalCount - 1){
         index = 0;
         setActiveDot(index);
@@ -998,7 +1108,6 @@ window.addEventListener('load', fetchSchedule);
     }
 
     function goPrev(){
-      // 最初→（先頭に置いた）末尾クローンへスムーズに1枚分戻る
       if (index === 0){
         index = originalCount - 1;
         setActiveDot(index);
@@ -1041,7 +1150,6 @@ window.addEventListener('load', fetchSchedule);
       originals = Array.from(track.querySelectorAll('.shot'));
       originalCount = originals.length;
 
-      // 端をクローンして無限ループ化（末尾クローンを先頭へ、先頭クローンを末尾へ）
       lastClone = originals[originalCount - 1].cloneNode(true);
       firstClone = originals[0].cloneNode(true);
 
@@ -1063,7 +1171,6 @@ window.addEventListener('load', fetchSchedule);
       scrollDebounce = setTimeout(() => {
         const x = track.scrollLeft;
 
-        // クローン込みで「いま最も近いスライド」を探す
         let bestEl = allSlides[0];
         let bestDist = Infinity;
         for (const s of allSlides){
@@ -1074,7 +1181,6 @@ window.addEventListener('load', fetchSchedule);
           }
         }
 
-        // クローン位置に来たら、本物へ瞬間ジャンプ（見た目は途切れない）
         if (bestEl.dataset.clone === 'first'){
           index = 0;
           setActiveDot(index);
@@ -1088,7 +1194,6 @@ window.addEventListener('load', fetchSchedule);
           return;
         }
 
-        // 通常スライド
         const slideIndex = Number(bestEl.dataset.slide);
         if (!Number.isNaN(slideIndex)){
           index = slideIndex;
@@ -1100,10 +1205,7 @@ window.addEventListener('load', fetchSchedule);
     window.addEventListener('load', () => {
       setupInfiniteLoop();
       buildDots();
-
-      // 初期位置を「本物の1枚目」に合わせる（先頭には末尾クローンがいるため）
       goTo(0, false);
-
       startAutoplay();
     });
 
@@ -1111,7 +1213,7 @@ window.addEventListener('load', fetchSchedule);
       goTo(index, false);
     });
 
-    // ===== ナビのスムーススクロール（変更なし）=====
+    // ===== ナビのスムーススクロール =====
     document.querySelectorAll('nav a').forEach(anchor => {
       anchor.addEventListener('click', (e) => {
         const href = anchor.getAttribute('href');
@@ -1123,4 +1225,3 @@ window.addEventListener('load', fetchSchedule);
   </script>
 </body>
 </html>
-
