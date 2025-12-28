@@ -1286,8 +1286,15 @@
 
     // プレミアムステータスチェック
     async function checkPremiumStatus() {
+      const premiumStatusEl = document.getElementById('premium-status');
+      if (!premiumStatusEl) return;  // 要素がないページでは何もしない
+
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return false;
+      if (!user) {
+        premiumStatusEl.textContent = "ログインしていません";
+        premiumStatusEl.style.color = var(--muted);
+        return false;
+      }
 
       // customersテーブルからsupabase_user_idが一致するcustomerを取得
       const { data: customers } = await supabase
@@ -1295,7 +1302,11 @@
         .select('id')
         .eq('metadata->>supabase_user_id', user.id);
 
-      if (!customers || customers.length === 0) return false;
+      if (!customers || customers.length === 0) {
+        premiumStatusEl.textContent = "プレミアム会員ではありません";
+        premiumStatusEl.style.color = "red";
+        return false;
+      }
 
       const customerId = customers[0].id;
 
@@ -1306,7 +1317,15 @@
         .eq('customer', customerId)
         .in('status', ['active', 'trialing']);
 
-      return subscriptions && subscriptions.length > 0;
+      const isPremium = subscriptions && subscriptions.length > 0;
+      if (isPremium) {
+        premiumStatusEl.textContent = "✅ プレミアム会員です（高速ボイス・限定コンテンツ利用可能）";
+        premiumStatusEl.style.color = var(--p);
+      } else {
+        premiumStatusEl.textContent = "プレミアム会員ではありません";
+        premiumStatusEl.style.color = "red";
+      }
+      return isPremium;
     }
 
     // 決済ボタン
@@ -1367,7 +1386,12 @@
     });
 
     // ページ読み込み時にステータスチェック
-    window.addEventListener('load', checkPremiumStatus);
+    window.addEventListener('load', () => {
+      checkPremiumStatus();
+      // 元のloadイベントコードもここに追加（fetchScheduleなど）
+      fetchSchedule();
+      // ... 他のloadイベント
+    });
 
     // 認証状態変化時にもチェック（ログイン/ログアウト対応）
     supabase.auth.onAuthStateChange((event, session) => {
@@ -1448,8 +1472,6 @@
         console.error(err);
       }
     }
-
-    window.addEventListener('load', fetchSchedule);
 
     // ===== ハンバーガーメニュー（スクロール完全無効化） =====
     const menuToggle = document.getElementById('menu-toggle');
