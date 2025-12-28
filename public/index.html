@@ -1148,15 +1148,27 @@
         <div class="container">
           <div class="membership">
             <div class="inner">
-              <h2>💎 メンバーシップ（近日公開）</h2>
-              <p>プレミアムボイス/限定コンテンツ/グッズ先行販売（Stripe決済で月額¥500〜）</p>
-              <button class="btn-secondary" type="button" onclick="alert('近日公開予定！ Stripe統合中...')">参加予約</button>
+              <h2>💎 メンバーシップ（月額298円）</h2>
+              <p>高速版ボイスメーカー・限定動画・画像・グッズ先行販売など</p>
+              <button id="subscribe-btn" class="btn-secondary">今すぐ参加する</button>
+              <button id="login-btn" class="btn-secondary" style="margin-top:10px;">ログイン</button>
+              <p id="premium-status" style="margin-top:12px; font-size:14px; color:var(--muted);"></p>
             </div>
           </div>
         </div>
       </section>
-    </div>
-  </main>
+
+       <!-- ログイン用マジックリンクモーダル -->
+      <div id="auth-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:1000; align-items:center; justify-content:center;">
+        <div style="background:#fff; padding:30px; border-radius:16px; max-width:400px; width:90%;">
+          <h3 style="margin-top:0;">ログイン / 新規登録</h3>
+          <p style="color:var(--muted); font-size:14px;">メールアドレスにマジックリンクを送信します</p>
+          <input id="auth-email" type="email" placeholder="メールアドレス" style="width:100%; padding:12px; margin:12px 0; border-radius:12px; border:1px solid var(--border);">
+          <button id="auth-magic" class="btn-primary" style="width:100%;">マジックリンクを送信</button>
+          <button id="auth-close" style="margin-top:12px; width:100%; padding:10px; background:transparent; border:1px solid var(--border); border-radius:12px;">閉じる</button>
+        </div>
+      </div>
+    </main>
 
   <!-- ===== 新規追加: SNSリンク紹介欄 ===== -->
   <section id="sns-section" class="section">
@@ -1258,6 +1270,111 @@
       <p>&copy; 2025 Abe Artificial Intelligence</p>
     </div>
   </footer>
+
+  <script type="module">
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+    // === ここをあなたの値に変更してください ===
+    const supabaseUrl = "https://fdtaesossfqfhtpoesjn.supabase.co";  // Supabase Dashboard → Settings → API
+    const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZkdGFlc29zc2ZxZmh0cG9lc2puIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY5Mzc1MzEsImV4cCI6MjA4MjUxMzUzMX0.AJQSaYIhaTBf338f4gfMGGQ-4hRARxcPSWRY3ReCFFk";           // 同上 → Project API keys → anon
+    const stripePriceId = "price_1Sj4iWBoy0CvdEnb2pgIdfry";   // Stripe Dashboard → Products → 298円のPrice ID
+    const checkoutFunctionUrl = "https://fdtaesossfqfhtpoesjn.supabase.co/functions/v1/create-checkout-session";
+    // ============================================
+
+    const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+    // プレミアムステータスチェック
+    async function checkPremiumStatus() {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        document.getElementById('premium-status').textContent = "ログインしていません";
+        return false;
+      }
+
+      const { data, error } = await supabase
+        .from('stripe.subscriptions')
+        .select('status')
+        .eq('status', 'active')
+        .eq('client_reference_id', user.id);  // または metadata->>supabase_user_id
+
+      const isPremium = data && data.length > 0;
+      const statusEl = document.getElementById('premium-status');
+      if (isPremium) {
+        statusEl.textContent = "✅ プレミアム会員です（高速ボイス・限定コンテンツ利用可能）";
+        statusEl.style.color = "var(--p)";
+        // ここでプレミアムコンテンツを表示（例）
+        document.querySelectorAll('.premium-only').forEach(el => el.style.display = 'block');
+      } else {
+        statusEl.textContent = "プレミアム会員ではありません";
+      }
+      return isPremium;
+    }
+
+    // 決済ボタン
+    document.getElementById('subscribe-btn')?.addEventListener('click', async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        alert("ログインしてください");
+        document.getElementById('auth-modal').style.display = 'flex';
+        return;
+      }
+
+      try {
+        const response = await fetch(checkoutFunctionUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`,
+          },
+          body: JSON.stringify({
+            priceId: stripePriceId,
+            userId: user.id,
+          }),
+        });
+
+        if (!response.ok) throw new Error(await response.text());
+
+        const { url } = await response.json();
+        window.location.href = url;
+      } catch (err) {
+        console.error(err);
+        alert("決済開始に失敗しました: " + err.message);
+      }
+    });
+
+    // ログインボタン・モーダル制御
+    document.getElementById('login-btn')?.addEventListener('click', () => {
+      document.getElementById('auth-modal').style.display = 'flex';
+    });
+
+    document.getElementById('auth-close')?.addEventListener('click', () => {
+      document.getElementById('auth-modal').style.display = 'none';
+    });
+
+    document.getElementById('auth-magic')?.addEventListener('click', async () => {
+      const email = document.getElementById('auth-email').value.trim();
+      if (!email) return alert("メールアドレスを入力してください");
+
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: { emailRedirectTo: window.location.origin }
+      });
+
+      if (error) alert("エラー: " + error.message);
+      else {
+        alert("メールを確認してリンクをクリックしてください！");
+        document.getElementById('auth-modal').style.display = 'none';
+      }
+    });
+
+    // ページ読み込み時にステータスチェック
+    window.addEventListener('load', checkPremiumStatus);
+
+    // 認証状態変化時にもチェック（ログイン/ログアウト対応）
+    supabase.auth.onAuthStateChange((event, session) => {
+      checkPremiumStatus();
+    });
+  </script>
 
   <script>
     const SCHEDULE_JSON_URL = 'schedule.json';
