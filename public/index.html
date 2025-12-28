@@ -1287,28 +1287,26 @@
     // プレミアムステータスチェック
     async function checkPremiumStatus() {
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        document.getElementById('premium-status').textContent = "ログインしていません";
-        return false;
-      }
+      if (!user) return false;
 
-      const { data, error } = await supabase
+      // customersテーブルからsupabase_user_idが一致するcustomerを取得
+      const { data: customers } = await supabase
+        .from('stripe.customers')
+        .select('id')
+        .eq('metadata->>supabase_user_id', user.id);
+
+      if (!customers || customers.length === 0) return false;
+
+      const customerId = customers[0].id;
+
+      // そのcustomerのactiveなsubscriptionがあるか
+      const { data: subscriptions } = await supabase
         .from('stripe.subscriptions')
         .select('status')
-        .eq('status', 'active')
-        .eq('client_reference_id', user.id);  // または metadata->>supabase_user_id
+        .eq('customer', customerId)
+        .in('status', ['active', 'trialing']);
 
-      const isPremium = data && data.length > 0;
-      const statusEl = document.getElementById('premium-status');
-      if (isPremium) {
-        statusEl.textContent = "✅ プレミアム会員です（高速ボイス・限定コンテンツ利用可能）";
-        statusEl.style.color = "var(--p)";
-        // ここでプレミアムコンテンツを表示（例）
-        document.querySelectorAll('.premium-only').forEach(el => el.style.display = 'block');
-      } else {
-        statusEl.textContent = "プレミアム会員ではありません";
-      }
-      return isPremium;
+      return subscriptions && subscriptions.length > 0;
     }
 
     // 決済ボタン
