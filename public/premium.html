@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>プレミアム会員専用ページ | 晋バルサンch</title>
+  <!-- 元のスタイルを読み込み（CSSは共有したいので外部化推奨） -->
+  <style>
+    /* 元の:rootと基本スタイルをコピー（または<link>で共有CSS読み込み） */
+    :root{
+      --bgA:#fff4f6; --bgB:#fffdfe; --bgC:#f3fdff; --ink:#1f2937; --muted:#6b7280;
+      --p:#ff4d6d; --p2:#ffb703; --p3:#4cc9f0; --shadow: 0 18px 50px rgba(0,0,0,0.12);
+      --r: 18px; --max: 1100px;
+    }
+    body { margin:0; font-family: system-ui, sans-serif; background: linear-gradient(135deg, var(--bgA), var(--bgC)); min-height:100vh; color:var(--ink); }
+    .container { width: min(var(--max), calc(100% - 28px)); margin-inline:auto; padding:40px 0; }
+    .panel { background:#fff; border-radius:var(--r); box-shadow:var(--shadow); padding:30px; }
+    h1 { text-align:center; font-size:clamp(24px,5vw,32px); margin-bottom:20px; }
+    .status { text-align:center; font-size:18px; font-weight:900; padding:16px; border-radius:12px; margin-bottom:30px; }
+    .premium { background:linear-gradient(135deg,var(--p),var(--p2)); color:#fff; }
+    .not-premium { background:#fee2e2; color:#991b1b; }
+    .btn-primary { display:block; width:100%; max-width:300px; margin:20px auto; padding:16px; background:linear-gradient(135deg,var(--p),var(--p2)); color:#fff; border:none; border-radius:999px; font-size:18px; font-weight:950; cursor:pointer; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="panel">
+      <h1>💎 プレミアム会員専用ページ</h1>
+      <div id="status" class="status">確認中...</div>
+
+      <!-- プレミアム限定コンテンツ（最初は非表示） -->
+      <div id="premium-content" style="display:none;">
+        <h2 style="text-align:center;">🎉 ようこそ、プレミアム会員さん！</h2>
+
+        <!-- 高速版ボイスメーカー（例） -->
+        <section style="margin-top:40px;">
+          <h3>🚀 高速安倍AIボイスメーカー（プレミアム専用）</h3>
+          <textarea id="premium-text" placeholder="ここにテキストを入力（高速合成）" style="width:100%; min-height:150px; padding:16px; border-radius:12px; border:1px solid var(--border); font-size:16px;"></textarea>
+          <button id="premium-generate" class="btn-primary" style="margin-top:12px;">高速合成生成</button>
+          <audio id="premium-audio" controls style="width:100%; margin-top:16px;"></audio>
+          <div id="premium-status" style="margin-top:12px; font-weight:900; color:var(--p);"></div>
+        </section>
+
+        <!-- 限定動画・画像例 -->
+        <section style="margin-top:50px;">
+          <h3>📹 限定アーカイブ動画</h3>
+          <div style="display:grid; gap:20px; grid-template-columns:repeat(auto-fit,minmax(300px,1fr));">
+            <iframe src="https://www.youtube.com/embed/限定動画ID1" allowfullscreen style="width:100%; aspect-ratio:16/9; border-radius:12px;"></iframe>
+            <iframe src="https://www.youtube.com/embed/限定動画ID2" allowfullscreen style="width:100%; aspect-ratio:16/9; border-radius:12px;"></iframe>
+          </div>
+        </section>
+
+        <section style="margin-top:50px; text-align:center;">
+          <h3>🖼 限定画像ギャラリー</h3>
+          <img src="images/premium-01.webp" alt="限定画像1" style="max-width:100%; border-radius:16px; box-shadow:var(--shadow);">
+          <img src="images/premium-02.webp" alt="限定画像2" style="max-width:100%; border-radius:16px; box-shadow:var(--shadow); margin-top:20px;">
+        </section>
+      </div>
+
+      <!-- 非会員用メッセージ -->
+      <div id="non-premium" style="display:none; text-align:center;">
+        <p>このページはプレミアム会員限定です。</p>
+        <a href="/" class="btn-primary">ホームに戻る</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Supabaseスクリプト -->
+  <script type="module">
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+    const supabaseUrl = "https://YOUR-PROJECT-ID.supabase.co";
+    const supabaseAnonKey = "your-anon-public-key";
+    const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+    const statusEl = document.getElementById('status');
+    const premiumContent = document.getElementById('premium-content');
+    const nonPremium = document.getElementById('non-premium');
+
+    async function checkPremium() {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        statusEl.textContent = "⚠️ ログインが必要です";
+        statusEl.className = "status not-premium";
+        nonPremium.style.display = "block";
+        return;
+      }
+
+      const { data } = await supabase
+        .from('stripe.subscriptions')
+        .select('status')
+        .eq('status', 'active')
+        .eq('client_reference_id', user.id);
+
+      if (data && data.length > 0) {
+        statusEl.textContent = "✅ プレミアム会員認証完了！";
+        statusEl.className = "status premium";
+        premiumContent.style.display = "block";
+      } else {
+        statusEl.textContent = "❌ プレミアム会員ではありません";
+        statusEl.className = "status not-premium";
+        nonPremium.style.display = "block";
+      }
+    }
+
+    // 高速TTS（例: 既存APIをプレミアム専用に変更 or パラメータ追加）
+    document.getElementById('premium-generate')?.addEventListener('click', async () => {
+      const text = document.getElementById('premium-text').value.trim();
+      if (!text) return alert("テキストを入力してください");
+
+      document.getElementById('premium-status').textContent = "高速合成中...";
+      // ここにあなたの高速TTS APIエンドポイントを呼び出し
+      // 例: fetch('/api/tts-premium', { method:'POST', body:JSON.stringify({text}) })
+      // 応答で音声URLを取得してaudio.srcにセット
+    });
+
+    // ページ読み込み時に認証チェック
+    checkPremium();
+
+    // 認証状態変化時にもチェック
+    supabase.auth.onAuthStateChange(checkPremium);
+  </script>
+</body>
+</html>
