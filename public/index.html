@@ -1286,44 +1286,27 @@
 
     // プレミアムステータスチェック
     async function checkPremiumStatus() {
-      const premiumStatusEl = document.getElementById('premium-status');
-      if (!premiumStatusEl) return;  // 要素がないページでは何もしない
-
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        premiumStatusEl.textContent = "ログインしていません";
-        premiumStatusEl.style.color = var(--muted);
+        document.getElementById('premium-status').textContent = "ログインしていません";
         return false;
       }
 
-      // customersテーブルからsupabase_user_idが一致するcustomerを取得
-      const { data: customers } = await supabase
-        .from('stripe.customers')
-        .select('id')
-        .eq('metadata->>supabase_user_id', user.id);
-
-      if (!customers || customers.length === 0) {
-        premiumStatusEl.textContent = "プレミアム会員ではありません";
-        premiumStatusEl.style.color = "red";
-        return false;
-      }
-
-      const customerId = customers[0].id;
-
-      // そのcustomerのactiveなsubscriptionがあるか
-      const { data: subscriptions } = await supabase
+      const { data, error } = await supabase
         .from('stripe.subscriptions')
         .select('status')
-        .eq('customer', customerId)
-        .in('status', ['active', 'trialing']);
+        .eq('status', 'active')
+        .eq('client_reference_id', user.id);  // または metadata->>supabase_user_id
 
-      const isPremium = subscriptions && subscriptions.length > 0;
+      const isPremium = data && data.length > 0;
+      const statusEl = document.getElementById('premium-status');
       if (isPremium) {
-        premiumStatusEl.textContent = "✅ プレミアム会員です（高速ボイス・限定コンテンツ利用可能）";
-        premiumStatusEl.style.color = var(--p);
+        statusEl.textContent = "✅ プレミアム会員です（高速ボイス・限定コンテンツ利用可能）";
+        statusEl.style.color = "var(--p)";
+        // ここでプレミアムコンテンツを表示（例）
+        document.querySelectorAll('.premium-only').forEach(el => el.style.display = 'block');
       } else {
-        premiumStatusEl.textContent = "プレミアム会員ではありません";
-        premiumStatusEl.style.color = "red";
+        statusEl.textContent = "プレミアム会員ではありません";
       }
       return isPremium;
     }
@@ -1386,12 +1369,7 @@
     });
 
     // ページ読み込み時にステータスチェック
-    window.addEventListener('load', () => {
-      checkPremiumStatus();
-      // 元のloadイベントコードもここに追加（fetchScheduleなど）
-      fetchSchedule();
-      // ... 他のloadイベント
-    });
+    window.addEventListener('load', checkPremiumStatus);
 
     // 認証状態変化時にもチェック（ログイン/ログアウト対応）
     supabase.auth.onAuthStateChange((event, session) => {
@@ -1472,6 +1450,8 @@
         console.error(err);
       }
     }
+
+    window.addEventListener('load', fetchSchedule);
 
     // ===== ハンバーガーメニュー（スクロール完全無効化） =====
     const menuToggle = document.getElementById('menu-toggle');
