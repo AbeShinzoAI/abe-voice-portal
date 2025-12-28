@@ -69,36 +69,38 @@
   <script type="module">
     import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
-    const supabaseUrl = "https://YOUR-PROJECT-ID.supabase.co";
-    const supabaseAnonKey = "your-anon-public-key";
+    const supabaseUrl = "https://fdtaesossfqfhtpoesjn.supabase.co";
+    const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZkdGFlc29zc2ZxZmh0cG9lc2puIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY5Mzc1MzEsImV4cCI6MjA4MjUxMzUzMX0.AJQSaYIhaTBf338f4gfMGGQ-4hRARxcPSWRY3ReCFFk";
     const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
     const statusEl = document.getElementById('status');
     const premiumContent = document.getElementById('premium-content');
     const nonPremium = document.getElementById('non-premium');
 
-    async function checkPremiumStatus() {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return false;
+    async function checkPremium() {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        statusEl.textContent = "⚠️ ログインが必要です";
+        statusEl.className = "status not-premium";
+        nonPremium.style.display = "block";
+        return;
+      }
 
-    // customersテーブルからsupabase_user_idが一致するcustomerを取得
-    const { data: customers } = await supabase
-        .from('stripe.customers')
-        .select('id')
-        .eq('metadata->>supabase_user_id', user.id);
-
-    if (!customers || customers.length === 0) return false;
-
-    const customerId = customers[0].id;
-
-    // そのcustomerのactiveなsubscriptionがあるか
-    const { data: subscriptions } = await supabase
+      const { data } = await supabase
         .from('stripe.subscriptions')
         .select('status')
-        .eq('customer', customerId)
-        .in('status', ['active', 'trialing']);
+        .eq('status', 'active')
+        .eq('client_reference_id', user.id);
 
-    return subscriptions && subscriptions.length > 0;
+      if (data && data.length > 0) {
+        statusEl.textContent = "✅ プレミアム会員認証完了！";
+        statusEl.className = "status premium";
+        premiumContent.style.display = "block";
+      } else {
+        statusEl.textContent = "❌ プレミアム会員ではありません";
+        statusEl.className = "status not-premium";
+        nonPremium.style.display = "block";
+      }
     }
 
     // 高速TTS（例: 既存APIをプレミアム専用に変更 or パラメータ追加）
