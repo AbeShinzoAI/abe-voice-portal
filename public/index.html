@@ -1290,7 +1290,7 @@ footer{
       }
 
       const { data, error } = await supabase
-        .from('subscriptions')  // テーブル名を'subscriptions'に修正（Supabase-Stripe標準）
+        .from('stripe.subscriptions')  // テーブル名を'subscriptions'に修正（Supabase-Stripe標準）
         .select('status')
         .eq('status', 'active')
         .eq('metadata->>supabase_user_id', user.id);  // metadata.supabase_user_idでクエリ（Webhookで設定されている可能性）
