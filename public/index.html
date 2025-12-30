@@ -1152,7 +1152,7 @@
               <p>高速版ボイスメーカー・限定動画・画像・グッズ先行販売など</p>
               <button id="subscribe-btn" class="btn-secondary">今すぐ参加する</button>
               <button id="login-btn" class="btn-secondary" style="margin-top:10px;">ログイン</button>
-              <p id="premium-status" style="margin-top:12px; font-size:14px; color:var(--muted);"></p>
+              <p id="premium-status" style="margin-top:12px; font-size:14px; color:var(--muted);">確認中...</p>
             </div>
           </div>
         </div>
@@ -1284,22 +1284,30 @@
 
     const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-    // プレミアムステータスチェック
+    // プレミアムステータスチェック（テーブル名を'subscriptions'に修正し、metadataベースのクエリに変更）
     async function checkPremiumStatus() {
       const { data: { user } } = await supabase.auth.getUser();
+      const statusEl = document.getElementById('premium-status');
+      statusEl.textContent = "確認中...";
+
       if (!user) {
-        document.getElementById('premium-status').textContent = "ログインしていません";
+        statusEl.textContent = "ログインしていません";
         return false;
       }
 
       const { data, error } = await supabase
-        .from('stripe.subscriptions')
+        .from('subscriptions')  // テーブル名を'subscriptions'に修正（stripe.subscriptionsは無効）
         .select('status')
         .eq('status', 'active')
-        .eq('client_reference_id', user.id);  // または metadata->>supabase_user_id
+        .eq('metadata->>supabase_user_id', user.id);  // metadataを使ったクエリに変更（client_reference_idが保存されていない場合に対応）
+
+      if (error) {
+        console.error('サブスクリプション確認エラー:', error);
+        statusEl.textContent = "確認エラー - 後ほどお試しください";
+        return false;
+      }
 
       const isPremium = data && data.length > 0;
-      const statusEl = document.getElementById('premium-status');
       if (isPremium) {
         statusEl.textContent = "✅ プレミアム会員です（高速ボイス・限定コンテンツ利用可能）";
         statusEl.style.color = "var(--p)";
@@ -1311,7 +1319,7 @@
       return isPremium;
     }
 
-    // 決済ボタン
+    // 決済ボタン（success_urlを明示的に設定し、リダイレクト後にリフレッシュ）
     document.getElementById('subscribe-btn')?.addEventListener('click', async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
@@ -1330,6 +1338,8 @@
           body: JSON.stringify({
             priceId: stripePriceId,
             userId: user.id,
+            successUrl: window.location.origin + window.location.pathname + '?session_id={CHECKOUT_SESSION_ID}',  // 明示的にsuccess_urlを追加（関数側で対応が必要）
+            cancelUrl: window.location.origin + window.location.pathname,
           }),
         });
 
@@ -1369,11 +1379,20 @@
     });
 
     // ページ読み込み時にステータスチェック
-    window.addEventListener('load', checkPremiumStatus);
+    window.addEventListener('load', async () => {
+      await checkPremiumStatus();
+      // クエリパラメータで決済成功を確認し、リフレッシュ
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has('session_id')) {
+        // 決済成功後、ステータスを再確認（Webhookの遅延対応）
+        setTimeout(checkPremiumStatus, 2000);  // 2秒待機
+        setTimeout(checkPremiumStatus, 5000);  // さらに5秒後
+      }
+    });
 
     // 認証状態変化時にもチェック（ログイン/ログアウト対応）
-    supabase.auth.onAuthStateChange((event, session) => {
-      checkPremiumStatus();
+    supabase.auth.onAuthStateChange(async (event, session) => {
+      await checkPremiumStatus();
     });
   </script>
 
