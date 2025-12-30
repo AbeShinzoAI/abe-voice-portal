@@ -154,7 +154,7 @@
         .from('stripe.subscriptions')  // テーブル名修正
         .select('status')
         .eq('status', 'active')
-        .eq('metadata->>supabase_user_id', user.id);  // metadataでクエリ
+        .eq('user_id', user.id);
 
       if (error) {
         console.error(error);
