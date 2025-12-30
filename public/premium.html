@@ -151,10 +151,10 @@
       }
 
       const { data, error } = await supabase
-        .from('stripe.subscriptions')  // テーブル名修正
+        .from('subscriptions')  // テーブル名修正
         .select('status')
         .eq('status', 'active')
-        .eq('client_reference_id', user.id);
+        .eq('user_id', user.id);
 
       if (error) {
         console.error(error);
