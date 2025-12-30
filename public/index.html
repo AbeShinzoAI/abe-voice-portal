@@ -1293,7 +1293,7 @@ footer{
         .from('stripe.subscriptions')  // テーブル名を'subscriptions'に修正（Supabase-Stripe標準）
         .select('status')
         .eq('status', 'active')
-        .eq('user_id', user.id);
+        .eq('client_reference_id', user.id);
 
       if (error) {
         console.error('Subscription check error:', error);
