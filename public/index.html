@@ -1290,10 +1290,10 @@ footer{
       }
 
       const { data, error } = await supabase
-        .from('stripe.subscriptions')  // テーブル名を'subscriptions'に修正（Supabase-Stripe標準）
+        .from('subscriptions')  // テーブル名を'subscriptions'に修正（Supabase-Stripe標準）
         .select('status')
         .eq('status', 'active')
-        .eq('client_reference_id', user.id);
+        .eq('user_id', user.id);
 
       if (error) {
         console.error('Subscription check error:', error);
