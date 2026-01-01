@@ -8,290 +8,900 @@
   <title>晋バルサンch</title>
   <style>
     :root{
-      --bgA:#fff4f6;--bgB:#fffdfe;--bgC:#f3fdff;--ink:#1f2937;--muted:#6b7280;
-      --card:#ffffff;--card2:#ffffffcc;--border:#00000012;--p:#ff4d6d;--p2:#ffb703;--p3:#4cc9f0;
-      --shadow:0 18px 50px rgba(0,0,0,0.12);--shadow2:0 10px 26px rgba(0,0,0,0.10);
-      --r:18px;--r2:26px;--max:1100px;
+      --bgA:#fff4f6;
+      --bgB:#fffdfe;
+      --bgC:#f3fdff;
+      --ink:#1f2937;
+      --muted:#6b7280;
+      --card:#ffffff;
+      --card2:#ffffffcc;
+      --border:#00000012;
+      --p:#ff4d6d;
+      --p2:#ffb703;
+      --p3:#4cc9f0;
+      --shadow: 0 18px 50px rgba(0,0,0,0.12);
+      --shadow2: 0 10px 26px rgba(0,0,0,0.10);
+      --r: 18px;
+      --r2: 26px;
+      --max: 1100px;
     }
-    *{box-sizing:border-box;}
-    html{scroll-behavior:smooth;}
-    html,body{width:100%;overflow-x:hidden;overscroll-behavior-x:none;}
+    *{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
+    html, body{
+      width: 100%;
+      overflow-x: hidden;
+      overscroll-behavior-x: none;
+    }
     body{
       margin:0;
-      font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic UI","Meiryo",Arial,sans-serif;
-      line-height:1.65;color:var(--ink);
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+        "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic UI", "Meiryo", Arial, sans-serif;
+      line-height:1.65;
+      color:var(--ink);
       background:
         radial-gradient(900px 520px at 15% 15%, rgba(255,77,109,0.08), transparent 60%),
         radial-gradient(900px 520px at 85% 20%, rgba(76,201,240,0.14), transparent 60%),
         radial-gradient(900px 520px at 55% 95%, rgba(255,183,3,0.10), transparent 62%),
         linear-gradient(135deg, var(--bgA), var(--bgB) 55%, var(--bgC));
-      min-height:100vh;
+      min-height: 100vh;
     }
-    body.menu-open{overflow:hidden !important;position:fixed !important;width:100% !important;height:100% !important;touch-action:none !important;}
-    html.menu-open{overflow:hidden !important;}
-    img{max-width:100%;height:auto;}
-    a{color:inherit;}
-    .container{width:min(var(--max), calc(100% - 28px));margin-inline:auto;}
-    header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.75);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);}
-    nav{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;min-width:0;position:relative;}
-    .brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:950;letter-spacing:.02em;white-space:nowrap;flex:0 0 auto;}
-    .brand span{font-size:15px;}
-    .brand-icon{width:34px;height:34px;border-radius:12px;object-fit:cover;flex:none;box-shadow:0 10px 25px rgba(255,77,109,0.20);background:#fff;}
-    .menu-toggle{
-      display:none;flex-direction:column;justify-content:center;align-items:center;gap:5px;
-      width:44px;height:44px;background:#fff;border:1px solid var(--border);border-radius:12px;cursor:pointer;
-      box-shadow:0 4px 12px rgba(0,0,0,0.08);transition:transform .15s ease;z-index:200;position:relative;
+    /* メニューが開いているときはスクロール完全無効 */
+    body.menu-open{
+      overflow: hidden !important;
+      position: fixed !important;
+      width: 100% !important;
+      height: 100% !important;
+      touch-action: none !important;
     }
-    .menu-toggle:hover{transform:scale(1.05);}
-    .menu-toggle span{display:block;width:20px;height:2px;background:var(--ink);border-radius:2px;transition:transform .2s ease, opacity .2s ease;}
-    .menu-toggle.active span:nth-child(1){transform:translateY(7px) rotate(45deg);}
-    .menu-toggle.active span:nth-child(2){opacity:0;}
-    .menu-toggle.active span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
-    .nav-scroller{
-      overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;max-width:100%;
-      padding-bottom:2px;flex:1 1 auto;min-width:0;
+    html.menu-open{
+      overflow: hidden !important;
     }
-    .nav-scroller::-webkit-scrollbar{display:none;}
-    .nav-links{display:flex;flex-wrap:nowrap;gap:8px;list-style:none;margin:0;padding:0;width:max-content;}
-    .nav-links a{
-      display:inline-flex;align-items:center;padding:9px 12px;border-radius:999px;text-decoration:none;
-      font-weight:900;font-size:13px;color:rgba(31,41,55,0.92);background:#fff;border:1px solid var(--border);
-      box-shadow:0 10px 22px rgba(0,0,0,0.06);white-space:nowrap;transition:transform .12s ease, filter .12s ease;
+    img{ max-width: 100%; height: auto; }
+    a{ color:inherit; }
+    .container{
+      width: min(var(--max), calc(100% - 28px));
+      margin-inline:auto;
     }
-    .nav-links a:hover{transform:translateY(-1px);filter:brightness(1.02);}
-    .sns-links{display:flex;align-items:center;gap:8px;flex:0 0 auto;}
-    .sns-links a{
-      display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:999px;background:#fff;
-      border:1px solid var(--border);box-shadow:0 10px 22px rgba(0,0,0,0.06);transition:transform .12s ease, filter .12s ease;text-decoration:none;
+    header{
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255,255,255,0.75);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
     }
-    .sns-links a:hover{transform:translateY(-1px);filter:brightness(1.02);}
-    .sns-links svg{width:20px;height:20px;fill:var(--ink);}
-
-    /* 追加: ヘッダーログインボタン */
-    .nav-login{
-      height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--border);background:#fff;
-      box-shadow:0 10px 22px rgba(0,0,0,0.06);font-weight:950;font-size:13px;cursor:pointer;
-      transition:transform .12s ease, filter .12s ease;white-space:nowrap;
+    nav{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      padding: 10px 0;
+      min-width: 0;
+      position: relative;
     }
-    .nav-login:hover{transform:translateY(-1px);filter:brightness(1.02);}
-
-    @media (max-width:640px){
-      .menu-toggle{display:flex;}
-      .nav-scroller{
-        position:fixed;top:0;left:0;width:100vw;height:100vh;height:100dvh;background:
-          radial-gradient(600px 400px at 20% 30%, rgba(255,77,109,0.15), transparent 60%),
-          radial-gradient(600px 400px at 80% 70%, rgba(76,201,240,0.15), transparent 60%),
-          radial-gradient(500px 300px at 50% 50%, rgba(255,183,3,0.10), transparent 60%),
-          #ffffff;
-        z-index:150;display:flex;flex-direction:column;align-items:center;justify-content:center;
-        opacity:0;visibility:hidden;transform:translateY(-20px);
-        transition:opacity .3s ease, visibility .3s ease, transform .3s ease;
-        overflow:hidden;padding:100px 30px 60px;touch-action:none;
-      }
-      .nav-scroller.open{opacity:1;visibility:visible;transform:translateY(0);}
-      .nav-links{flex-direction:column;align-items:center;gap:20px;width:100%;max-width:300px;}
-      .nav-links li{width:100%;}
-      .nav-links a{
-        display:flex;justify-content:center;width:100%;font-size:18px;padding:18px 32px;border-radius:16px;
-        box-shadow:0 10px 30px rgba(0,0,0,0.12);background:#fff;border:1px solid rgba(0,0,0,0.08);
-      }
-      .nav-links a:hover{background:linear-gradient(135deg, var(--p), var(--p2));color:#fff;border-color:transparent;}
-      .nav-scroller::before{
-        content:"MENU";position:absolute;top:30px;left:50%;transform:translateX(-50%);
-        font-size:12px;font-weight:950;letter-spacing:.2em;color:var(--muted);
-      }
-      .sns-links-mobile{
-        display:flex;flex-direction:column;align-items:center;gap:20px;width:100%;max-width:300px;margin-top:40px;
-      }
-      .sns-links-mobile a{
-        display:flex;align-items:center;justify-content:center;gap:12px;width:100%;
-        padding:16px 32px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,0.12);
-        background:#fff;border:1px solid rgba(0,0,0,0.08);
-        font-size:18px;font-weight:900;text-decoration:none;color:rgba(31,41,55,0.92);
-      }
-      .sns-links-mobile a:hover{background:linear-gradient(135deg, var(--p), var(--p2));color:#fff;border-color:transparent;}
-      .sns-links-mobile svg{width:24px;height:24px;fill:currentColor;}
-      .sns-links{display:none;}
-
-      /* 追加: モバイルメニュー最下部ログイン */
-      .nav-scroller.open{justify-content:flex-start;}
-      .mobile-menu-bottom{margin-top:auto;width:100%;max-width:300px;padding-top:18px;}
-      .nav-login.mobile{
-        width:100%;font-size:18px;height:auto;padding:18px 32px;border-radius:16px;
-        box-shadow:0 10px 30px rgba(0,0,0,0.12);
-      }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      text-decoration:none;
+      font-weight: 950;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      flex: 0 0 auto;
     }
-    @media (min-width:641px){
-      .sns-links-mobile{display:none;}
-      .mobile-menu-bottom{display:none;}
+    .brand span{ font-size: 15px; }
+    .brand-icon{
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      object-fit: cover;
+      flex: none;
+      box-shadow: 0 10px 25px rgba(255,77,109,0.20);
+      background: #fff;
     }
 
-    .section{padding:16px 0 30px;}
-    .hero{padding:18px 0 10px;}
-    .hero-cta{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:12px;}
-    .btn{
-      display:inline-flex;align-items:center;justify-content:center;padding:11px 14px;border-radius:999px;
-      font-weight:950;text-decoration:none;border:1px solid var(--border);background:#fff;box-shadow:var(--shadow2);
-      transition:transform .12s ease, filter .12s ease;white-space:nowrap;
-    }
-    .btn:hover{transform:translateY(-1px);filter:brightness(1.02);}
-    .btn.primary{border:none;color:#fff;background:linear-gradient(135deg, var(--p), var(--p2));box-shadow:0 16px 35px rgba(255,77,109,0.22);}
+/* ===== ハンバーガーボタン ===== */
+.menu-toggle{
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 44px;
+  height: 44px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform .15s ease;
+  z-index: 200;
+  position: relative;
+}
+.menu-toggle:hover{ transform: scale(1.05); }
+.menu-toggle span{
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--ink);
+  border-radius: 2px;
+  transition: transform .2s ease, opacity .2s ease;
+}
+.menu-toggle.active span:nth-child(1){
+  transform: translateY(7px) rotate(45deg);
+}
+.menu-toggle.active span:nth-child(2){
+  opacity: 0;
+}
+.menu-toggle.active span:nth-child(3){
+  transform: translateY(-7px) rotate(-45deg);
+}
 
-    .gallery{background:transparent;border:none;box-shadow:none;border-radius:0;overflow:visible;width:100vw;margin-left:calc(50% - 50vw);position:relative;}
-    .gallery-track{
-      display:grid;grid-auto-flow:column;grid-auto-columns:clamp(260px, 78vw, 560px);gap:10px;padding:6px 20px;
-      overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scroll-behavior:smooth;
-      -webkit-overflow-scrolling:touch;scrollbar-width:none;
-    }
-    .gallery-track::-webkit-scrollbar{display:none;}
-    .shot{
-      position:relative;display:block;border-radius:18px;overflow:hidden;scroll-snap-align:start;text-decoration:none;outline:none;
-      aspect-ratio:16 / 9;background:
-        radial-gradient(600px 220px at 30% 20%, rgba(76,201,240,0.18), transparent 60%),
-        radial-gradient(600px 220px at 70% 40%, rgba(255,77,109,0.18), transparent 60%),
-        linear-gradient(135deg, rgba(255,183,3,0.12), rgba(255,77,109,0.08));
-      box-shadow:0 10px 24px rgba(0,0,0,0.06);transition:transform .12s ease, filter .12s ease;
-    }
-    .shot:hover{transform:translateY(-2px);filter:brightness(1.02);}
-    .shot:focus-visible{box-shadow:0 0 0 4px rgba(255,77,109,0.25), 0 14px 30px rgba(0,0,0,0.10);}
-    .shot img{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.02);}
-    .shot::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.00), rgba(0,0,0,0.45) 80%);pointer-events:none;}
-    .shot-cap{position:absolute;left:14px;right:14px;bottom:12px;display:flex;align-items:flex-end;justify-content:space-between;gap:12px;color:#fff;pointer-events:none;}
-    .cap-title{margin:0;font-size:15px;font-weight:950;letter-spacing:.01em;}
-    .cap-sub{margin:2px 0 0;font-size:12px;opacity:.92;}
-    .badge{flex:none;padding:7px 10px;border-radius:999px;font-size:12px;font-weight:950;background:rgba(255,255,255,0.22);border:1px solid rgba(255,255,255,0.24);backdrop-filter:blur(10px);}
+.nav-scroller{
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  max-width: 100%;
+  padding-bottom: 2px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.nav-scroller::-webkit-scrollbar{ display:none; }
+.nav-links{
+  display:flex;
+  flex-wrap: nowrap;
+  gap: 8px;
+  list-style:none;
+  margin:0;
+  padding:0;
+  width: max-content;
+}
+.nav-links a{
+  display:inline-flex;
+  align-items:center;
+  padding: 9px 12px;
+  border-radius: 999px;
+  text-decoration:none;
+  font-weight: 900;
+  font-size: 13px;
+  color: rgba(31,41,55,0.92);
+  background: #ffffff;
+  border: 1px solid var(--border);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.06);
+  white-space: nowrap;
+  transition: transform .12s ease, filter .12s ease;
+}
+.nav-links a:hover{ transform: translateY(-1px); filter: brightness(1.02); }
 
-    .gallery-controls{position:absolute;top:50%;left:0;right:0;transform:translateY(-50%);display:flex;justify-content:space-between;padding:0 20px;pointer-events:none;z-index:10;}
-    .gallery-prev,.gallery-next{
-      pointer-events:all;width:50px;height:50px;border-radius:50%;background:rgba(255,255,255,0.75);backdrop-filter:blur(10px);
-      border:none;font-size:32px;color:#1f2937;display:flex;align-items:center;justify-content:center;cursor:pointer;
-      box-shadow:0 8px 20px rgba(0,0,0,0.15);transition:all .2s ease;
-    }
-    .gallery-prev:hover,.gallery-next:hover{background:rgba(255,255,255,0.95);transform:scale(1.1);}
+/* ===== SNSリンク（PC版右端） ===== */
+.sns-links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+.sns-links a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.06);
+  transition: transform .12s ease, filter .12s ease;
+  text-decoration: none;
+}
+.sns-links a:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.02);
+}
+.sns-links svg {
+  width: 20px;
+  height: 20px;
+  fill: var(--ink);
+}
 
-    .gallery-dots{display:flex;gap:10px;justify-content:center;align-items:center;padding:12px 0;background:transparent;border:none;}
-    .dot{appearance:none;border:none;cursor:pointer;width:34px;height:6px;border-radius:999px;background:rgba(31,41,55,0.18);box-shadow:inset 0 0 0 1px rgba(0,0,0,0.06);transition:transform .12s ease, background .12s ease;}
-    .dot:hover{transform:translateY(-1px);}
-    .dot:focus-visible{outline:none;box-shadow:0 0 0 4px rgba(255,77,109,0.18), inset 0 0 0 1px rgba(0,0,0,0.06);}
-    .dot[aria-current="true"]{background:linear-gradient(135deg, var(--p), var(--p2));box-shadow:0 10px 20px rgba(255,77,109,0.18);}
+/* ===== スマホ版フルスクリーンメニュー ===== */
+@media (max-width: 640px){
+  .menu-toggle{
+    display: flex;
+  }
+  .nav-scroller{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    background: 
+      radial-gradient(600px 400px at 20% 30%, rgba(255,77,109,0.15), transparent 60%),
+      radial-gradient(600px 400px at 80% 70%, rgba(76,201,240,0.15), transparent 60%),
+      radial-gradient(500px 300px at 50% 50%, rgba(255,183,3,0.10), transparent 60%),
+      #ffffff;
+    z-index: 150;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-20px);
+    transition: opacity .3s ease, visibility .3s ease, transform .3s ease;
+    overflow: hidden;
+    padding: 100px 30px 60px;
+    touch-action: none;
+  }
+  .nav-scroller.open{
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  .nav-links{
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    max-width: 300px;
+  }
+  .nav-links li{
+    width: 100%;
+  }
+  .nav-links a{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    font-size: 18px;
+    padding: 18px 32px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    background: #fff;
+    border: 1px solid rgba(0,0,0,0.08);
+  }
+  .nav-links a:hover{
+    background: linear-gradient(135deg, var(--p), var(--p2));
+    color: #fff;
+    border-color: transparent;
+  }
+  .nav-scroller::before{
+    content: "MENU";
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    font-weight: 950;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+  }
+  /* SNSリンク（モバイルメニュー下部） */
+  .sns-links-mobile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    max-width: 300px;
+    margin-top: 40px;
+  }
+  .sns-links-mobile a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    padding: 16px 32px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    background: #fff;
+    border: 1px solid rgba(0,0,0,0.08);
+    font-size: 18px;
+    font-weight: 900;
+    text-decoration: none;
+    color: rgba(31,41,55,0.92);
+  }
+  .sns-links-mobile a:hover {
+    background: linear-gradient(135deg, var(--p), var(--p2));
+    color: #fff;
+    border-color: transparent;
+  }
+  .sns-links-mobile svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+  }
+  /* PC版のSNSリンクをモバイルで非表示 */
+  .sns-links {
+    display: none;
+  }
+}
 
-    .panel{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);box-shadow:var(--shadow);overflow:hidden;}
-    .panel-header{
-      padding:16px 16px 10px;background:
-        radial-gradient(900px 240px at 10% 0%, rgba(255,77,109,0.10), transparent 60%),
-        radial-gradient(900px 240px at 90% 20%, rgba(76,201,240,0.12), transparent 60%);
-      border-bottom:1px solid rgba(0,0,0,0.06);
-    }
-    .tts-title{margin:0;font-size:clamp(17px, 2.4vw, 21px);letter-spacing:.01em;display:flex;align-items:center;gap:10px;}
-    .tts-emoji{font-size:20px;line-height:1;flex:none;transform:translateY(1px);}
-    .help{margin:8px 0 0;color:var(--muted);font-size:13px;}
-    .panel-body{padding:14px 16px 16px;}
-    .tts-input{
-      width:100%;min-height:130px;padding:12px;font-size:16px;line-height:1.55;border-radius:14px;border:1px solid rgba(0,0,0,0.16);
-      outline:none;resize:vertical;background:#fff;color:#111827;caret-color:#111827;
-    }
-    .tts-input::placeholder{color:rgba(17,24,39,0.45);}
-    .tts-input:focus{border-color:rgba(255,77,109,0.55);box-shadow:0 0 0 4px rgba(255,77,109,0.18);}
-    .btn-primary{
-      width:100%;margin-top:12px;border:none;color:#fff;background:linear-gradient(135deg, var(--p), var(--p2));
-      padding:14px 16px;border-radius:16px;font-weight:950;font-size:16px;cursor:pointer;box-shadow:0 16px 35px rgba(255,77,109,0.22);
-      transition:transform .12s ease, filter .12s ease;
-    }
-    .btn-primary:hover{transform:translateY(-1px);filter:brightness(1.02);}
-    .btn-primary:disabled{opacity:.65;cursor:not-allowed;transform:none;box-shadow:none;}
-    #audio-player{width:100%;margin-top:12px;border-radius:12px;}
-    .audio-controls{display:flex;flex-direction:column;gap:10px;margin-top:12px;}
-    .btn-download{
-      display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px 16px;
-      border:1px solid var(--border);border-radius:12px;background:#fff;color:var(--ink);font-weight:900;font-size:14px;
-      text-decoration:none;box-shadow:0 4px 12px rgba(0,0,0,0.08);transition:transform .12s ease, background .12s ease;cursor:pointer;
-    }
-    .btn-download:hover{transform:translateY(-1px);background:#f9fafb;}
-    .btn-download:disabled{opacity:.5;cursor:not-allowed;transform:none;}
-    .btn-download svg{width:18px;height:18px;flex:none;}
-    .loading{display:none;margin-top:10px;color:rgba(255,77,109,0.95);font-size:13px;font-weight:900;}
-    #status{margin-top:10px;font-size:14px;color:rgba(31,41,55,0.92);word-break:break-word;}
+/* PC版でSNSリンクを表示 */
+@media (min-width: 641px) {
+  .sns-links-mobile {
+    display: none;
+  }
+}
 
-    .section-title{margin:0 0 14px;text-align:center;font-size:clamp(18px, 2.6vw, 24px);letter-spacing:.01em;}
-    .grid{display:grid;grid-template-columns:repeat(12, 1fr);gap:14px;min-width:0;}
-    .card{grid-column:span 6;background:#fff;border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow2);overflow:hidden;transition:transform .12s ease, filter .12s ease;min-width:0;}
-    .card:hover{transform:translateY(-2px);filter:brightness(1.01);}
-    .card h3{margin:0;padding:12px 14px;color:#fff;font-size:15px;font-weight:950;background:linear-gradient(135deg, var(--p), var(--p3));}
-    .card p{margin:0;padding:12px 14px 14px;color:rgba(31,41,55,0.84);font-size:14px;}
-    .media{position:relative;width:100%;aspect-ratio:16 / 9;background:#0b1020;}
-    .media iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+.section{ padding: 16px 0 30px; }
+.hero{ padding: 18px 0 10px; }
+.hero-cta{
+  display:flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding: 11px 14px;
+  border-radius: 999px;
+  font-weight: 950;
+  text-decoration:none;
+  border: 1px solid var(--border);
+  background: #fff;
+  box-shadow: var(--shadow2);
+  transition: transform .12s ease, filter .12s ease;
+  white-space: nowrap;
+}
+.btn:hover{ transform: translateY(-1px); filter: brightness(1.02); }
+.btn.primary{
+  border: none;
+  color: #fff;
+  background: linear-gradient(135deg, var(--p), var(--p2));
+  box-shadow: 0 16px 35px rgba(255,77,109,0.22);
+}
 
-    .membership{
-      margin-top:18px;background:linear-gradient(135deg, rgba(255,77,109,0.92), rgba(255,183,3,0.88));
-      border:1px solid rgba(255,255,255,0.35);border-radius:var(--r2);color:#fff;box-shadow:var(--shadow);overflow:hidden;
-    }
-    .membership .inner{padding:18px;text-align:center;}
-    .membership h2{margin:0 0 8px;font-size:clamp(18px, 2.2vw, 22px);font-weight:950;}
-    .membership p{margin:0 0 14px;opacity:.95;font-size:14px;}
-    .btn-secondary{
-      border:1px solid rgba(255,255,255,0.35);background:rgba(255,255,255,0.18);color:#fff;padding:12px 16px;border-radius:999px;
-      font-weight:950;cursor:pointer;transition:transform .12s ease, background .12s ease;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;
-    }
-    .btn-secondary:hover{transform:translateY(-1px);background:rgba(255,255,255,0.22);}
+/* ===== Gallery（フル幅＋左揃えスナップ） ===== */
+.gallery{
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  overflow: visible;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  position: relative;
+}
+.gallery-track{
+  display:grid;
+  grid-auto-flow: column;
+  grid-auto-columns: clamp(260px, 78vw, 560px);
+  gap: 10px;
+  padding: 6px 20px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.gallery-track::-webkit-scrollbar{ display: none; }
+.shot{
+  position: relative;
+  display:block;
+  border-radius: 18px;
+  overflow: hidden;
+  scroll-snap-align: start;
+  text-decoration: none;
+  outline: none;
+  aspect-ratio: 16 / 9;
+  background:
+    radial-gradient(600px 220px at 30% 20%, rgba(76,201,240,0.18), transparent 60%),
+    radial-gradient(600px 220px at 70% 40%, rgba(255,77,109,0.18), transparent 60%),
+    linear-gradient(135deg, rgba(255,183,3,0.12), rgba(255,77,109,0.08));
+  box-shadow: 0 10px 24px rgba(0,0,0,0.06);
+  transition: transform .12s ease, filter .12s ease;
+}
+.shot:hover{ transform: translateY(-2px); filter: brightness(1.02); }
+.shot:focus-visible{
+  box-shadow: 0 0 0 4px rgba(255,77,109,0.25), 0 14px 30px rgba(0,0,0,0.10);
+}
+.shot img{
+  width:100%;
+  height:100%;
+  object-fit: cover;
+  display:block;
+  transform: scale(1.02);
+}
+.shot::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.00), rgba(0,0,0,0.45) 80%);
+  pointer-events:none;
+}
+.shot-cap{
+  position:absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 12px;
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap: 12px;
+  color: #fff;
+  pointer-events: none;
+}
+.cap-title{
+  margin:0;
+  font-size: 15px;
+  font-weight: 950;
+  letter-spacing: 0.01em;
+}
+.cap-sub{
+  margin: 2px 0 0;
+  font-size: 12px;
+  opacity: 0.92;
+}
+.badge{
+  flex:none;
+  padding: 7px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 950;
+  background: rgba(255,255,255,0.22);
+  border: 1px solid rgba(255,255,255,0.24);
+  backdrop-filter: blur(10px);
+}
 
-    footer{padding:22px 0 34px;text-align:center;color:rgba(31,41,55,0.70);font-size:13px;}
+/* 左右ボタン */
+.gallery-controls{
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px;
+  pointer-events: none;
+  z-index: 10;
+}
+.gallery-prev, .gallery-next{
+  pointer-events: all;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.75);
+  backdrop-filter: blur(10px);
+  border: none;
+  font-size: 32px;
+  color: #1f2937;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  transition: all .2s ease;
+}
+.gallery-prev:hover, .gallery-next:hover{
+  background: rgba(255,255,255,0.95);
+  transform: scale(1.1);
+}
 
-    @media (max-width:860px){
-      .card{grid-column:span 12;}
-      .gallery-track{padding-inline:14px;}
-      .gallery-controls{padding:0 10px;}
-      .gallery-prev,.gallery-next{width:44px;height:44px;font-size:28px;}
-    }
-    @media (prefers-reduced-motion:reduce){
-      html{scroll-behavior:auto;}
-      *{transition:none !important;}
-      .card:hover,.btn:hover,.btn-primary:hover,.shot:hover{transform:none;}
-      .gallery-track{scroll-behavior:auto;}
-    }
+/* ドットインジケータ */
+.gallery-dots{
+  display:flex;
+  gap: 10px;
+  justify-content:center;
+  align-items:center;
+  padding: 12px 0;
+  background: transparent;
+  border: none;
+}
+.dot{
+  appearance:none;
+  border: none;
+  cursor:pointer;
+  width: 34px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(31,41,55,0.18);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.06);
+  transition: transform .12s ease, background .12s ease;
+}
+.dot:hover{ transform: translateY(-1px); }
+.dot:focus-visible{
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(255,77,109,0.18), inset 0 0 0 1px rgba(0,0,0,0.06);
+}
+.dot[aria-current="true"]{
+  background: linear-gradient(135deg, var(--p), var(--p2));
+  box-shadow: 0 10px 20px rgba(255,77,109,0.18);
+}
 
-    #live-cards{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;width:100%;padding:0;margin:0 auto;}
-    .live-card{
-      background:#fff;border-radius:20px;overflow:hidden;box-shadow:var(--shadow2);transition:transform .18s ease, box-shadow .18s ease;border:1px solid var(--border);
-      display:block;text-decoration:none;color:inherit;width:100%;max-width:400px;flex:1 1 300px;
-    }
-    .live-card:hover{transform:translateY(-6px);box-shadow:0 20px 40px rgba(0,0,0,0.12);}
-    .live-card.past{opacity:.65;}
-    .live-card-header{padding:16px 18px 12px;background:linear-gradient(135deg, var(--p), var(--p2));color:#fff;}
-    .live-card-title{margin:0;font-size:17px;font-weight:950;letter-spacing:.01em;word-break:break-word;}
-    .live-card-platform{display:inline-block;margin-top:6px;padding:4px 12px;border-radius:999px;font-size:12px;font-weight:950;background:rgba(255,255,255,0.25);backdrop-filter:blur(4px);}
-    .live-card-body{padding:14px 18px 18px;}
-    .live-card-time{font-size:15px;color:var(--ink);font-weight:900;margin-bottom:6px;}
-    .live-card-status{font-size:13px;color:var(--muted);}
-    .live-card.past .live-card-status::after{content:"（終了）";color:var(--muted);margin-left:6px;}
-    @media (max-width:600px){
-      #live-cards{flex-direction:column;align-items:center;padding:0 4px;}
-      .live-card{max-width:100%;flex:none;width:calc(100% - 8px);}
-    }
+.panel{
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  box-shadow: var(--shadow);
+  overflow:hidden;
+}
+.panel-header{
+  padding: 16px 16px 10px;
+  background:
+    radial-gradient(900px 240px at 10% 0%, rgba(255,77,109,0.10), transparent 60%),
+    radial-gradient(900px 240px at 90% 20%, rgba(76,201,240,0.12), transparent 60%);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+.tts-title{
+  margin:0;
+  font-size: clamp(17px, 2.4vw, 21px);
+  letter-spacing: 0.01em;
+  display:flex;
+  align-items:center;
+  gap: 10px;
+}
+.tts-emoji{
+  font-size: 20px;
+  line-height: 1;
+  flex: none;
+  transform: translateY(1px);
+}
+.help{
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+.panel-body{ padding: 14px 16px 16px; }
+.tts-input{
+  width:100%;
+  min-height: 130px;
+  padding: 12px;
+  font-size: 16px;
+  line-height: 1.55;
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,0.16);
+  outline:none;
+  resize: vertical;
+  background: #fff;
+  color: #111827;
+  caret-color: #111827;
+}
+.tts-input::placeholder{ color: rgba(17,24,39,0.45); }
+.tts-input:focus{
+  border-color: rgba(255,77,109,0.55);
+  box-shadow: 0 0 0 4px rgba(255,77,109,0.18);
+}
+.btn-primary{
+  width:100%;
+  margin-top: 12px;
+  border: none;
+  color:#fff;
+  background: linear-gradient(135deg, var(--p), var(--p2));
+  padding: 14px 16px;
+  border-radius: 16px;
+  font-weight: 950;
+  font-size: 16px;
+  cursor:pointer;
+  box-shadow: 0 16px 35px rgba(255,77,109,0.22);
+  transition: transform .12s ease, filter .12s ease;
+}
+.btn-primary:hover{ transform: translateY(-1px); filter: brightness(1.02); }
+.btn-primary:disabled{
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform:none;
+  box-shadow:none;
+}
+#audio-player{ width:100%; margin-top: 12px; border-radius: 12px; }
 
-    #sns-section{background:linear-gradient(135deg, rgba(255,77,109,0.05), rgba(76,201,240,0.05));border-top:1px solid var(--border);padding:30px 0 20px;}
-    .sns-list{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;list-style:none;padding:0;margin:16px 0 0;}
-    .sns-list li{flex:1 1 200px;max-width:300px;}
-    .sns-list a{
-      display:flex;align-items:center;justify-content:center;gap:12px;padding:14px 20px;border-radius:16px;background:#fff;
-      border:1px solid var(--border);box-shadow:var(--shadow2);text-decoration:none;font-weight:900;font-size:15px;color:var(--ink);
-      transition:transform .12s ease, filter .12s ease;
-    }
-    .sns-list a:hover{transform:translateY(-2px);filter:brightness(1.02);}
-  </style>
-</head>
+/* ===== ダウンロードボタン ===== */
+.audio-controls{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 12px;
+}
+.btn-download{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--ink);
+  font-weight: 900;
+  font-size: 14px;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform .12s ease, background .12s ease;
+  cursor: pointer;
+}
+.btn-download:hover{
+  transform: translateY(-1px);
+  background: #f9fafb;
+}
+.btn-download:disabled{
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+.btn-download svg{
+  width: 18px;
+  height: 18px;
+  flex: none;
+}
+
+.loading{
+  display:none;
+  margin-top: 10px;
+  color: rgba(255,77,109,0.95);
+  font-size: 13px;
+  font-weight: 900;
+}
+#status{
+  margin-top: 10px;
+  font-size: 14px;
+  color: rgba(31,41,55,0.92);
+  word-break: break-word;
+}
+.section-title{
+  margin: 0 0 14px;
+  text-align:center;
+  font-size: clamp(18px, 2.6vw, 24px);
+  letter-spacing: 0.01em;
+}
+.grid{
+  display:grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 14px;
+  min-width: 0;
+}
+.card{
+  grid-column: span 6;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  box-shadow: var(--shadow2);
+  overflow:hidden;
+  transition: transform .12s ease, filter .12s ease;
+  min-width: 0;
+}
+.card:hover{ transform: translateY(-2px); filter: brightness(1.01); }
+.card h3{
+  margin:0;
+  padding: 12px 14px;
+  color:#fff;
+  font-size: 15px;
+  font-weight: 950;
+  background: linear-gradient(135deg, var(--p), var(--p3));
+}
+.card p{
+  margin:0;
+  padding: 12px 14px 14px;
+  color: rgba(31,41,55,0.84);
+  font-size: 14px;
+}
+.media{
+  position:relative;
+  width:100%;
+  aspect-ratio: 16 / 9;
+  background: #0b1020;
+}
+.media iframe{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  border:0;
+}
+.membership{
+  margin-top: 18px;
+  background: linear-gradient(135deg, rgba(255,77,109,0.92), rgba(255,183,3,0.88));
+  border: 1px solid rgba(255,255,255,0.35);
+  border-radius: var(--r2);
+  color:#fff;
+  box-shadow: var(--shadow);
+  overflow:hidden;
+}
+.membership .inner{
+  padding: 18px;
+  text-align:center;
+}
+.membership h2{
+  margin:0 0 8px;
+  font-size: clamp(18px, 2.2vw, 22px);
+  font-weight: 950;
+}
+.membership p{
+  margin: 0 0 14px;
+  opacity: 0.95;
+  font-size: 14px;
+}
+.btn-secondary{
+  border: 1px solid rgba(255,255,255,0.35);
+  background: rgba(255,255,255,0.18);
+  color:#fff;
+  padding: 12px 16px;
+  border-radius: 999px;
+  font-weight: 950;
+  cursor:pointer;
+  transition: transform .12s ease, background .12s ease;
+}
+.btn-secondary:hover{
+  transform: translateY(-1px);
+  background: rgba(255,255,255,0.22);
+}
+footer{
+  padding: 22px 0 34px;
+  text-align:center;
+  color: rgba(31,41,55,0.70);
+  font-size: 13px;
+}
+@media (max-width: 860px){
+  .card{ grid-column: span 12; }
+  .gallery-track{ padding-inline: 14px; }
+  .gallery-controls{ padding: 0 10px; }
+  .gallery-prev, .gallery-next{ width: 44px; height: 44px; font-size: 28px; }
+}
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto; }
+  *{ transition:none !important; }
+  .card:hover, .btn:hover, .btn-primary:hover, .shot:hover{ transform:none; }
+  .gallery-track{ scroll-behavior: auto; }
+}
+
+/* ===== ライブカードコンテナ（中央揃え修正） ===== */
+#live-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
+  padding: 0;
+  margin: 0 auto;
+}
+
+.live-card {
+  background: #fff;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--shadow2);
+  transition: transform .18s ease, box-shadow .18s ease;
+  border: 1px solid var(--border);
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  width: 100%;
+  max-width: 400px;
+  flex: 1 1 300px;
+}
+.live-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+}
+.live-card.past {
+  opacity: 0.65;
+}
+.live-card-header {
+  padding: 16px 18px 12px;
+  background: linear-gradient(135deg, var(--p), var(--p2));
+  color: #fff;
+}
+.live-card-title {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 950;
+  letter-spacing: 0.01em;
+  word-break: break-word;
+}
+.live-card-platform {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 950;
+  background: rgba(255,255,255,0.25);
+  backdrop-filter: blur(4px);
+}
+.live-card-body {
+  padding: 14px 18px 18px;
+}
+.live-card-time {
+  font-size: 15px;
+  color: var(--ink);
+  font-weight: 900;
+  margin-bottom: 6px;
+}
+.live-card-status {
+  font-size: 13px;
+  color: var(--muted);
+}
+.live-card.past .live-card-status::after {
+  content: "（終了）";
+  color: var(--muted);
+  margin-left: 6px;
+}
+
+/* スマホ対応（中央揃え強化） */
+@media (max-width: 600px) {
+  #live-cards {
+    flex-direction: column;
+    align-items: center;
+    padding: 0 4px;
+  }
+  .live-card {
+    max-width: 100%;
+    flex: none;
+    width: calc(100% - 8px);
+  }
+}
+
+/* ===== 新規追加: SNSリンク紹介欄のスタイル ===== */
+#sns-section {
+  background: linear-gradient(135deg, rgba(255,77,109,0.05), rgba(76,201,240,0.05));
+  border-top: 1px solid var(--border);
+  padding: 30px 0 20px;
+}
+.sns-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  list-style: none;
+  padding: 0;
+  margin: 16px 0 0;
+}
+.sns-list li {
+  flex: 1 1 200px;
+  max-width: 300px;
+}
+.sns-list a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 14px 20px;
+  border-radius: 16px;
+  background: #fff;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow2);
+  text-decoration: none;
+  font-weight: 900;
+  font-size: 15px;
+  color: var(--ink);
+  transition: transform .12s ease, filter .12s ease;
+}
+.sns-list a:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.02);
+}
+.sns-list svg {
+  width: 24px;
+  height: 24px;
+  fill: var(--p);
+}  </style></head>
 <body>
   <header>
     <div class="container">
       <nav aria-label="Site navigation">
         <a class="brand" href="#live-notice" aria-label="ライブ配信へ">
-          <img class="brand-icon" src="images/logo.png" srcset="images/logo@2x.png 2x" alt="晋バルサンch" width="34" height="34" decoding="async" />
+          <img
+            class="brand-icon"
+            src="images/logo.png"
+            srcset="images/logo@2x.png 2x"
+            alt="晋バルサンch"
+            width="34"
+            height="34"
+            decoding="async"
+          />
           <span>晋バルサンch</span>
         </a>
-
+        <!-- ハンバーガーボタン -->
         <button class="menu-toggle" id="menu-toggle" aria-label="メニューを開く" aria-expanded="false">
-          <span></span><span></span><span></span>
+          <span></span>
+          <span></span>
+          <span></span>
         </button>
-
         <div class="nav-scroller" id="nav-scroller" aria-label="Primary">
           <ul class="nav-links">
             <li><a href="#live-notice">ライブ配信</a></li>
@@ -299,25 +909,34 @@
             <li><a href="#content">コンテンツ</a></li>
             <li><a href="#membership">メンバーシップ</a></li>
           </ul>
-
+          <!-- モバイルメニュー下部のSNSリンク -->
           <div class="sns-links-mobile">
-            <a href="https://x.com/RougaiBarusan" target="_blank" rel="noopener noreferrer">X (Twitter)</a>
-            <a href="https://www.youtube.com/@%E3%83%88%E3%83%AA%E3%83%A2%E3%83%AD%E3%82%B9TV/streams" target="_blank" rel="noopener noreferrer">YouTube</a>
-          </div>
-
-          <div class="mobile-menu-bottom">
-            <button class="nav-login mobile" id="nav-login-btn-mobile" type="button">ログイン</button>
+            <a href="https://x.com/RougaiBarusan" target="_blank" rel="noopener noreferrer">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 7.35 6.064-7.35zM17.61 20.644h2.04L6.65 3.356H4.527l13.083 17.288z"/>
+              </svg>
+              X (Twitter)
+            </a>
+            <a href="https://www.youtube.com/@%E3%83%88%E3%83%AA%E3%83%A2%E3%83%AD%E3%82%B9TV/streams" target="_blank" rel="noopener noreferrer">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.016 3.016 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.872.505 9.377.505 9.377.505s7.505 0 9.377-.505a3.016 3.016 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+              </svg>
+              YouTube
+            </a>
           </div>
         </div>
-
+        <!-- PC版右端のSNSリンク -->
         <div class="sns-links">
           <a href="https://x.com/RougaiBarusan" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 7.35 6.064-7.35zM17.61 20.644h2.04L6.65 3.356H4.527l13.083 17.288z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 7.35 6.064-7.35zM17.61 20.644h2.04L6.65 3.356H4.527l13.083 17.288z"/>
+            </svg>
           </a>
           <a href="https://www.youtube.com/@%E3%83%88%E3%83%AA%E3%83%A2%E3%83%AD%E3%82%B9TV/streams" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.016 3.016 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.872.505 9.377.505 9.377.505s7.505 0 9.377-.505a3.016 3.016 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.016 3.016 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.872.505 9.377.505 9.377.505s7.505 0 9.377-.505a3.016 3.016 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+            </svg>
           </a>
-          <button class="nav-login" id="nav-login-btn" type="button">ログイン</button>
         </div>
       </nav>
     </div>
@@ -327,776 +946,870 @@
     <section id="home" class="hero section">
       <div class="gallery" aria-label="Featured gallery">
         <div class="gallery-track" id="gallery-track" tabindex="0" aria-label="Gallery">
+          <!-- 1 -->
           <a class="shot" data-slide="0" href="https://x.com/RougaiBarusan" target="_blank" rel="noopener noreferrer" aria-label="Xへ">
             <img src="images/feature-01.webp" alt="注目コンテンツ1のサムネイル" loading="lazy">
-            <div class="shot-cap"><div><p class="cap-title">晋バルサンのX</p><p class="cap-sub">フォローお願いします</p></div></div>
+            <div class="shot-cap">
+              <div>
+                <p class="cap-title">晋バルサンのX</p>
+                <p class="cap-sub">フォローお願いします</p>
+              </div>
+            </div>
           </a>
+          <!-- 2 -->
           <a class="shot" data-slide="1" href="https://www.youtube.com/@%E3%83%88%E3%83%AA%E3%83%A2%E3%83%AD%E3%82%B9TV/streams" target="_blank" rel="noopener noreferrer" aria-label="YouTubeライブへ">
             <img src="images/feature-02.webp" alt="注目コンテンツ2のサムネイル" loading="lazy">
-            <div class="shot-cap"><div><p class="cap-title">全自動ライブ</p><p class="cap-sub">夜20時~より</p></div><span class="badge">LIVE</span></div>
+            <div class="shot-cap">
+              <div>
+                <p class="cap-title">全自動ライブ</p>
+                <p class="cap-sub">夜20時~より</p>
+              </div>
+              <span class="badge">LIVE</span>
+            </div>
           </a>
+          <!-- 3 -->
           <a class="shot" data-slide="2" href="#membership" aria-label="メンバーシップへ">
             <img src="images/feature-03.webp" alt="注目コンテンツ3のサムネイル" loading="lazy">
-            <div class="shot-cap"><div><p class="cap-title">オリジナル</p><p class="cap-sub">当サイト限定</p></div><span class="badge">HOT</span></div>
+            <div class="shot-cap">
+              <div>
+                <p class="cap-title">オリジナル</p>
+                <p class="cap-sub">当サイト限定</p>
+              </div>
+              <span class="badge">HOT</span>
+            </div>
           </a>
+          <!-- 4 -->
           <a class="shot" data-slide="3" href="https://www.tiktok.com/@sin3_ai" target="_blank" rel="noopener noreferrer" aria-label="TikTokへ移動">
             <img src="images/feature-04.webp" alt="ボイスメーカーのイメージ" loading="lazy">
-            <div class="shot-cap"><div><p class="cap-title">TikTok</p><p class="cap-sub">ショート更新中</p></div></div>
+            <div class="shot-cap">
+              <div>
+                <p class="cap-title"></p>
+                <p class="cap-sub"></p>
+              </div>
+            </div>
           </a>
+          <!-- 5 -->
           <a class="shot" data-slide="4" href="https://discord.gg/dXexG8aSds" target="_blank" rel="noopener noreferrer" aria-label="Discordへ">
             <img src="images/feature-05.webp" alt="注目コンテンツ5のサムネイル" loading="lazy">
-            <div class="shot-cap"><div><p class="cap-title">拠点</p><p class="cap-sub">Discord</p></div><span class="badge">JOIN</span></div>
+            <div class="shot-cap">
+              <div>
+                <p class="cap-title">拠点</p>
+                <p class="cap-sub">反アベ団体</p>
+              </div>
+              <span class="badge">JOIN</span>
+            </div>
           </a>
+          <!-- 6 -->
           <a class="shot" data-slide="5" href="https://kick.com/abeshinzoai" target="_blank" rel="noopener noreferrer" aria-label="KICKへ">
             <img src="images/feature-06.webp" alt="注目コンテンツ6のサムネイル" loading="lazy">
-            <div class="shot-cap"><div><p class="cap-title">KICKでも配信中</p><p class="cap-sub">安倍AI大活躍</p></div><span class="badge">FUN</span></div>
+            <div class="shot-cap">
+              <div>
+                <p class="cap-title">KICKでも配信中</p>
+                <p class="cap-sub">安倍AI大活躍</p>
+              </div>
+              <span class="badge">FUN</span>
+            </div>
           </a>
+          <!-- 7 -->
           <a class="shot" data-slide="6" href="https://rumble.com/playlists/I1lxDg0pS2I" target="_blank" rel="noopener noreferrer" aria-label="rumbleへ">
             <img src="images/feature-07.webp" alt="注目コンテンツ7のサムネイル" loading="lazy">
-            <div class="shot-cap"><div><p class="cap-title">過去の名作揃い</p><p class="cap-sub">全編UP</p></div><span class="badge">SPECIAL</span></div>
-          </a>
-          <a class="shot" data-slide="7" href="https://abeshinzo.wuaze.com" target="_blank" rel="noopener noreferrer" aria-label="反アベ団体サイトへ">
-            <img src="images/feature-08.webp" alt="反アベ団体公式のイメージ" loading="lazy">
-            <div class="shot-cap"><div><p class="cap-title">反アベ団体公式</p><p class="cap-sub">アベを許さない</p></div><span class="badge">VIEW</span></div>
-          </a>
-        </div>
-
-        <div class="gallery-controls">
-          <button class="gallery-prev" aria-label="前のスライド">←</button>
-          <button class="gallery-next" aria-label="次のスライド">→</button>
-        </div>
-        <div class="gallery-dots" id="gallery-dots" aria-label="Gallery navigation"></div>
-      </div>
-    </section>
-
-    <div class="container">
-      <div class="hero-cta">
-        <a class="btn primary" href="#tts">ボイスメーカーへ</a>
-        <a class="btn" href="#content">動画を見る</a>
-      </div>
-
-      <section id="content" class="section">
-        <div class="container">
-          <h2 class="section-title">最新情報</h2>
-          <div class="grid" aria-label="Content grid">
-            <article class="card">
-              <div class="media"><iframe src="https://www.youtube.com/embed/8Q-QYL82Qvc" title="YouTube Video 1" allowfullscreen></iframe></div>
-              <h3>統一戦士シンサム GQuuuAbeX</h3>
-              <p>もしもあの近鉄の駅で立ち止まらず歩いていれば──</p>
-            </article>
-            <article class="card">
-              <div class="media"><iframe src="https://www.youtube.com/embed/1d5ax3lLENo" title="YouTube Video 2" allowfullscreen></iframe></div>
-              <h3>Chu！可愛くてごめん</h3>
-              <p>生まれてきちゃってごめん♡</p>
-            </article>
-            <article class="card">
-              <div class="media"><iframe src="https://www.youtube.com/embed/KgM-LAAb5Hk" title="YouTube Video 3" allowfullscreen></iframe></div>
-              <h3>テトゲリス</h3>
-              <p>どうしてこんな目に</p>
-            </article>
-            <article class="card">
-              <div class="media"><iframe src="https://www.youtube.com/embed/aAxJ674aWFY" title="YouTube Video 4" allowfullscreen></iframe></div>
-              <h3>YOASOBI 『祝福』</h3>
-              <p>僕たちは"操り人形"じゃない</p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section id="live-notice" class="section">
-        <div class="container">
-          <div class="panel" style="box-shadow: var(--shadow); border: 1px solid rgba(255,77,109,0.15);">
-            <div class="panel-header" style="background: linear-gradient(135deg, rgba(255,77,109,0.12), rgba(255,183,3,0.10)); border-bottom: 1px solid rgba(255,77,109,0.15);">
-              <h2 class="tts-title"><span class="tts-emoji" aria-hidden="true"></span><span>ライブ配信のお知らせ</span></h2>
-              <p class="help" style="color: var(--p); font-weight: 900;">だいたい1~2日くらいの間隔で20時頃から配信中</p>
-            </div>
-            <div class="panel-body">
-              <p id="live-status" style="font-size: 18px; font-weight: 950; color: var(--p); margin-bottom: 20px; text-align: center;">読み込み中...</p>
-              <div id="live-cards"></div>
-              <p id="no-schedule" style="text-align: center; color: var(--muted); font-size: 15px; display: none;">
-                現在予定されているライブはありません。<br><br>
-                毎晩20時頃から全自動ライブをお届けしています！<br>
-                <a class="btn primary" href="https://www.youtube.com/@%E3%83%88%E3%83%AA%E3%83%A2%E3%83%AD%E3%82%B9TV/streams" target="_blank" rel="noopener noreferrer">全チャンネルをチェック</a>
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="tts" class="section">
-        <div class="container">
-          <div class="panel">
-            <div class="panel-header">
-              <h2 class="tts-title">
-                <span class="tts-emoji" aria-hidden="true"></span>
-                <span>安倍AIボイスメーカー</span>
-                <img class="tts-icon" src="images/abe_voice@2x.png" alt="マイクアイコン" aria-hidden="true" width="20" height="20">
-              </h2>
-              <p class="help">安倍ちゃんにあんなことやこんなことを喋らせよう</p>
-            </div>
-            <div class="panel-body">
-              <textarea id="text-input" class="tts-input" placeholder="ここにテキストを入力…"></textarea>
-              <button id="generate-btn" class="btn-primary" type="button">合成生成</button>
-              <div id="loading" class="loading">合成中...（数秒お待ちください）</div>
-
-              <div class="audio-controls">
-                <audio id="audio-player" controls></audio>
-                <button id="download-btn" class="btn-download" type="button" disabled>
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                    <polyline points="7 10 12 15 17 10"/>
-                    <line x1="12" y1="15" x2="12" y2="3"/>
-                  </svg>
-                  音声をダウンロード
-                </button>
+            <div class="shot-cap">
+              <div>
+                <p class="cap-title">過去の名作揃い</p>
+                <p class="cap-sub">全編UP</p>
               </div>
-
-              <div id="status" aria-live="polite"></div>
+              <span class="badge">SPECIAL</span>
             </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="membership" class="section">
-        <div class="container">
-          <div class="membership">
-            <div class="inner">
-              <h2>メンバーシップ（月額298円）</h2>
-              <p>高速版ボイスメーカー・限定動画・画像・グッズ先行販売など</p>
-
-              <button id="subscribe-btn" class="btn-secondary" type="button">今すぐ参加する</button>
-              <button id="login-btn" class="btn-secondary" type="button" style="margin-top:10px;">ログイン</button>
-
-              <a id="premium-page-btn" class="btn-secondary" href="premium.html" style="display:none; margin-top:10px;">premium.htmlへ</a>
-
-              <p id="login-email" style="margin-top:12px; font-size:14px; color:rgba(255,255,255,0.92); display:none;"></p>
-              <p id="premium-status" style="margin-top:12px; font-size:14px; color:rgba(255,255,255,0.92);"></p>
+          </a>
+          <!-- 8 -->
+          <a class="shot" data-slide="7" href="https://abeshinzo.wuaze.com" target="_blank" rel="noopener noreferrer" aria-label="反アベ団体サイトへ">
+            <img src="images/feature-08.webp" alt="メンバーシップのイメージ" loading="lazy">
+            <div class="shot-cap">
+              <div>
+                <p class="cap-title">反アベ団体公式</p>
+                <p class="cap-sub">アベを許さない</p>
+              </div>
+              <span class="badge">VIEW</span>
             </div>
-          </div>
+          </a>
         </div>
-      </section>
 
-      <div id="auth-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:1000; align-items:center; justify-content:center;">
-        <div style="background:#fff; padding:30px; border-radius:16px; max-width:400px; width:90%;">
-          <h3 style="margin-top:0;">ログイン / 新規登録</h3>
-          <p style="color:var(--muted); font-size:14px;">メールアドレスにマジックリンクを送信します</p>
-          <input id="auth-email" type="email" placeholder="メールアドレス" style="width:100%; padding:12px; margin:12px 0; border-radius:12px; border:1px solid var(--border);">
-          <button id="auth-magic" class="btn-primary" style="width:100%;">マジックリンクを送信</button>
-          <button id="auth-close" style="margin-top:12px; width:100%; padding:10px; background:transparent; border:1px solid var(--border); border-radius:12px;">閉じる</button>
+    <div class="gallery-controls">
+      <button class="gallery-prev" aria-label="前のスライド">←</button>
+      <button class="gallery-next" aria-label="次のスライド">→</button>
+    </div>
+    <div class="gallery-dots" id="gallery-dots" aria-label="Gallery navigation"></div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="hero-cta">
+    <a class="btn primary" href="#tts">ボイスメーカーへ</a>
+    <a class="btn" href="#content">動画を見る</a>
+  </div>
+
+  <section id="content" class="section">
+    <div class="container">
+      <h2 class="section-title">最新情報</h2>
+      <div class="grid" aria-label="Content grid">
+        <article class="card">
+          <div class="media">
+            <iframe src="https://www.youtube.com/embed/8Q-QYL82Qvc" title="YouTube Video 1" allowfullscreen></iframe>
+          </div>
+          <h3>統一戦士シンサム GQuuuAbeX</h3>
+          <p>もしもあの近鉄の駅で立ち止まらず歩いていれば──</p>
+        </article>
+        <article class="card">
+          <div class="media">
+            <iframe src="https://www.youtube.com/embed/1d5ax3lLENo" title="YouTube Video 2" allowfullscreen></iframe>
+          </div>
+          <h3>Chu！可愛くてごめん</h3>
+          <p>生まれてきちゃってごめん♡</p>
+        </article>
+        <article class="card">
+          <div class="media">
+            <iframe src="https://www.youtube.com/embed/KgM-LAAb5Hk" title="YouTube Video 3" allowfullscreen></iframe>
+          </div>
+          <h3>テトゲリス</h3>
+          <p>どうしてこんな目に</p>
+        </article>
+        <article class="card">
+          <div class="media">
+            <iframe src="https://www.youtube.com/embed/aAxJ674aWFY" title="YouTube Video 4" allowfullscreen></iframe>
+          </div>
+          <h3>YOASOBI 『祝福』</h3>
+          <p>僕たちは"操り人形"じゃない</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="live-notice" class="section">
+    <div class="container">
+      <div class="panel" style="box-shadow: var(--shadow); border: 1px solid rgba(255,77,109,0.15);">
+        <div class="panel-header" style="background: linear-gradient(135deg, rgba(255,77,109,0.12), rgba(255,183,3,0.10)); border-bottom: 1px solid rgba(255,77,109,0.15);">
+          <h2 class="tts-title">
+            <span class="tts-emoji" aria-hidden="true"></span>
+            <span>ライブ配信のお知らせ</span>
+          </h2>
+          <p class="help" style="color: var(--p); font-weight: 900;">だいたい1~2日くらいの間隔で20時頃から配信中</p>
+        </div>
+        <div class="panel-body">
+          <p id="live-status" style="font-size: 18px; font-weight: 950; color: var(--p); margin-bottom: 20px; text-align: center;">読み込み中...</p>
+          <div id="live-cards"></div>
+          <p id="no-schedule" style="text-align: center; color: var(--muted); font-size: 15px; display: none;">
+            現在予定されているライブはありません。
+
+            毎晩20時頃から全自動ライブをお届けしています！
+            <a class="btn primary" href="https://www.youtube.com/@%E3%83%88%E3%83%AA%E3%83%A2%E3%83%AD%E3%82%B9TV/streams" target="_blank" rel="noopener noreferrer">全チャンネルをチェック</a>
+          </p>
         </div>
       </div>
     </div>
+  </section>
 
-    <section id="sns-section" class="section">
-      <div class="container">
-        <h2 class="section-title">SNSリンク</h2>
-        <p style="text-align:center; color:var(--muted); font-size:15px; margin-bottom:20px;">フォローして最新情報をチェック！</p>
-        <ul class="sns-list">
-          <li><a href="https://x.com/RougaiBarusan" target="_blank" rel="noopener noreferrer">X (Twitter)</a></li>
-          <li><a href="https://www.youtube.com/@%E3%83%88%E3%83%AA%E3%83%A2%E3%83%AD%E3%82%B9TV/streams" target="_blank" rel="noopener noreferrer">YouTube（メイン）</a></li>
-          <li><a href="https://www.tiktok.com/@sin3_ai" target="_blank" rel="noopener noreferrer">TikTok（メイン）</a></li>
-          <li><a href="https://discord.gg/dXexG8aSds" target="_blank" rel="noopener noreferrer">Discord</a></li>
-          <li><a href="https://kick.com/abeshinzoai" target="_blank" rel="noopener noreferrer">KICK（配信サイト）</a></li>
-          <li><a href="https://rumble.com/playlists/I1lxDg0pS2I" target="_blank" rel="noopener noreferrer">Rumble</a></li>
-          <li><a href="https://abeshinzo.wuaze.com" target="_blank" rel="noopener noreferrer">反アベ団体公式</a></li>
-          <li><a href="https://www.nicovideo.jp/user/52518540" target="_blank" rel="noopener noreferrer">ニコニコ</a></li>
-          <li><a href="https://www.twitch.tv/abeshinzo" target="_blank" rel="noopener noreferrer">Twitch</a></li>
-          <li><a href="https://huggingface.co/AbeShinzo0708" target="_blank" rel="noopener noreferrer">Hugging Face</a></li>
-          <li><a href="https://www.instagram.com/aisin3" target="_blank" rel="noopener noreferrer">Instagram</a></li>
-          <li><a href="https://www.youtube.com/@ai-abe-ch" target="_blank" rel="noopener noreferrer">YouTube（別ch）</a></li>
-          <li><a href="https://www.tiktok.com/@aisin3" target="_blank" rel="noopener noreferrer">TikTok（別）</a></li>
-          <li><a href="https://doneru.jp/abeshinzo" target="_blank" rel="noopener noreferrer">Doneru</a></li>
-        </ul>
+  <section id="tts" class="section">
+    <div class="container">
+      <div class="panel">
+        <div class="panel-header">
+          <h2 class="tts-title">
+            <span class="tts-emoji" aria-hidden="true"></span>
+            <span>安倍AIボイスメーカー</span>
+            <img class="tts-icon" src="images/abe_voice@2x.png" alt="マイクアイコン" aria-hidden="true" width="20" height="20">
+          </h2>
+          <p class="help">安倍ちゃんにあんなことやこんなことを喋らせよう</p>
+        </div>
+        <div class="panel-body">
+          <textarea id="text-input" class="tts-input" placeholder="ここにテキストを入力…"></textarea>
+          <button id="generate-btn" class="btn-primary" type="button">合成生成</button>
+          <div id="loading" class="loading">合成中...（数秒お待ちください）</div>
+          
+          <!-- オーディオプレイヤー＋ダウンロードボタン -->
+          <div class="audio-controls">
+            <audio id="audio-player" controls></audio>
+            <button id="download-btn" class="btn-download" type="button" disabled>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              音声をダウンロード
+            </button>
+          </div>
+          
+          <div id="status" aria-live="polite"></div>
+        </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <footer>
-      <div class="container">
-        <p>© 2025 Abe Artificial Intelligence</p>
+  <section id="membership" class="section">
+    <div class="container">
+      <div class="membership">
+        <div class="inner">
+          <h2> メンバーシップ（月額298円）</h2>
+          <p>高速版ボイスメーカー・限定動画・画像・グッズ先行販売など</p>
+          <button id="subscribe-btn" class="btn-secondary">今すぐ参加する</button>
+          <button id="login-btn" class="btn-secondary" style="margin-top:10px;">ログイン</button>
+          <p id="premium-status" style="margin-top:12px; font-size:14px; color:var(--muted);"></p>
+        </div>
       </div>
-    </footer>
+    </div>
+  </section>
 
-    <script type="module">
-      import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+   <!-- ログイン用マジックリンクモーダル -->
+  <div id="auth-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:1000; align-items:center; justify-content:center;">
+    <div style="background:#fff; padding:30px; border-radius:16px; max-width:400px; width:90%;">
+      <h3 style="margin-top:0;">ログイン / 新規登録</h3>
+      <p style="color:var(--muted); font-size:14px;">メールアドレスにマジックリンクを送信します</p>
+      <input id="auth-email" type="email" placeholder="メールアドレス" style="width:100%; padding:12px; margin:12px 0; border-radius:12px; border:1px solid var(--border);">
+      <button id="auth-magic" class="btn-primary" style="width:100%;">マジックリンクを送信</button>
+      <button id="auth-close" style="margin-top:12px; width:100%; padding:10px; background:transparent; border:1px solid var(--border); border-radius:12px;">閉じる</button>
+    </div>
+  </div>
+</main>  <!-- ===== 新規追加: SNSリンク紹介欄 ===== -->
+  <section id="sns-section" class="section">
+  <div class="container">
+    <h2 class="section-title">SNSリンク</h2>
+    <p style="text-align: center; color: var(--muted); font-size: 15px; margin-bottom: 20px;">フォローして最新情報をチェック！</p>
+    <ul class="sns-list">
+      <!-- 既存 -->
+      <li>
+        <a href="https://x.com/RougaiBarusan" target="_blank" rel="noopener noreferrer">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZFgiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmY0ZDZkIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2ZmYjcwMyIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHBhdGggZmlsbD0idXJsKCNncmFkWCkiIGQ9Ik0xOC45MDEgMS4xNTNoMy42OGwtOC4wNCA5LjE5TDI0IDIyLjg0NmgtNy40MDZsLTUuOC03LjU4NC02LjYzOCA3LjU4NEguNDc0bDguNi05LjgzTDAgMS4xNTRoNy41OTRsNS4yNDMgNy4zNSA2LjA2NC03LjM1ek0xNy42MSAyMC42NDRoMi4wNEw2LjY1IDMuMzU2SDQuNTI3bDEzLjA4MyAxNy4yODh6Ii8+Cjwvc3ZnPg==" alt="X (Twitter)" width="24" height="24">
+          X (Twitter)
+        </a>
+      </li>
+      <li>
+        <a href="https://www.youtube.com/@%E3%83%88%E3%83%AA%E3%83%A2%E3%83%AD%E3%82%B9TV/streams" target="_blank" rel="noopener noreferrer">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZFlUIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmNGQ2ZCIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM0Y2M5ZjAiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxwYXRoIGZpbGw9InVybCgjZ3JhZFlUKSIgZD0iTTIzLjQ5OCA2LjE4NmEzLjAxNiAzLjAxNiAwIDAgMC0yLjEyMi0yLjEzNkMxOS41MDUgMy41NDUgMTIgMy41NDUgMTIgMy41NDVzLTcuNTA1IDAtOS4zNzcuNTA1QTMuMDE2IDMuMDE2IDAgMCAwIC41MDIgNi4xODZDMCA4LjA3IDAgMTIgMCAxMnMwIDMuOTMuNTAyIDUuODE0YTMuMDE2IDMuMDE2IDAgMCAwIDIuMTIyIDIuMTM2YzEuODcyLjUwNSA5LjM3Ny41MDUgOS4zNzcuNTA1czcuNTA1IDAgOS4zNzctLjUwNWEzLjAxNiAzLjAxNiAwIDAgMCAyLjEyMi0yLjEzNkMyNCAxNS45MyAyNCAxMiAyNCAxMnMwLTMuOTMtLjUwMi01LjgxNHpNOS41NDUgMTUuNTY4VjguNDMyTDE1LjgxOCAxMmwtNi4yNzMgMy41Njh6Ii8+Cjwvc3ZnPg==" alt="YouTube" width="24" height="24">
+          YouTube（メイン）
+        </a>
+      </li>
+      <li>
+        <a href="https://www.tiktok.com/@sin3_ai" target="_blank" rel="noopener noreferrer">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZFRUIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmNGQ2ZCIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iIzAwMDAwMCIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM0Y2M5ZjAiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxwYXRoIGZpbGw9InVybCgjZ3JhZFRUKSIgZD0iTTEyIDJhMTAgMTAgMCAxIDAgMCAyMCAxMCAxMCAwIDAgMCAwLTIwem00LjUgNy41Yy0uOCAwLTEuNS0uMy0yLS44djUuNWEzLjUgMy41IDAgMSAxLTMuNS0zLjVjLjIgMCAuNCAwIC42LjF2LTEuOGMtLjIgMC0uNC0uMS0uNi0uMWE1LjUgNS41IDAgMSAwIDUuNSA1LjV2LTYuOGMuOC42IDEuOCAxIDMgMVY3LjdjLTEuMiAwLTIuMi0uNC0zLTEuMnoiLz4KPC9zdmc+" alt="TikTok" width="24" height="24">
+          TikTok（メイン）
+        </a>
+      </li>
+      <li>
+        <a href="https://discord.gg/dXexG8aSds" target="_blank" rel="noopener noreferrer">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZERDIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmNGQ2ZCIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM1ODY1RjIiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxwYXRoIGZpbGw9InVybCgjZ3JhZERDKSIgZD0iTTIwLjMgMy43YTE5LjUgMTkuNSAwIDAgMC00LjktMS41LjA3LjA3IDAgMCAwLS4wNy4wNGMtLjIuNC0uNS45LS43IDEuM2ExOCAxOCAwIDAgMC01LjQgMGMtLjItLjQtLjUtLjktLjctMS4zYS4wNy4wNyAwIDAgMC0uMDctLjA0IDE5LjUgMTkuNSAwIDAgMC00LjkgMS41LjA3LjA3IDAgMCAwLS4wMy4wM0MuOCA5LjcuMyAxNS41LjUgMjEuM2EuMS4xIDAgMCAwIC4wNC4wNyAxOS43IDE5LjcgMCAwIDAgNiAzIC4wNy4wNyAwIDAgMCAuMDgtLjAzYy41LS43IDEtMS40IDEuNC0yLjFhLjA3LjA3IDAgMCAwLS4wNC0uMDggMTMgMTMgMCAwIDEtMS45LTEgLjA3LjA3IDAgMCAxLS4wNC0uMWMuMS0uMS4zLS4yLjQtLjNhLjA3LjA3IDAgMCAxIC4wNC0uMDIgMTQuMyAxNC4zIDAgMCAwIDUuMiAxLjZjMS42IDAgMy4yLS40IDQuNy0xLjIgMS4yLS42IDIuMi0xLjQgMy0yLjQuOC0xIDEuNC0yLjEgMS44LTMuMy4yLS42LjMtMS4yLjQtMS44YS4wNy4wNyAwIDAgMC0uMDQtLjA4Yy0xLjMuOS0yLjcgMS42LTQuMiAyYS4wNy4wNyAwIDAgMS0uMDgtLjAzYy0uNC0uNi0uOS0xLjItMS40LTIuMWEuMDcuMDcgMCAwIDAtLjA4LS4wMyAxOS41IDE5LjUgMCAwIDEtMi44LTEuNC4wNy4wNyAwIDAgMS0uMDQtLjA2VjguM2MwLTEgLjMtMiAuOS0yLjhhLjA3LjA3IDAgMCAxIC4wOC0uMDNjLjkuMyAxLjguNyAyLjcgMS4yYS4wNy4wNyAwIDAgMCAuMDggMGMxLjUtLjkgMy4yLTEuNiA1LTJhLjA3LjA3IDAgMCAxIC4wOC4wM2MuNi44IDEuMSAxLjcgMS41IDIuNi4zLjcuNSAxLjQuNiAyLjFhLjA3LjA3IDAgMCAwIC4wNC4wNmMxLjUtLjQgMy0xLjEgNC40LTJhLjA3LjA3IDAgMCAxIC4wOC4wM2MuNC45LjcgMS44LjkgMi44djYuOGEuMDcuMDcgMCAwIDEtLjA0LjA2Yy0xLjUuOS0zIDEuNi00LjYgMmEuMDcuMDcgMCAwIDAtLjA0LjFjLjEuMS4yLjIuMy4zYS4wNy4wNyAwIDAgMS0uMDQuMSAxMyAxMyAwIDAgMS0xLjkgMSAuMDcuMDcgMCAwIDAtLjA0LjA4Yy40LjcuOSAxLjQgMS40IDIuMWEuMDcuMDcgMCAwIDAgLjA4LjAzIDE5LjcgMTkuNyAwIDAgMCA2LTMgLjEuMSAwIDAgMCAuMDQtLjA3Yy4yLTUuOC0uMy0xMS42LTMtMTYuNmEuMDcuMDcgMCAwIDAtLjAzLS4wM3oiLz4KPC9zdmc+" alt="Discord" width="24" height="24">
+          Discord
+        </a>
+      </li>
+      <li>
+        <a href="https://kick.com/abeshinzoai" target="_blank" rel="noopener noreferrer">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZEtpY2siIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmY0ZDZkIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzUzZmMxOCIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHBvbHlnb24gZmlsbD0idXJsKCNncmFkS2ljaykiIHBvaW50cz0iNSAzIDE5IDEyIDUgMjEgNSAzIi8+Cjwvc3ZnPg==" alt="KICK" width="24" height="24">
+          KICK（配信サイト）
+        </a>
+      </li>
+      <li>
+        <a href="https://rumble.com/playlists/I1lxDg0pS2I" target="_blank" rel="noopener noreferrer">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZFJ1bWJsZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNmZmI3MDMiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjZmY0ZDZkIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8Y2lyY2xlIGZpbGw9InVybCgjZ3JhZFJ1bWJsZSkiIGN4PSIxMiIgY3k9IjEyIiByPSIxMCIvPgogIDxjaXJjbGUgZmlsbD0iI2ZmZiIgY3g9IjEyIiBjeT0iMTIiIHI9IjQiLz4KICA8cGF0aCBmaWxsPSIjZmZmIiBkPSJNMTIgOHY4Ii8+Cjwvc3ZnPg==" alt="Rumble" width="24" height="24">
+          Rumble（長尺動画全編アップロード済み）
+        </a>
+      </li>
+      <li>
+        <a href="https://abeshinzo.wuaze.com" target="_blank" rel="noopener noreferrer">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZE9mZmljaWFsIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzRjYzlmMCIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmZjRkNmQiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxjaXJjbGUgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ1cmwoI2dyYWRPZmZpY2lhbCkiIHN0cm9rZS13aWR0aD0iMiIgY3g9IjEyIiBjeT0iMTIiIHI9IjEwIi8+CiAgPGNpcmNsZSBmaWxsPSJ1cmwoI2dyYWRPZmZpY2lhbCkiIGN4PSI4IiBjeT0iOCIgcj0iMiIvPgogIDxjaXJjbGUgZmlsbD0idXJsKCNncmFkT2ZmaWNpYWwpIiBjeD0iMTYiIGN5PSI4IiByPSIyIi8+CiAgPGNpcmNsZSBmaWxsPSJ1cmwoI2dyYWRPZmZpY2lhbCkiIGN4PSIxMiIgY3k9IjEyIiByPSIyIi8+CiAgPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSJ1cmwoI2dyYWRPZmZpY2lhbCkiIHN0cm9rZS13aWR0aD0iMiIgZD0iTTEyIDJhMTAgMTAgMCAwIDEgMCAyMCIvPgo8L3N2Zz4=" alt="反アベ団体公式" width="24" height="24">
+          反アベ団体公式
+        </a>
+      </li>
+      <li>
+        <a href="https://www.nicovideo.jp/user/52518540" target="_blank" rel="noopener noreferrer">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZE5pY28iIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmY0ZDZkIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iNTAlIiBzdG9wLWNvbG9yPSIjZmZiNzAzIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzRjYzlmMCIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3QgZmlsbD0idXJsKCNncmFkTmljbykiIHg9IjIiIHk9IjQiIHdpZHRoPSIyMCIgaGVpZ2h0PSIxNiIgcng9IjQiLz4KICA8dGV4dCB4PSIxMiIgeT0iMTYiIGZvbnQtc2l6ZT0iMTIiIGZvbnQtd2VpZ2h0PSI5MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiNmZmYiPk5pY288L3RleHQ+Cjwvc3ZnPg==" alt="ニコニコ動画" width="24" height="24">
+          ニコニコ動画
+        </a>
+      </li>
+      <li>
+        <a href="https://www.twitch.tv/abeshinzo_" target="_blank" rel="noopener noreferrer">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZFR3aXRjaCIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM5MTRlZmQiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjZmY0ZDZkIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCBmaWxsPSJ1cmwoI2dyYWRUd2l0Y2gpIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHg9IjIiIHk9IjIiIHJ4PSI1Ii8+CiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTEzIDZoLTN2OGgzbDMgMyAzLTN2LTNoM3YtMnoiLz4KPC9zdmc+" alt="Twitch" width="24" height="24">
+          Twitch
+        </a>
+      </li>
+      <li>
+        <a href="https://huggingface.co/AbeShinzo0708" target="_blank" rel="noopener noreferrer">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZEh1Z2dpbmciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmY0ZDZkIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2ZmYjcwMyIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPGNpcmNsZSBmaWxsPSJ1cmwoI2dyYWRIdWdnaW5nKSIgY3g9IjEyIiBjeT0iMTIiIHI9IjEwIi8+CiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTEyIDhhNCA0IDAgMSAxIDAgOCAzIDMgMCAwIDEgMCA4eiIvPgo8L3N2Zz4=" alt="Hugging Face" width="24" height="24">
+          Hugging Face（AIツール置き場）
+        </a>
+      </li>
+      <li>
+        <a href="https://www.instagram.com/ai_sin3" target="_blank" rel="noopener noreferrer">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNmZjRkNmQiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSI0MCUiIHN0b3AtY29sb3I9IiNmZmI3MDMiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNGNjOWYwIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCBmaWxsPSJ1cmwoI2cpIiB4PSIyIiB5PSIyIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHJ4PSI1IiByeT0iNSIvPgogIDxjaXJjbGUgZmlsbD0iI2ZmZiIgY3g9IjEyIiBjeT0iMTIiIHI9IjQuNSIvPgogIDxjaXJjbGUgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjEiIGN4PSIxNy41IiBjeT0iNy41IiByPSIxLjUiLz4KPC9zdmc+" alt="Instagram" width="24" height="24">
+          Instagram
+        </a>
+      </li>
+      <li>
+        <a href="https://www.youtube.com/@ai-abe-ch" target="_blank" rel="noopener noreferrer">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZFlUMiIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM0Y2M5ZjAiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjZmY0ZDZkIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cGF0aCBmaWxsPSJ1cmwoI2dyYWRZVDIpIiBkPSJNMjMuNDk4IDYuMTg2YTMuMDE2IDMuMDE2IDAgMCAwLTIuMTIyLTIuMTM2QzE5LjUwNSAzLjU0NSAxMiAzLjU0NSAxMiAzLjU0NXMtNy41MDUgMC05LjM3Ny41MDVBMy4wMTYgMy4wMTYgMCAwIDAgLjUwMiA2LjE4NkMwIDguMDcgMCAxMiAwIDEyczAgMy45My41MDIgNS44MTRhMy4wMTYgMy4wMTYgMCAwIDAgMi4xMjIgMi4xMzZjMS44NzIuNTA1IDkuMzc3LjUwNSA5LjM3Ny41MDVzNy41MDUgMCA5LjM3Ny0uNTA1YTMuMDE2IDMuMDE2IDAgMCAwIDIuMTIyLTIuMTM2QzI0IDE1LjkzIDI0IDEyIDI0IDEyczAtMy45My0uNTAyLTUuODE0ek05LjU0NSAxNS41NjhWOC40MzJMMTUuODE4IDEybC02LjI3MyAzLjU2OHoiLz4KPC9zdmc+" alt="YouTube（サブ）" width="24" height="24">
+          YouTube（サブチャンネル）
+        </a>
+      </li>
+      <li>
+        <a href="https://www.tiktok.com/@ai_sin3" target="_blank" rel="noopener noreferrer">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZFRUMiIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM0Y2M5ZjAiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSI1MCUiIHN0b3AtY29sb3I9IiMwMDAwMDAiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjZmY0ZDZkIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cGF0aCBmaWxsPSJ1cmwoI2dyYWRUVDIpIiBkPSJNMTIgMmExMCAxMCAwIDEgMCAwIDIwIDEwIDEwIDAgMCAxIDAgMC0yMG00LjUgNy41Yy0uOCAwLTEuNS0uMy0yLS44djUuNWEzLjUgMy41IDAgMSAxLTMuNS0zLjVjLjIgMCAuNCAwIC42LjF2LTEuOGMtLjIgMC0uNC0uMS0uNi0uMWE1LjUgNS41IDAgMSAwIDUuNSA1LjV2LTYuOGMuOC42IDEuOCAxIDMgMVY3LjdjLTEuMiAwLTIuMi0uNC0zLTEuMnoiLz4KPC9zdmc+" alt="TikTok（サブ）" width="24" height="24">
+          TikTok（サブ）
+        </a>
+      </li>
+      <li>
+        <a href="https://doneru.jp/abeshinzo" target="_blank" rel="noopener noreferrer">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZERvbmVydSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNmZjRkNmQiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNGNjOWYwIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8Y2lyY2xlIGZpbGw9InVybCgjZ3JhZERvbmVydSkiIGN4PSIxMiIgY3k9IjEyIiByPSIxMCIvPgogIDx0ZXh0IHg9IjEyIiB5PSIxNiIgZm9udC1zaXplPSIxMCIgZm9udC13ZWlnaHQ9IjkwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iI2ZmZiI+RG88L3RleHQ+Cjwvc3ZnPg==" alt="Doneru" width="24" height="24">
+          Doneru（投げ銭）
+        </a>
+      </li>
+    </ul>
+  </div>
+  </section>
 
-      /* ====== ここは paste.txt の値をそのまま採用 ====== */
-      const supabaseUrl = "https://fdtaesossfqfhtpoesjn.supabase.co";
-      const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZkdGFlc29zc2ZxZmh0cG9lc2puIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY5Mzc1MzEsImV4cCI6MjA4MjUxMzUzMX0.AJQSaYIhaTBf338f4gfMGGQ-4hRARxcPSWRY3ReCFFk";
-      const stripePriceId = "price_1Sj3ppB20VFjVTK97a2DhgTU";
-      const checkoutFunctionUrl = "https://fdtaesossfqfhtpoesjn.supabase.co/functions/v1/create-checkout-session";
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Abe Artificial Intelligence</p>
+    </div>
+  </footer>
 
-      /* 追加: Billing Portal 起動用 */
-      const billingPortalFunctionUrl = "https://fdtaesossfqfhtpoesjn.supabase.co/functions/v1/create-billing-portal-session";
+  <script type="module">
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
-      const supabase = createClient(supabaseUrl, supabaseAnonKey);
+    // === ここをあなたの値に変更してください ===
+    const supabaseUrl = "https://fdtaesossfqfhtpoesjn.supabase.co";  // Supabase Dashboard → Settings → API
+    const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZkdGFlc29zc2ZxZmh0cG9lc2puIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY5Mzc1MzEsImV4cCI6MjA4MjUxMzUzMX0.AJQSaYIhaTBf338f4gfMGGQ-4hRARxcPSWRY3ReCFFk";           // 同上 → Project API keys → anon
+    const stripePriceId = "price_1Sj4iWBoy0CvdEnb2pgIdfry";   // Stripe Dashboard → Products → 298円のPrice ID
+    //const stripePriceId = "price_1Sj3ppB20VFjVTK97a2DhgTU";
+    const checkoutFunctionUrl = "https://fdtaesossfqfhtpoesjn.supabase.co/functions/v1/create-checkout-session";
+    // ============================================
 
-      /* ====== Premium判定（paste.txtベース） ====== */
-      async function checkPremiumStatus(){
-        const { data: userData } = await supabase.auth.getUser();
-        const user = userData?.user;
+    const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-        const statusEl = document.getElementById("premium-status");
+    // プレミアムステータスチェック（改善: テーブル名を'subscriptions'に修正、metadata.supabase_user_idでクエリ。リアルタイム購読追加）
+    async function checkPremiumStatus() {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        document.getElementById('premium-status').textContent = "ログインしていません";
+        return false;
+      }
 
-        if(!user){
-          if(statusEl) statusEl.textContent = "";
-          return false;
-        }
+      const { data, error } = await supabase
+        .from('subscriptions')
+        .select('status, current_period_end')
+        .eq('user_id', user.id)
+        .in('status', ['active', 'trialing'])  // activeまたはtrialingを許可
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single();
 
-        const { data, error } = await supabase
-          .from("subscriptions")
-          .select("status, current_period_end")
-          .eq("user_id", user.id)
-          .in("status", ["active", "trialing"])
-          .order("created_at", { ascending: false })
-          .limit(1)
-          .single();
+      if (error && error.code !== 'PGRST116') {  // PGRST116 = no rows
+        console.error('Subscription check error:', error);
+        document.getElementById('premium-status').textContent = "ステータス確認エラー";
+        return false;
+      }
 
-        if(error){
-          // PGRST116 = no rows
-          if(error.code !== "PGRST116"){
-            console.error("Subscription check error:", error);
-          }
-          if(statusEl) statusEl.textContent = "";
-          return false;
-        }
+      const isPremium = data && ['active', 'trialing'].includes(data.status);
+      const statusEl = document.getElementById('premium-status');
+      
+      if (isPremium) {
+        const endDate = new Date(data.current_period_end).toLocaleDateString('ja-JP');
+        statusEl.textContent = `✨ プレミアム会員です（次回更新: ${endDate}）`;
+        statusEl.style.color = "var(--p)";
+        document.querySelectorAll('.premium-only').forEach(el => el.style.display = 'block');
+      } else {
+        statusEl.textContent = "プレミアム会員ではありません";
+      }
+      return isPremium;
+    }
 
-        const isPremium = ["active", "trialing"].includes(data.status);
+    // リアルタイムでsubscriptionsテーブルを監視（決済後即時反映）
+    function subscribeToSubscriptions() {
+      supabase
+        .channel('subscriptions-changes')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'subscriptions' }, () => {
+          checkPremiumStatus();
+        })
+        .subscribe();
+    }
 
-        if(statusEl){
-          if(isPremium){
-            const endDate = new Date(data.current_period_end).toLocaleDateString("ja-JP");
-            statusEl.textContent = `プレミアム会員（次回更新/期限: ${endDate}）`;
-          } else {
-            statusEl.textContent = "";
-          }
-        }
+    // 決済ボタン（改善: success_urlを現在のページに設定し、ポーリング追加）
+    document.getElementById('subscribe-btn')?.addEventListener('click', async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        alert("ログインしてください");
+        document.getElementById('auth-modal').style.display = 'flex';
+        return;
+      }
 
-        // 既存仕様: premium-only を表示したい場合に備えて残す
-        document.querySelectorAll(".premium-only").forEach((el) => {
-          el.style.display = isPremium ? "block" : "none";
+      try {
+        const response = await fetch(checkoutFunctionUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`,
+          },
+          body: JSON.stringify({
+            priceId: stripePriceId,
+            userId: user.id,
+            success_url: window.location.href,  // 決済成功後、このページに戻る
+            cancel_url: window.location.href,
+          }),
         });
 
-        return isPremium;
+        if (!response.ok) throw new Error(await response.text());
+
+        const { url } = await response.json();
+        window.location.href = url;
+      } catch (err) {
+        console.error(err);
+        alert("決済開始に失敗しました: " + err.message);
       }
+    });
 
-      function subscribeToSubscriptions(){
-        supabase
-          .channel("subscriptions-changes")
-          .on("postgres_changes", { event: "*", schema: "public", table: "subscriptions" }, () => {
-            refreshPremiumUI();
-          })
-          .subscribe();
-      }
+    // 決済成功後のポーリング（専用ページで「確認中...」の場合を想定し、このページでポーリング）
+    async function pollSubscriptionStatus(maxAttempts = 30, interval = 2000) {
+      let attempts = 0;
+      const statusEl = document.getElementById('premium-status');
+      statusEl.textContent = "確認中...";
 
-      /* ====== 追加: ログイン状態UI ====== */
-      function setLoginButtonLabel(btn, user){
-        if(!btn) return;
-        btn.textContent = user ? "ログイン中" : "ログイン";
-        btn.dataset.loggedIn = user ? "1" : "0";
-      }
-
-      async function refreshAuthUI(){
-        const { data: sessionData } = await supabase.auth.getSession();
-        const user = sessionData?.session?.user ?? null;
-
-        setLoginButtonLabel(document.getElementById("nav-login-btn"), user);
-        setLoginButtonLabel(document.getElementById("nav-login-btn-mobile"), user);
-        setLoginButtonLabel(document.getElementById("login-btn"), user);
-
-        const emailEl = document.getElementById("login-email");
-        if(emailEl){
-          if(user?.email){
-            emailEl.style.display = "block";
-            emailEl.textContent = `${user.email}でログインしています`;
-          }else{
-            emailEl.style.display = "none";
-            emailEl.textContent = "";
-          }
-        }
-      }
-
-      async function refreshPremiumUI(){
+      const poll = setInterval(async () => {
+        attempts++;
         const isPremium = await checkPremiumStatus();
-
-        const subscribeBtn = document.getElementById("subscribe-btn");
-        const loginBtn = document.getElementById("login-btn");
-        const premiumBtn = document.getElementById("premium-page-btn");
-
-        if(isPremium){
-          if(subscribeBtn) subscribeBtn.style.display = "none";
-          if(loginBtn) loginBtn.style.display = "none";
-          if(premiumBtn) premiumBtn.style.display = "inline-flex";
-        }else{
-          if(subscribeBtn) subscribeBtn.style.display = "";
-          if(loginBtn) loginBtn.style.display = "";
-          if(premiumBtn) premiumBtn.style.display = "none";
-        }
-      }
-
-      function openAuthModal(){
-        const modal = document.getElementById("auth-modal");
-        if(modal) modal.style.display = "flex";
-      }
-
-      function closeAuthModal(){
-        const modal = document.getElementById("auth-modal");
-        if(modal) modal.style.display = "none";
-      }
-
-      function bindLoginButton(btn){
-        if(!btn) return;
-        btn.addEventListener("click", async () => {
-          const { data: sessionData } = await supabase.auth.getSession();
-          const user = sessionData?.session?.user ?? null;
-          if(!user){
-            openAuthModal();
-            return;
+        if (isPremium || attempts >= maxAttempts) {
+          clearInterval(poll);
+          if (!isPremium) {
+            statusEl.textContent = "プレミアムステータスの確認に失敗しました。ページをリロードしてください。";
           }
-          // ログイン中は premium.html へ（会員管理/解約導線）
-          location.href = "premium.html";
-        });
+        }
+      }, interval);
+    }
+
+    // URLにsession_idがあればポーリング開始（Stripeから戻ってきた場合）
+    window.addEventListener('load', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has('session_id')) {
+        pollSubscriptionStatus();
       }
+      checkPremiumStatus();
+      subscribeToSubscriptions();  // リアルタイム購読開始
+    });
 
-      bindLoginButton(document.getElementById("nav-login-btn"));
-      bindLoginButton(document.getElementById("nav-login-btn-mobile"));
+    // ログインボタン・モーダル制御
+    document.getElementById('login-btn')?.addEventListener('click', () => {
+      document.getElementById('auth-modal').style.display = 'flex';
+    });
 
-      /* ====== 購読（Stripe Checkoutへ） ====== */
-      document.getElementById("subscribe-btn")?.addEventListener("click", async () => {
-        const { data: userData } = await supabase.auth.getUser();
-        const user = userData?.user;
+    document.getElementById('auth-close')?.addEventListener('click', () => {
+      document.getElementById('auth-modal').style.display = 'none';
+    });
 
-        if(!user){
-          alert("ログインしてください");
-          openAuthModal();
+    document.getElementById('auth-magic')?.addEventListener('click', async () => {
+      const email = document.getElementById('auth-email').value.trim();
+      if (!email) return alert("メールアドレスを入力してください");
+
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: { emailRedirectTo: window.location.origin }
+      });
+
+      if (error) alert("エラー: " + error.message);
+      else {
+        alert("メールを確認してリンクをクリックしてください！");
+        document.getElementById('auth-modal').style.display = 'none';
+      }
+    });
+
+    // 認証状態変化時にもチェック（ログイン/ログアウト対応）
+    supabase.auth.onAuthStateChange((event, session) => {
+      checkPremiumStatus();
+    });
+  </script>
+
+  <script>
+    const SCHEDULE_JSON_URL = 'schedule.json';
+
+    async function fetchSchedule() {
+      try {
+        const response = await fetch(SCHEDULE_JSON_URL + '?t=' + Date.now());
+        if (!response.ok) throw new Error('ファイルが見つかりません');
+        const events = await response.json();
+
+        const statusEl = document.getElementById('live-status');
+        const cardsContainer = document.getElementById('live-cards');
+        const noScheduleEl = document.getElementById('no-schedule');
+        cardsContainer.innerHTML = '';
+        statusEl.style.display = 'none';
+        noScheduleEl.style.display = 'none';
+
+        const now = new Date();
+
+        const sortedEvents = events
+          .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        if (sortedEvents.length === 0) {
+          noScheduleEl.style.display = 'block';
           return;
         }
 
-        try{
-          const { data: sessionData } = await supabase.auth.getSession();
-          const accessToken = sessionData?.session?.access_token;
+        statusEl.textContent = '近日中の配信スケジュール';
+        statusEl.style.display = 'block';
 
-          const response = await fetch(checkoutFunctionUrl, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${accessToken}`,
-            },
-            body: JSON.stringify({
-              priceId: stripePriceId,
-              userId: user.id,
-              successUrl: window.location.href,
-              cancelUrl: window.location.href,
-            }),
+        sortedEvents.forEach(event => {
+          if (!event.title && !event.date) return;
+
+          const startTime = new Date(event.date);
+          const hoursSinceStart = (now - startTime) / (1000 * 60 * 60);
+          const isClearlyPast = hoursSinceStart >= 48;
+
+          const timeStr = startTime.toLocaleString('ja-JP', {
+            month: 'numeric',
+            day: 'numeric',
+            weekday: 'short',
+            hour: '2-digit',
+            minute: '2-digit'
           });
 
-          if(!response.ok){
-            throw new Error(await response.text());
-          }
+          const platform = event.platform || 'ライブ';
+          const url = event.url || 'https://www.youtube.com/@%E3%83%88%E3%83%AA%E3%83%A2%E3%83%AD%E3%82%B9TV/streams';
 
-          const url = await response.json();
-          window.location.href = url;
-        }catch(err){
-          console.error(err);
-          alert(err.message || "エラーが発生しました");
-        }
-      });
+          const card = document.createElement('a');
+          card.className = `live-card ${isClearlyPast ? 'past' : ''}`;
+          card.href = url;
+          card.target = '_blank';
+          card.rel = 'noopener noreferrer';
 
-      async function pollSubscriptionStatus(maxAttempts = 30, interval = 2000){
-        let attempts = 0;
-        const statusEl = document.getElementById("premium-status");
-        if(statusEl) statusEl.textContent = "反映待ち…（最大1分程度）";
+          card.innerHTML = `
+            <div class="live-card-header">
+              <h3 class="live-card-title">${event.title || '無題の配信'}</h3>
+              <span class="live-card-platform">${platform}</span>
+            </div>
+            <div class="live-card-body">
+              <p class="live-card-time">${timeStr}</p>
+              <p class="live-card-status">クリックで視聴ページへ</p>
+            </div>
+          `;
 
-        const poll = setInterval(async () => {
-          attempts++;
-          const isPremium = await checkPremiumStatus();
-          if(isPremium || attempts >= maxAttempts){
-            clearInterval(poll);
-            if(!isPremium && statusEl) statusEl.textContent = "";
-            refreshPremiumUI();
-          }
-        }, interval);
-      }
-
-      window.addEventListener("load", async () => {
-        const urlParams = new URLSearchParams(window.location.search);
-        if(urlParams.has("session_id")){
-          pollSubscriptionStatus();
-        }
-        await refreshAuthUI();
-        await refreshPremiumUI();
-        subscribeToSubscriptions();
-      });
-
-      supabase.auth.onAuthStateChange(async () => {
-        await refreshAuthUI();
-        await refreshPremiumUI();
-      });
-
-      /* ====== 既存: メンバーシップ欄ログインボタン（未ログインのみモーダル） ====== */
-      document.getElementById("login-btn")?.addEventListener("click", async () => {
-        const { data: sessionData } = await supabase.auth.getSession();
-        const user = sessionData?.session?.user ?? null;
-        if(!user) openAuthModal();
-      });
-
-      document.getElementById("auth-close")?.addEventListener("click", closeAuthModal);
-
-      document.getElementById("auth-magic")?.addEventListener("click", async () => {
-        const email = (document.getElementById("auth-email")?.value || "").trim();
-        if(!email) return alert("メールアドレスを入力してください");
-
-        const { error } = await supabase.auth.signInWithOtp({
-          email,
-          options: { emailRedirectTo: window.location.origin },
+          cardsContainer.appendChild(card);
         });
 
-        if(error){
-          alert(error.message);
-        }else{
-          alert("マジックリンクを送信しました。メールをご確認ください。");
-          closeAuthModal();
-        }
-      });
-    </script>
-
-    <script>
-      /* ===== ライブ予定 (paste.txtベース) ===== */
-      const SCHEDULE_JSON_URL = "schedule.json";
-      async function fetchSchedule(){
-        try{
-          const response = await fetch(SCHEDULE_JSON_URL + "?t=" + Date.now());
-          if(!response.ok) throw new Error("schedule.jsonの読み込みに失敗しました");
-          const events = await response.json();
-
-          const statusEl = document.getElementById("live-status");
-          const cardsContainer = document.getElementById("live-cards");
-          const noScheduleEl = document.getElementById("no-schedule");
-
-          cardsContainer.innerHTML = "";
-          statusEl.style.display = "none";
-          noScheduleEl.style.display = "none";
-
-          const now = new Date();
-          const sortedEvents = events.sort((a,b) => new Date(b.date) - new Date(a.date));
-
-          if(sortedEvents.length === 0){
-            noScheduleEl.style.display = "block";
-            return;
-          }
-
-          statusEl.textContent = "";
-          statusEl.style.display = "block";
-
-          sortedEvents.forEach((event) => {
-            if(!event.title || !event.date) return;
-            const startTime = new Date(event.date);
-            const hoursSinceStart = (now - startTime) / (1000*60*60);
-            const isClearlyPast = hoursSinceStart > 48;
-
-            const timeStr = startTime.toLocaleString("ja-JP", {
-              month:"numeric", day:"numeric", weekday:"short", hour:"2-digit", minute:"2-digit"
-            });
-
-            const platform = event.platform || "YouTube";
-            const url = event.url || "https://www.youtube.com/@%E3%83%88%E3%83%AA%E3%83%A2%E3%83%AD%E3%82%B9TV/streams";
-
-            const card = document.createElement("a");
-            card.className = "live-card" + (isClearlyPast ? " past" : "");
-            card.href = url;
-            card.target = "_blank";
-            card.rel = "noopener noreferrer";
-
-            card.innerHTML = `
-              <div class="live-card-header">
-                <h3 class="live-card-title">${event.title}</h3>
-                <span class="live-card-platform">${platform}</span>
-              </div>
-              <div class="live-card-body">
-                <p class="live-card-time">${timeStr}</p>
-                <p class="live-card-status">${isClearlyPast ? "配信終了" : "配信予定 / 配信中の可能性あり"}</p>
-              </div>
-            `;
-            cardsContainer.appendChild(card);
-          });
-        }catch(err){
-          document.getElementById("live-status").textContent = "schedule.jsonの読み込みに失敗しました";
-          document.getElementById("live-status").style.color = "#e11d48";
-          console.error(err);
-        }
+      } catch (err) {
+        document.getElementById('live-status').textContent = ' スケジュール取得失敗（schedule.jsonを確認）';
+        document.getElementById('live-status').style.color = '#e11d48';
+        console.error(err);
       }
-      window.addEventListener("load", fetchSchedule);
+    }
 
-      /* ===== メニュー (paste.txtベース) ===== */
-      const menuToggle = document.getElementById("menu-toggle");
-      const navScroller = document.getElementById("nav-scroller");
-      const navLinks = navScroller.querySelectorAll("a");
-      let scrollPosition = 0;
+    window.addEventListener('load', fetchSchedule);
 
-      function preventScroll(e){ e.preventDefault(); e.stopPropagation(); return false; }
+    // ===== ハンバーガーメニュー（スクロール完全無効化） =====
+    const menuToggle = document.getElementById('menu-toggle');
+    const navScroller = document.getElementById('nav-scroller');
+    const navLinks = navScroller.querySelectorAll('a');
+    let scrollPosition = 0;
 
-      function openMenu(){
-        scrollPosition = window.pageYOffset;
-        navScroller.classList.add("open");
-        menuToggle.classList.add("active");
-        menuToggle.setAttribute("aria-expanded","true");
-        menuToggle.setAttribute("aria-label","メニューを閉じる");
-        document.body.classList.add("menu-open");
-        document.documentElement.classList.add("menu-open");
-        document.body.style.top = `-${scrollPosition}px`;
-        document.addEventListener("touchmove", preventScroll, { passive:false });
-        document.addEventListener("wheel", preventScroll, { passive:false });
+    function preventScroll(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    }
+
+    function openMenu() {
+      scrollPosition = window.pageYOffset;
+      
+      navScroller.classList.add('open');
+      menuToggle.classList.add('active');
+      menuToggle.setAttribute('aria-expanded', 'true');
+      menuToggle.setAttribute('aria-label', 'メニューを閉じる');
+      document.body.classList.add('menu-open');
+      document.documentElement.classList.add('menu-open');
+      
+      document.body.style.top = `-${scrollPosition}px`;
+      
+      document.addEventListener('touchmove', preventScroll, { passive: false });
+      document.addEventListener('wheel', preventScroll, { passive: false });
+    }
+
+    function closeMenu() {
+      navScroller.classList.remove('open');
+      menuToggle.classList.remove('active');
+      menuToggle.setAttribute('aria-expanded', 'false');
+      menuToggle.setAttribute('aria-label', 'メニューを開く');
+      document.body.classList.remove('menu-open');
+      document.documentElement.classList.remove('menu-open');
+      
+      document.body.style.top = '';
+      window.scrollTo(0, scrollPosition);
+      
+      document.removeEventListener('touchmove', preventScroll);
+      document.removeEventListener('wheel', preventScroll);
+    }
+
+    menuToggle.addEventListener('click', () => {
+      const isOpen = navScroller.classList.contains('open');
+      if (isOpen) {
+        closeMenu();
+      } else {
+        openMenu();
       }
+    });
 
-      function closeMenu(){
-        navScroller.classList.remove("open");
-        menuToggle.classList.remove("active");
-        menuToggle.setAttribute("aria-expanded","false");
-        menuToggle.setAttribute("aria-label","メニューを開く");
-        document.body.classList.remove("menu-open");
-        document.documentElement.classList.remove("menu-open");
-        document.body.style.top = "";
-        window.scrollTo(0, scrollPosition);
-        document.removeEventListener("touchmove", preventScroll);
-        document.removeEventListener("wheel", preventScroll);
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        closeMenu();
+      });
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && navScroller.classList.contains('open')) {
+        closeMenu();
+        menuToggle.focus();
       }
+    });
 
-      menuToggle.addEventListener("click", () => {
-        const isOpen = navScroller.classList.contains("open");
-        if(isOpen) closeMenu(); else openMenu();
-      });
-      navLinks.forEach((link) => link.addEventListener("click", closeMenu));
-      document.addEventListener("keydown", (e) => {
-        if(e.key === "Escape" && navScroller.classList.contains("open")){
-          closeMenu();
-          menuToggle.focus();
-        }
-      });
+    // ===== TTS（ダウンロード機能付き） =====
+    const API_URL = '/api/tts';
+    let currentAudioUrl = null;
+    let currentAudioBlob = null;
 
-      /* ===== TTS (paste.txtベース) ===== */
-      const API_URL = "api/tts";
-      let currentAudioUrl = null;
-      let currentAudioBlob = null;
-
-      document.getElementById("generate-btn").addEventListener("click", async () => {
-        const text = document.getElementById("text-input").value.trim();
-        if(!text) return alert("テキストを入力してください");
-
-        const btn = document.getElementById("generate-btn");
-        const loading = document.getElementById("loading");
-        const status = document.getElementById("status");
-        const player = document.getElementById("audio-player");
-        const downloadBtn = document.getElementById("download-btn");
-
-        btn.disabled = true;
+    document.getElementById('generate-btn').addEventListener('click', async () => {
+      const text = document.getElementById('text-input').value.trim();
+      if (!text) return alert('テキストを入力してください');
+      const btn = document.getElementById('generate-btn');
+      const loading = document.getElementById('loading');
+      const status = document.getElementById('status');
+      const player = document.getElementById('audio-player');
+      const downloadBtn = document.getElementById('download-btn');
+      
+      btn.disabled = true;
+      downloadBtn.disabled = true;
+      loading.style.display = 'block';
+      status.textContent = '';
+      
+      if (currentAudioUrl) {
+        URL.revokeObjectURL(currentAudioUrl);
+      }
+      
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            text,
+            speaker: 1099527840,
+            speed: 1.0,
+            pitch: 0.0
+          })
+        });
+        if (!response.ok) throw new Error(`APIエラー: ${response.status}`);
+        
+        currentAudioBlob = await response.blob();
+        currentAudioUrl = URL.createObjectURL(currentAudioBlob);
+        
+        player.src = currentAudioUrl;
+        player.play();
+        
+        downloadBtn.disabled = false;
+        
+        status.textContent = ' 合成完了！';
+      } catch (error) {
+        status.textContent = ` エラー: ${error.message}`;
         downloadBtn.disabled = true;
-        loading.style.display = "block";
-        status.textContent = "";
+      } finally {
+        btn.disabled = false;
+        loading.style.display = 'none';
+      }
+    });
 
-        if(currentAudioUrl) URL.revokeObjectURL(currentAudioUrl);
+    document.getElementById('download-btn').addEventListener('click', () => {
+      if (!currentAudioBlob) return;
+      
+      const timestamp = new Date().toISOString().slice(0, 19).replace(/[:-]/g, '');
+      const filename = `abe_voice_${timestamp}.wav`;
+      
+      const a = document.createElement('a');
+      a.href = currentAudioUrl;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    });
 
-        try{
-          const response = await fetch(API_URL, {
-            method:"POST",
-            headers:{ "Content-Type":"application/json" },
-            body: JSON.stringify({
-              text,
-              speaker: 1099527840,
-              speed: 1.0,
-              pitch: 0.0,
-            }),
-          });
+    // ===== Gallery =====
+    const track = document.getElementById('gallery-track');
+    const dotsWrap = document.getElementById('gallery-dots');
+    const prevBtn = document.querySelector('.gallery-prev');
+    const nextBtn = document.querySelector('.gallery-next');
 
-          if(!response.ok) throw new Error("API Error: " + response.status);
+    let autoplayTimer = null;
+    let pauseTimer = null;
 
-          currentAudioBlob = await response.blob();
-          currentAudioUrl = URL.createObjectURL(currentAudioBlob);
+    let index = 0;
+    let originals = [];
+    let originalCount = 0;
 
-          player.src = currentAudioUrl;
-          player.play();
+    let firstClone = null;
+    let lastClone = null;
+    let allSlides = [];
 
-          downloadBtn.disabled = false;
-          status.textContent = "生成完了";
-        }catch(error){
-          status.textContent = error.message;
-          downloadBtn.disabled = true;
-        }finally{
-          btn.disabled = false;
-          loading.style.display = "none";
-        }
+    function buildDots(){
+      dotsWrap.innerHTML = '';
+      for (let i = 0; i < originalCount; i++){
+        const b = document.createElement('button');
+        b.className = 'dot';
+        b.type = 'button';
+        b.setAttribute('aria-label', `スライド ${i + 1}`);
+        b.addEventListener('click', () => {
+          pauseAutoplay(7000);
+          goTo(i, true);
+        });
+        dotsWrap.appendChild(b);
+      }
+      setActiveDot(0);
+    }
+
+    function setActiveDot(i){
+      const dots = Array.from(dotsWrap.querySelectorAll('.dot'));
+      dots.forEach((d, di) => d.setAttribute('aria-current', String(di === i)));
+    }
+
+    function scrollToSlide(el, smooth){
+      track.scrollTo({
+        left: el.offsetLeft,
+        behavior: smooth ? 'smooth' : 'auto'
       });
+    }
 
-      document.getElementById("download-btn").addEventListener("click", () => {
-        if(!currentAudioBlob) return;
-        const timestamp = new Date().toISOString().slice(0,19).replace(/[-:]/g,"");
-        const filename = `abevoice_${timestamp}.wav`;
-        const a = document.createElement("a");
-        a.href = currentAudioUrl;
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-      });
+    function jumpTo(el){
+      track.scrollTo({ left: el.offsetLeft, behavior: 'auto' });
+    }
 
-      /* ===== Gallery (paste.txtベース) ===== */
-      const track = document.getElementById("gallery-track");
-      const dotsWrap = document.getElementById("gallery-dots");
-      const prevBtn = document.querySelector(".gallery-prev");
-      const nextBtn = document.querySelector(".gallery-next");
+    function goTo(i, smooth = true){
+      index = i;
+      setActiveDot(index);
+      scrollToSlide(originals[index], smooth);
+    }
 
-      let autoplayTimer = null;
-      let pauseTimer = null;
-      let index = 0;
-
-      let originals = [];
-      let originalCount = 0;
-      let firstClone = null;
-      let lastClone = null;
-      let allSlides = [];
-
-      function buildDots(){
-        dotsWrap.innerHTML = "";
-        for(let i=0;i<originalCount;i++){
-          const b = document.createElement("button");
-          b.className = "dot";
-          b.type = "button";
-          b.setAttribute("aria-label", String(i+1));
-          b.addEventListener("click", () => { pauseAutoplay(7000); goTo(i,true); });
-          dotsWrap.appendChild(b);
-        }
-        setActiveDot(0);
-      }
-
-      function setActiveDot(i){
-        const dots = Array.from(dotsWrap.querySelectorAll(".dot"));
-        dots.forEach((d,di) => d.setAttribute("aria-current", String(di===i)));
-      }
-
-      function scrollToSlide(el, smooth){
-        track.scrollTo({ left: el.offsetLeft, behavior: smooth ? "smooth" : "auto" });
-      }
-
-      function jumpTo(el){
-        track.scrollTo({ left: el.offsetLeft, behavior: "auto" });
-      }
-
-      function goTo(i, smooth=true){
-        index = i;
+    function goNext(){
+      if (index === originalCount - 1){
+        index = 0;
         setActiveDot(index);
-        scrollToSlide(originals[index], smooth);
+        scrollToSlide(firstClone, true);
+        return;
       }
+      goTo(index + 1, true);
+    }
 
-      function goNext(){
-        if(index === originalCount - 1){
+    function goPrev(){
+      if (index === 0){
+        index = originalCount - 1;
+        setActiveDot(index);
+        scrollToSlide(lastClone, true);
+        return;
+      }
+      goTo(index - 1, true);
+    }
+
+    function startAutoplay(){
+      stopAutoplay();
+      autoplayTimer = setInterval(goNext, 3500);
+    }
+
+    function stopAutoplay(){
+      if (autoplayTimer) clearInterval(autoplayTimer);
+      autoplayTimer = null;
+    }
+
+    function pauseAutoplay(ms = 7000){
+      stopAutoplay();
+      if (pauseTimer) clearTimeout(pauseTimer);
+      pauseTimer = setTimeout(startAutoplay, ms);
+    }
+
+    ['pointerdown','touchstart','wheel','keydown','mouseenter','focusin'].forEach(ev => {
+      track.addEventListener(ev, () => pauseAutoplay(7000), { passive: true });
+    });
+
+    prevBtn.addEventListener('click', () => {
+      pauseAutoplay(7000);
+      goPrev();
+    });
+    nextBtn.addEventListener('click', () => {
+      pauseAutoplay(7000);
+      goNext();
+    });
+
+    function setupInfiniteLoop(){
+      originals = Array.from(track.querySelectorAll('.shot'));
+      originalCount = originals.length;
+
+      lastClone = originals[originalCount - 1].cloneNode(true);
+      firstClone = originals[0].cloneNode(true);
+
+      lastClone.dataset.clone = 'last';
+      firstClone.dataset.clone = 'first';
+      lastClone.setAttribute('aria-hidden', 'true');
+      firstClone.setAttribute('aria-hidden', 'true');
+
+      track.insertBefore(lastClone, originals[0]);
+      track.appendChild(firstClone);
+
+      allSlides = Array.from(track.querySelectorAll('.shot'));
+    }
+
+    let scrollDebounce = null;
+    track.addEventListener('scroll', () => {
+      if (scrollDebounce) clearTimeout(scrollDebounce);
+
+      scrollDebounce = setTimeout(() => {
+        const x = track.scrollLeft;
+
+        let bestEl = allSlides[0];
+        let bestDist = Infinity;
+        for (const s of allSlides){
+          const d = Math.abs(s.offsetLeft - x);
+          if (d < bestDist){
+            bestDist = d;
+            bestEl = s;
+          }
+        }
+
+        if (bestEl.dataset.clone === 'first'){
           index = 0;
           setActiveDot(index);
-          scrollToSlide(firstClone, true);
+          jumpTo(originals[0]);
           return;
         }
-        goTo(index + 1, true);
-      }
-
-      function goPrev(){
-        if(index === 0){
+        if (bestEl.dataset.clone === 'last'){
           index = originalCount - 1;
           setActiveDot(index);
-          scrollToSlide(lastClone, true);
+          jumpTo(originals[originalCount - 1]);
           return;
         }
-        goTo(index - 1, true);
-      }
 
-      function startAutoplay(){
-        stopAutoplay();
-        autoplayTimer = setInterval(goNext, 3500);
-      }
+        const slideIndex = Number(bestEl.dataset.slide);
+        if (!Number.isNaN(slideIndex)){
+          index = slideIndex;
+          setActiveDot(index);
+        }
+      }, 80);
+    }, { passive: true });
 
-      function stopAutoplay(){
-        if(autoplayTimer) clearInterval(autoplayTimer);
-        autoplayTimer = null;
-      }
+    window.addEventListener('load', () => {
+      setupInfiniteLoop();
+      buildDots();
+      goTo(0, false);
+      startAutoplay();
+    });
 
-      function pauseAutoplay(ms=7000){
-        stopAutoplay();
-        if(pauseTimer) clearTimeout(pauseTimer);
-        pauseTimer = setTimeout(startAutoplay, ms);
-      }
+    window.addEventListener('resize', () => {
+      goTo(index, false);
+    });
 
-      ["pointerdown","touchstart","wheel","keydown","mouseenter","focusin"].forEach((ev) => {
-        track.addEventListener(ev, () => pauseAutoplay(7000), { passive:true });
+    // ===== ナビのスムーススクロール =====
+    document.querySelectorAll('nav a').forEach(anchor => {
+      anchor.addEventListener('click', (e) => {
+        const href = anchor.getAttribute('href');
+        if (!href || !href.startsWith('#')) return;
+        e.preventDefault();
+        document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
       });
-
-      prevBtn.addEventListener("click", () => { pauseAutoplay(7000); goPrev(); });
-      nextBtn.addEventListener("click", () => { pauseAutoplay(7000); goNext(); });
-
-      function setupInfiniteLoop(){
-        originals = Array.from(track.querySelectorAll(".shot"));
-        originalCount = originals.length;
-
-        lastClone = originals[originalCount-1].cloneNode(true);
-        firstClone = originals[0].cloneNode(true);
-        lastClone.dataset.clone = "last";
-        firstClone.dataset.clone = "first";
-        lastClone.setAttribute("aria-hidden","true");
-        firstClone.setAttribute("aria-hidden","true");
-
-        track.insertBefore(lastClone, originals[0]);
-        track.appendChild(firstClone);
-
-        allSlides = Array.from(track.querySelectorAll(".shot"));
-
-        let scrollDebounce = null;
-        track.addEventListener("scroll", () => {
-          if(scrollDebounce) clearTimeout(scrollDebounce);
-          scrollDebounce = setTimeout(() => {
-            const x = track.scrollLeft;
-
-            let bestEl = allSlides[0];
-            let bestDist = Infinity;
-            for(const s of allSlides){
-              const d = Math.abs(s.offsetLeft - x);
-              if(d < bestDist){ bestDist = d; bestEl = s; }
-            }
-
-            if(bestEl.dataset.clone === "first"){
-              index = 0;
-              setActiveDot(index);
-              jumpTo(originals[0]);
-              return;
-            }
-            if(bestEl.dataset.clone === "last"){
-              index = originalCount - 1;
-              setActiveDot(index);
-              jumpTo(originals[originalCount - 1]);
-              return;
-            }
-
-            const slideIndex = Number(bestEl.dataset.slide);
-            if(!Number.isNaN(slideIndex)){
-              index = slideIndex;
-              setActiveDot(index);
-            }
-          }, 80);
-        }, { passive:true });
-      }
-
-      window.addEventListener("load", () => {
-        setupInfiniteLoop();
-        buildDots();
-        goTo(0, false);
-        startAutoplay();
-      });
-
-      window.addEventListener("resize", () => goTo(index, false));
-
-      document.querySelectorAll("nav a").forEach((anchor) => {
-        anchor.addEventListener("click", (e) => {
-          const href = anchor.getAttribute("href");
-          if(!href || !href.startsWith("#")) return;
-          e.preventDefault();
-          document.querySelector(href)?.scrollIntoView({ behavior:"smooth" });
-        });
-      });
-    </script>
-  </main>
+    });
+  </script>
 </body>
 </html>
