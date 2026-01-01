@@ -51,6 +51,10 @@
       background:#fee2e2; 
       color:#991b1b; 
     }
+    .checking {
+      background:#fef3c7;
+      color:#92400e;
+    }
     .btn-primary { 
       display:block; 
       width:100%; 
@@ -66,6 +70,15 @@
       cursor:pointer; 
       text-decoration:none;
       text-align:center;
+      transition: transform 0.12s ease;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+    }
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
     }
     textarea {
       width:100%;
@@ -75,10 +88,48 @@
       border:1px solid #ddd;
       font-size:16px;
       margin-top:12px;
+      resize: vertical;
+    }
+    textarea:focus {
+      outline: none;
+      border-color: var(--p);
+      box-shadow: 0 0 0 3px rgba(255,77,109,0.15);
     }
     audio {
       width:100%;
       margin-top:16px;
+    }
+    .membership-info {
+      text-align: center;
+      font-size: 14px;
+      color: var(--muted);
+      margin-top: 10px;
+    }
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      max-width: 300px;
+      margin: 12px auto 0;
+      padding: 12px 16px;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      background: #fff;
+      color: var(--ink);
+      font-weight: 900;
+      font-size: 14px;
+      cursor: pointer;
+      transition: transform 0.12s ease;
+    }
+    .download-btn:hover {
+      transform: translateY(-1px);
+      background: #f9fafb;
+    }
+    .download-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
     }
   </style>
 </head>
@@ -86,7 +137,8 @@
   <div class="container">
     <div class="panel">
       <h1>💎 プレミアム会員専用ページ</h1>
-      <div id="status" class="status">確認中...</div>
+      <div id="status" class="status checking">確認中...</div>
+      <p id="membership-info" class="membership-info"></p>
 
       <!-- プレミアム限定コンテンツ -->
       <div id="premium-content" style="display:none;">
@@ -95,36 +147,54 @@
         <!-- 高速版ボイスメーカー -->
         <section style="margin-top:40px;">
           <h3 style="text-align:center;">🚀 高速安倍AIボイスメーカー（プレミアム専用）</h3>
+          <p style="text-align:center; color:var(--muted); font-size:14px;">通常版より高速・高品質な音声合成</p>
           <textarea id="premium-text" placeholder="ここにテキストを入力（高速・高品質合成）"></textarea>
-          <button id="premium-generate" class="btn-primary" style="margin-top:12px;">高速合成生成</button>
-          <div id="premium-status" style="margin-top:12px; font-weight:900; color:var(--p); text-align:center;"></div>
-          <audio id="premium-audio" controls></audio>
+          <button id="premium-generate" class="btn-primary" style="margin-top:12px;">🎤 高速合成生成</button>
+          <div id="premium-tts-status" style="margin-top:12px; font-weight:900; color:var(--p); text-align:center;"></div>
+          <audio id="premium-audio" controls style="display:none;"></audio>
+          <button id="premium-download" class="download-btn" style="display:none;" disabled>
+            📥 音声をダウンロード
+          </button>
         </section>
 
         <!-- 限定動画 -->
         <section style="margin-top:60px;">
           <h3 style="text-align:center;">📹 限定アーカイブ動画</h3>
+          <p style="text-align:center; color:var(--muted); font-size:14px; margin-bottom:20px;">メンバー限定の特別コンテンツ</p>
           <div style="display:grid; gap:20px; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); margin-top:20px;">
-            <iframe src="https://www.youtube.com/embed/限定動画ID1" allowfullscreen style="width:100%; aspect-ratio:16/9; border-radius:12px;"></iframe>
-            <iframe src="https://www.youtube.com/embed/限定動画ID2" allowfullscreen style="width:100%; aspect-ratio:16/9; border-radius:12px;"></iframe>
+            <iframe src="https://www.youtube.com/embed/限定動画ID1" allowfullscreen style="width:100%; aspect-ratio:16/9; border-radius:12px; border:none;"></iframe>
+            <iframe src="https://www.youtube.com/embed/限定動画ID2" allowfullscreen style="width:100%; aspect-ratio:16/9; border-radius:12px; border:none;"></iframe>
           </div>
         </section>
 
         <!-- 限定画像 -->
         <section style="margin-top:60px; text-align:center;">
           <h3>🖼 限定画像ギャラリー</h3>
+          <p style="color:var(--muted); font-size:14px; margin-bottom:20px;">ここでしか見れない特別な画像</p>
           <div style="display:flex; flex-direction:column; align-items:center; gap:20px; margin-top:20px;">
             <img src="images/premium-01.webp" alt="限定画像1" style="max-width:100%; border-radius:16px; box-shadow:var(--shadow);">
             <img src="images/premium-02.webp" alt="限定画像2" style="max-width:100%; border-radius:16px; box-shadow:var(--shadow);">
           </div>
         </section>
+
+        <!-- ホームへ戻る -->
+        <div style="text-align:center; margin-top:60px;">
+          <a href="/" class="btn-primary" style="background:#fff; color:var(--ink); border:2px solid #ddd;">🏠 ホームに戻る</a>
+        </div>
       </div>
 
       <!-- 非会員用 -->
       <div id="non-premium" style="display:none; text-align:center;">
         <p style="font-size:18px; margin-bottom:30px;">このページはプレミアム会員限定です。</p>
-        <a href="/" class="btn-primary">🏠 ホームに戻る</a>
-        <p style="margin-top:20px;"><a href="/" style="color:var(--p); text-decoration:underline;">メンバーシップ加入はこちらから</a></p>
+        <a href="/#membership" class="btn-primary">✨ メンバーシップに加入する</a>
+        <a href="/" class="btn-primary" style="background:#fff; color:var(--ink); border:2px solid #ddd; margin-top:12px;">🏠 ホームに戻る</a>
+      </div>
+
+      <!-- ログイン必要 -->
+      <div id="need-login" style="display:none; text-align:center;">
+        <p style="font-size:18px; margin-bottom:30px;">このページを見るにはログインが必要です。</p>
+        <a href="/#membership" class="btn-primary">🔐 ログイン / 新規登録</a>
+        <a href="/" class="btn-primary" style="background:#fff; color:var(--ink); border:2px solid #ddd; margin-top:12px;">🏠 ホームに戻る</a>
       </div>
     </div>
   </div>
@@ -137,8 +207,25 @@
     const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
     const statusEl = document.getElementById('status');
+    const membershipInfoEl = document.getElementById('membership-info');
     const premiumContent = document.getElementById('premium-content');
     const nonPremium = document.getElementById('non-premium');
+    const needLogin = document.getElementById('need-login');
+
+    // 表示状態を管理
+    function showState(state) {
+      premiumContent.style.display = 'none';
+      nonPremium.style.display = 'none';
+      needLogin.style.display = 'none';
+      
+      if (state === 'premium') {
+        premiumContent.style.display = 'block';
+      } else if (state === 'not-premium') {
+        nonPremium.style.display = 'block';
+      } else if (state === 'need-login') {
+        needLogin.style.display = 'block';
+      }
+    }
 
     async function checkPremiumStatus() {
       const { data: { user } } = await supabase.auth.getUser();
@@ -146,35 +233,53 @@
       if (!user) {
         statusEl.textContent = "⚠️ ログインが必要です";
         statusEl.className = "status not-premium";
-        nonPremium.style.display = "block";
+        membershipInfoEl.textContent = "";
+        showState('need-login');
         return false;
       }
 
+      // 改善版クエリ: active または trialing を許可、期限も取得
       const { data, error } = await supabase
-        .from('subscriptions')  // テーブル名修正
-        .select('status')
-        .eq('status', 'active')
-        .eq('user_id', user.id);
+        .from('subscriptions')
+        .select('status, current_period_end')
+        .eq('user_id', user.id)
+        .in('status', ['active', 'trialing'])
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();  // single() の代わりに maybeSingle() を使用（行がなくてもエラーにならない）
 
       if (error) {
-        console.error(error);
+        console.error('Subscription check error:', error);
         statusEl.textContent = "❌ ステータス確認エラー（リロードしてください）";
         statusEl.className = "status not-premium";
+        membershipInfoEl.textContent = "エラー: " + error.message;
+        showState('not-premium');
         return false;
       }
 
-      const isPremium = data && data.length > 0;
+      const isPremium = data && ['active', 'trialing'].includes(data.status);
 
       if (isPremium) {
         statusEl.textContent = "✅ プレミアム会員認証完了！";
         statusEl.className = "status premium";
-        premiumContent.style.display = "block";
-        nonPremium.style.display = "none";
+        
+        // 次回更新日を表示
+        if (data.current_period_end) {
+          const endDate = new Date(data.current_period_end).toLocaleDateString('ja-JP', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          });
+          membershipInfoEl.textContent = `次回更新日: ${endDate}`;
+          membershipInfoEl.style.color = '#fff';
+        }
+        
+        showState('premium');
       } else {
         statusEl.textContent = "❌ プレミアム会員ではありません";
         statusEl.className = "status not-premium";
-        nonPremium.style.display = "block";
-        premiumContent.style.display = "none";
+        membershipInfoEl.textContent = user.email + " でログイン中";
+        showState('not-premium');
       }
 
       return isPremium;
@@ -183,17 +288,26 @@
     // ポーリング（Stripe決済直後用）
     async function startPolling(maxAttempts = 30, interval = 2000) {
       let attempts = 0;
-      statusEl.textContent = "確認中...（決済反映待ち）";
-      statusEl.className = "status";
+      statusEl.textContent = "⏳ 決済反映を確認中...";
+      statusEl.className = "status checking";
+      membershipInfoEl.textContent = "しばらくお待ちください（最大1分程度）";
 
       const poll = setInterval(async () => {
         attempts++;
+        console.log(`Polling attempt ${attempts}/${maxAttempts}`);
+        
         const isPremium = await checkPremiumStatus();
+        
         if (isPremium || attempts >= maxAttempts) {
           clearInterval(poll);
+          
           if (!isPremium && attempts >= maxAttempts) {
-            statusEl.textContent = "⏰ 反映に時間がかかっています。数分待ってリロードしてください。";
-            statusEl.className = "status not-premium";
+            statusEl.textContent = "⏰ 反映に時間がかかっています";
+            statusEl.className = "status checking";
+            membershipInfoEl.innerHTML = `
+              数分待ってから<a href="javascript:location.reload()" style="color:var(--p);text-decoration:underline;">ページをリロード</a>してください。<br>
+              それでも反映されない場合は<a href="mailto:support@example.com" style="color:var(--p);text-decoration:underline;">お問い合わせ</a>ください。
+            `;
           }
         }
       }, interval);
@@ -203,7 +317,12 @@
     function subscribeToChanges() {
       supabase
         .channel('premium-subscriptions')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'subscriptions' }, () => {
+        .on('postgres_changes', { 
+          event: '*', 
+          schema: 'public', 
+          table: 'subscriptions' 
+        }, (payload) => {
+          console.log('Subscription changed:', payload);
           checkPremiumStatus();
         })
         .subscribe();
@@ -212,44 +331,104 @@
     // ページ読み込み時
     window.addEventListener('load', async () => {
       const urlParams = new URLSearchParams(window.location.search);
+      
       if (urlParams.has('session_id')) {
         // Stripeから戻ってきた場合 → ポーリング開始
+        // URLからsession_idを削除（リロード時の再ポーリング防止）
+        const newUrl = window.location.pathname;
+        history.replaceState({}, '', newUrl);
         await startPolling();
       } else {
         await checkPremiumStatus();
       }
+      
       subscribeToChanges();
     });
 
     // 認証状態変化時もチェック
-    supabase.auth.onAuthStateChange(() => {
+    supabase.auth.onAuthStateChange((event, session) => {
+      console.log('Auth state changed:', event);
       checkPremiumStatus();
     });
 
-    // 高速TTS例（実際のAPIに合わせて調整してください）
+    // ===== 高速TTS =====
+    let currentAudioUrl = null;
+    let currentAudioBlob = null;
+
     document.getElementById('premium-generate')?.addEventListener('click', async () => {
       const text = document.getElementById('premium-text').value.trim();
       if (!text) return alert("テキストを入力してください");
 
-      const premiumStatus = document.getElementById('premium-status');
-      premiumStatus.textContent = "高速合成中...";
+      const btn = document.getElementById('premium-generate');
+      const ttsStatus = document.getElementById('premium-tts-status');
+      const audioEl = document.getElementById('premium-audio');
+      const downloadBtn = document.getElementById('premium-download');
+
+      btn.disabled = true;
+      btn.textContent = "🔄 合成中...";
+      ttsStatus.textContent = "高速合成処理中...";
+      downloadBtn.disabled = true;
+
+      // 前の音声URLを解放
+      if (currentAudioUrl) {
+        URL.revokeObjectURL(currentAudioUrl);
+      }
 
       try {
-        const response = await fetch('/api/tts-premium', {  // または既存の /api/tts にプレミアムパラメータ
+        // 注意: 実際のプレミアムTTS APIエンドポイントに合わせて変更してください
+        // 既存の /api/tts を使う場合は premium パラメータを追加するなど
+        const response = await fetch('/api/tts', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ text, premium: true })
+          body: JSON.stringify({ 
+            text, 
+            speaker: 1099527840,
+            speed: 1.0,
+            pitch: 0.0,
+            premium: true  // プレミアムフラグ（API側で対応が必要）
+          })
         });
 
-        if (!response.ok) throw new Error('合成失敗');
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(errorText || `APIエラー: ${response.status}`);
+        }
 
-        const blob = await response.blob();
-        const url = URL.createObjectURL(blob);
-        document.getElementById('premium-audio').src = url;
-        premiumStatus.textContent = "✅ 高速合成完了！";
+        currentAudioBlob = await response.blob();
+        currentAudioUrl = URL.createObjectURL(currentAudioBlob);
+        
+        audioEl.src = currentAudioUrl;
+        audioEl.style.display = 'block';
+        audioEl.play();
+        
+        downloadBtn.style.display = 'block';
+        downloadBtn.disabled = false;
+        
+        ttsStatus.textContent = "✅ 高速合成完了！";
       } catch (err) {
-        premiumStatus.textContent = "❌ エラー: " + err.message;
+        console.error('TTS Error:', err);
+        ttsStatus.textContent = "❌ エラー: " + err.message;
+        audioEl.style.display = 'none';
+        downloadBtn.style.display = 'none';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "🎤 高速合成生成";
       }
+    });
+
+    // ダウンロードボタン
+    document.getElementById('premium-download')?.addEventListener('click', () => {
+      if (!currentAudioBlob) return;
+      
+      const timestamp = new Date().toISOString().slice(0, 19).replace(/[:-]/g, '');
+      const filename = `abe_voice_premium_${timestamp}.wav`;
+      
+      const a = document.createElement('a');
+      a.href = currentAudioUrl;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
     });
   </script>
 </body>
