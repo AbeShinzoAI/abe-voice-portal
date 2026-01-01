@@ -1290,23 +1290,27 @@ footer{
       }
 
       const { data, error } = await supabase
-        .from('subscriptions')  // テーブル名を'subscriptions'に修正（Supabase-Stripe標準）
-        .select('status')
-        .eq('status', 'active')
-        .eq('user_id', user.id);
+        .from('subscriptions')
+        .select('status, current_period_end')
+        .eq('user_id', user.id)
+        .in('status', ['active', 'trialing'])  // activeまたはtrialingを許可
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single();
 
-      if (error) {
+      if (error && error.code !== 'PGRST116') {  // PGRST116 = no rows
         console.error('Subscription check error:', error);
         document.getElementById('premium-status').textContent = "ステータス確認エラー";
         return false;
       }
 
-      const isPremium = data && data.length > 0;
+      const isPremium = data && ['active', 'trialing'].includes(data.status);
       const statusEl = document.getElementById('premium-status');
+      
       if (isPremium) {
-        statusEl.textContent = " プレミアム会員です（高速ボイス・限定コンテンツ利用可能）";
+        const endDate = new Date(data.current_period_end).toLocaleDateString('ja-JP');
+        statusEl.textContent = `✨ プレミアム会員です（次回更新: ${endDate}）`;
         statusEl.style.color = "var(--p)";
-        // ここでプレミアムコンテンツを表示（例）
         document.querySelectorAll('.premium-only').forEach(el => el.style.display = 'block');
       } else {
         statusEl.textContent = "プレミアム会員ではありません";
