@@ -135,7 +135,9 @@
 }
 .menu-toggle.active span:nth-child(3){
   transform: translateY(-7px) rotate(-45deg);
-}.nav-scroller{
+}
+
+.nav-scroller{
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
@@ -169,14 +171,16 @@
   white-space: nowrap;
   transition: transform .12s ease, filter .12s ease;
 }
-.nav-links a:hover{ transform: translateY(-1px); filter: brightness(1.02); }/* ===== SNSリンク（PC版右端） ===== */
-.sns-links, .auth-links {
+.nav-links a:hover{ transform: translateY(-1px); filter: brightness(1.02); }
+
+/* ===== SNSリンク（PC版右端） ===== */
+.sns-links {
   display: flex;
   align-items: center;
   gap: 8px;
   flex: 0 0 auto;
 }
-.sns-links a, .auth-links button {
+.sns-links a {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -188,11 +192,8 @@
   box-shadow: 0 10px 22px rgba(0,0,0,0.06);
   transition: transform .12s ease, filter .12s ease;
   text-decoration: none;
-  font-size: 13px;
-  font-weight: 900;
-  color: var(--ink);
 }
-.sns-links a:hover, .auth-links button:hover {
+.sns-links a:hover {
   transform: translateY(-1px);
   filter: brightness(1.02);
 }
@@ -200,7 +201,9 @@
   width: 20px;
   height: 20px;
   fill: var(--ink);
-}/* ===== スマホ版フルスクリーンメニュー ===== */
+}
+
+/* ===== スマホ版フルスクリーンメニュー ===== */
 @media (max-width: 640px){
   .menu-toggle{
     display: flex;
@@ -273,7 +276,7 @@
     color: var(--muted);
   }
   /* SNSリンク（モバイルメニュー下部） */
-  .sns-links-mobile, .auth-links-mobile {
+  .sns-links-mobile {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -282,7 +285,7 @@
     max-width: 300px;
     margin-top: 40px;
   }
-  .sns-links-mobile a, .auth-links-mobile button {
+  .sns-links-mobile a {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -298,7 +301,7 @@
     text-decoration: none;
     color: rgba(31,41,55,0.92);
   }
-  .sns-links-mobile a:hover, .auth-links-mobile button:hover {
+  .sns-links-mobile a:hover {
     background: linear-gradient(135deg, var(--p), var(--p2));
     color: #fff;
     border-color: transparent;
@@ -309,15 +312,19 @@
     fill: currentColor;
   }
   /* PC版のSNSリンクをモバイルで非表示 */
-  .sns-links, .auth-links {
+  .sns-links {
     display: none;
   }
-}/* PC版でSNSリンクを表示 */
+}
+
+/* PC版でSNSリンクを表示 */
 @media (min-width: 641px) {
-  .sns-links-mobile, .auth-links-mobile {
+  .sns-links-mobile {
     display: none;
   }
-}.section{ padding: 16px 0 30px; }
+}
+
+.section{ padding: 16px 0 30px; }
 .hero{ padding: 18px 0 10px; }
 .hero-cta{
   display:flex;
@@ -346,7 +353,9 @@
   color: #fff;
   background: linear-gradient(135deg, var(--p), var(--p2));
   box-shadow: 0 16px 35px rgba(255,77,109,0.22);
-}/* ===== Gallery（フル幅＋左揃えスナップ） ===== */
+}
+
+/* ===== Gallery（フル幅＋左揃えスナップ） ===== */
 .gallery{
   background: transparent;
   border: none;
@@ -437,7 +446,9 @@
   background: rgba(255,255,255,0.22);
   border: 1px solid rgba(255,255,255,0.24);
   backdrop-filter: blur(10px);
-}/* 左右ボタン */
+}
+
+/* 左右ボタン */
 .gallery-controls{
   position: absolute;
   top: 50%;
@@ -470,7 +481,9 @@
 .gallery-prev:hover, .gallery-next:hover{
   background: rgba(255,255,255,0.95);
   transform: scale(1.1);
-}/* ドットインジケータ */
+}
+
+/* ドットインジケータ */
 .gallery-dots{
   display:flex;
   gap: 10px;
@@ -499,7 +512,9 @@
 .dot[aria-current="true"]{
   background: linear-gradient(135deg, var(--p), var(--p2));
   box-shadow: 0 10px 20px rgba(255,77,109,0.18);
-}.panel{
+}
+
+.panel{
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--r2);
@@ -573,7 +588,9 @@
   transform:none;
   box-shadow:none;
 }
-#audio-player{ width:100%; margin-top: 12px; border-radius: 12px; }/* ===== ダウンロードボタン ===== */
+#audio-player{ width:100%; margin-top: 12px; border-radius: 12px; }
+
+/* ===== ダウンロードボタン ===== */
 .audio-controls{
   display: flex;
   flex-direction: column;
@@ -611,7 +628,9 @@
   width: 18px;
   height: 18px;
   flex: none;
-}.loading{
+}
+
+.loading{
   display:none;
   margin-top: 10px;
   color: rgba(255,77,109,0.95);
@@ -686,10 +705,6 @@
 .membership .inner{
   padding: 18px;
   text-align:center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
 }
 .membership h2{
   margin:0 0 8px;
@@ -697,17 +712,15 @@
   font-weight: 950;
 }
 .membership p{
-  margin: 0;
+  margin: 0 0 14px;
   opacity: 0.95;
   font-size: 14px;
 }
 .btn-secondary{
-  width: 100%;
-  max-width: 320px;
   border: 1px solid rgba(255,255,255,0.35);
   background: rgba(255,255,255,0.18);
   color:#fff;
-  padding: 14px 20px;
+  padding: 12px 16px;
   border-radius: 999px;
   font-weight: 950;
   cursor:pointer;
@@ -734,7 +747,9 @@ footer{
   *{ transition:none !important; }
   .card:hover, .btn:hover, .btn-primary:hover, .shot:hover{ transform:none; }
   .gallery-track{ scroll-behavior: auto; }
-}/* ===== ライブカードコンテナ（中央揃え修正） ===== */
+}
+
+/* ===== ライブカードコンテナ（中央揃え修正） ===== */
 #live-cards {
   display: flex;
   flex-wrap: wrap;
@@ -743,7 +758,9 @@ footer{
   width: 100%;
   padding: 0;
   margin: 0 auto;
-}.live-card {
+}
+
+.live-card {
   background: #fff;
   border-radius: 20px;
   overflow: hidden;
@@ -803,7 +820,9 @@ footer{
   content: "（終了）";
   color: var(--muted);
   margin-left: 6px;
-}/* スマホ対応（中央揃え強化） */
+}
+
+/* スマホ対応（中央揃え強化） */
 @media (max-width: 600px) {
   #live-cards {
     flex-direction: column;
@@ -815,7 +834,9 @@ footer{
     flex: none;
     width: calc(100% - 8px);
   }
-}/* ===== 新規追加: SNSリンク紹介欄のスタイル ===== */
+}
+
+/* ===== 新規追加: SNSリンク紹介欄のスタイル ===== */
 #sns-section {
   background: linear-gradient(135deg, rgba(255,77,109,0.05), rgba(76,201,240,0.05));
   border-top: 1px solid var(--border);
@@ -858,9 +879,7 @@ footer{
   width: 24px;
   height: 24px;
   fill: var(--p);
-}
-  </style>
-</head>
+}  </style></head>
 <body>
   <header>
     <div class="container">
@@ -905,10 +924,6 @@ footer{
               YouTube
             </a>
           </div>
-          <!-- モバイル用ログインボタン -->
-          <div class="auth-links-mobile">
-            <button id="auth-btn-mobile">ログイン</button>
-          </div>
         </div>
         <!-- PC版右端のSNSリンク -->
         <div class="sns-links">
@@ -923,10 +938,6 @@ footer{
             </svg>
           </a>
         </div>
-        <!-- PC版ログインボタン -->
-        <div class="auth-links">
-          <button id="auth-btn-pc">ログイン</button>
-        </div>
       </nav>
     </div>
   </header>
@@ -935,6 +946,7 @@ footer{
     <section id="home" class="hero section">
       <div class="gallery" aria-label="Featured gallery">
         <div class="gallery-track" id="gallery-track" tabindex="0" aria-label="Gallery">
+          <!-- 1 -->
           <a class="shot" data-slide="0" href="https://x.com/RougaiBarusan" target="_blank" rel="noopener noreferrer" aria-label="Xへ">
             <img src="images/feature-01.webp" alt="注目コンテンツ1のサムネイル" loading="lazy">
             <div class="shot-cap">
@@ -944,6 +956,7 @@ footer{
               </div>
             </div>
           </a>
+          <!-- 2 -->
           <a class="shot" data-slide="1" href="https://www.youtube.com/@%E3%83%88%E3%83%AA%E3%83%A2%E3%83%AD%E3%82%B9TV/streams" target="_blank" rel="noopener noreferrer" aria-label="YouTubeライブへ">
             <img src="images/feature-02.webp" alt="注目コンテンツ2のサムネイル" loading="lazy">
             <div class="shot-cap">
@@ -954,6 +967,7 @@ footer{
               <span class="badge">LIVE</span>
             </div>
           </a>
+          <!-- 3 -->
           <a class="shot" data-slide="2" href="#membership" aria-label="メンバーシップへ">
             <img src="images/feature-03.webp" alt="注目コンテンツ3のサムネイル" loading="lazy">
             <div class="shot-cap">
@@ -964,6 +978,7 @@ footer{
               <span class="badge">HOT</span>
             </div>
           </a>
+          <!-- 4 -->
           <a class="shot" data-slide="3" href="https://www.tiktok.com/@sin3_ai" target="_blank" rel="noopener noreferrer" aria-label="TikTokへ移動">
             <img src="images/feature-04.webp" alt="ボイスメーカーのイメージ" loading="lazy">
             <div class="shot-cap">
@@ -973,6 +988,7 @@ footer{
               </div>
             </div>
           </a>
+          <!-- 5 -->
           <a class="shot" data-slide="4" href="https://discord.gg/dXexG8aSds" target="_blank" rel="noopener noreferrer" aria-label="Discordへ">
             <img src="images/feature-05.webp" alt="注目コンテンツ5のサムネイル" loading="lazy">
             <div class="shot-cap">
@@ -983,6 +999,7 @@ footer{
               <span class="badge">JOIN</span>
             </div>
           </a>
+          <!-- 6 -->
           <a class="shot" data-slide="5" href="https://kick.com/abeshinzoai" target="_blank" rel="noopener noreferrer" aria-label="KICKへ">
             <img src="images/feature-06.webp" alt="注目コンテンツ6のサムネイル" loading="lazy">
             <div class="shot-cap">
@@ -993,6 +1010,7 @@ footer{
               <span class="badge">FUN</span>
             </div>
           </a>
+          <!-- 7 -->
           <a class="shot" data-slide="6" href="https://rumble.com/playlists/I1lxDg0pS2I" target="_blank" rel="noopener noreferrer" aria-label="rumbleへ">
             <img src="images/feature-07.webp" alt="注目コンテンツ7のサムネイル" loading="lazy">
             <div class="shot-cap">
@@ -1003,6 +1021,7 @@ footer{
               <span class="badge">SPECIAL</span>
             </div>
           </a>
+          <!-- 8 -->
           <a class="shot" data-slide="7" href="https://abeshinzo.wuaze.com" target="_blank" rel="noopener noreferrer" aria-label="反アベ団体サイトへ">
             <img src="images/feature-08.webp" alt="メンバーシップのイメージ" loading="lazy">
             <div class="shot-cap">
@@ -1015,762 +1034,782 @@ footer{
           </a>
         </div>
 
-        <div class="gallery-controls">
-          <button class="gallery-prev" aria-label="前のスライド">←</button>
-          <button class="gallery-next" aria-label="次のスライド">→</button>
-        </div>
-        <div class="gallery-dots" id="gallery-dots" aria-label="Gallery navigation"></div>
-      </div>
-    </section>
+    <div class="gallery-controls">
+      <button class="gallery-prev" aria-label="前のスライド">←</button>
+      <button class="gallery-next" aria-label="次のスライド">→</button>
+    </div>
+    <div class="gallery-dots" id="gallery-dots" aria-label="Gallery navigation"></div>
+  </div>
+</section>
 
+<div class="container">
+  <div class="hero-cta">
+    <a class="btn primary" href="#tts">ボイスメーカーへ</a>
+    <a class="btn" href="#content">動画を見る</a>
+  </div>
+
+  <section id="content" class="section">
     <div class="container">
-      <div class="hero-cta">
-        <a class="btn primary" href="#tts">ボイスメーカーへ</a>
-        <a class="btn" href="#content">動画を見る</a>
+      <h2 class="section-title">最新情報</h2>
+      <div class="grid" aria-label="Content grid">
+        <article class="card">
+          <div class="media">
+            <iframe src="https://www.youtube.com/embed/8Q-QYL82Qvc" title="YouTube Video 1" allowfullscreen></iframe>
+          </div>
+          <h3>統一戦士シンサム GQuuuAbeX</h3>
+          <p>もしもあの近鉄の駅で立ち止まらず歩いていれば──</p>
+        </article>
+        <article class="card">
+          <div class="media">
+            <iframe src="https://www.youtube.com/embed/1d5ax3lLENo" title="YouTube Video 2" allowfullscreen></iframe>
+          </div>
+          <h3>Chu！可愛くてごめん</h3>
+          <p>生まれてきちゃってごめん♡</p>
+        </article>
+        <article class="card">
+          <div class="media">
+            <iframe src="https://www.youtube.com/embed/KgM-LAAb5Hk" title="YouTube Video 3" allowfullscreen></iframe>
+          </div>
+          <h3>テトゲリス</h3>
+          <p>どうしてこんな目に</p>
+        </article>
+        <article class="card">
+          <div class="media">
+            <iframe src="https://www.youtube.com/embed/aAxJ674aWFY" title="YouTube Video 4" allowfullscreen></iframe>
+          </div>
+          <h3>YOASOBI 『祝福』</h3>
+          <p>僕たちは"操り人形"じゃない</p>
+        </article>
       </div>
+    </div>
+  </section>
 
-      <section id="content" class="section">
-        <div class="container">
-          <h2 class="section-title">最新情報</h2>
-          <div class="grid" aria-label="Content grid">
-            <article class="card">
-              <div class="media">
-                <iframe src="https://www.youtube.com/embed/8Q-QYL82Qvc" title="YouTube Video 1" allowfullscreen></iframe>
-              </div>
-              <h3>統一戦士シンサム GQuuuAbeX</h3>
-              <p>もしもあの近鉄の駅で立ち止まらず歩いていれば──</p>
-            </article>
-            <article class="card">
-              <div class="media">
-                <iframe src="https://www.youtube.com/embed/1d5ax3lLENo" title="YouTube Video 2" allowfullscreen></iframe>
-              </div>
-              <h3>Chu！可愛くてごめん</h3>
-              <p>生まれてきちゃってごめん♡</p>
-            </article>
-            <article class="card">
-              <div class="media">
-                <iframe src="https://www.youtube.com/embed/KgM-LAAb5Hk" title="YouTube Video 3" allowfullscreen></iframe>
-              </div>
-              <h3>テトゲリス</h3>
-              <p>どうしてこんな目に</p>
-            </article>
-            <article class="card">
-              <div class="media">
-                <iframe src="https://www.youtube.com/embed/aAxJ674aWFY" title="YouTube Video 4" allowfullscreen></iframe>
-              </div>
-              <h3>YOASOBI 『祝福』</h3>
-              <p>僕たちは"操り人形"じゃない</p>
-            </article>
-          </div>
+  <section id="live-notice" class="section">
+    <div class="container">
+      <div class="panel" style="box-shadow: var(--shadow); border: 1px solid rgba(255,77,109,0.15);">
+        <div class="panel-header" style="background: linear-gradient(135deg, rgba(255,77,109,0.12), rgba(255,183,3,0.10)); border-bottom: 1px solid rgba(255,77,109,0.15);">
+          <h2 class="tts-title">
+            <span class="tts-emoji" aria-hidden="true"></span>
+            <span>ライブ配信のお知らせ</span>
+          </h2>
+          <p class="help" style="color: var(--p); font-weight: 900;">だいたい1~2日くらいの間隔で20時頃から配信中</p>
         </div>
-      </section>
+        <div class="panel-body">
+          <p id="live-status" style="font-size: 18px; font-weight: 950; color: var(--p); margin-bottom: 20px; text-align: center;">読み込み中...</p>
+          <div id="live-cards"></div>
+          <p id="no-schedule" style="text-align: center; color: var(--muted); font-size: 15px; display: none;">
+            現在予定されているライブはありません。
 
-      <section id="live-notice" class="section">
-        <div class="container">
-          <div class="panel" style="box-shadow: var(--shadow); border: 1px solid rgba(255,77,109,0.15);">
-            <div class="panel-header" style="background: linear-gradient(135deg, rgba(255,77,109,0.12), rgba(255,183,3,0.10)); border-bottom: 1px solid rgba(255,77,109,0.15);">
-              <h2 class="tts-title">
-                <span class="tts-emoji" aria-hidden="true"></span>
-                <span>ライブ配信のお知らせ</span>
-              </h2>
-              <p class="help" style="color: var(--p); font-weight: 900;">だいたい1~2日くらいの間隔で20時頃から配信中</p>
-            </div>
-            <div class="panel-body">
-              <p id="live-status" style="font-size: 18px; font-weight: 950; color: var(--p); margin-bottom: 20px; text-align: center;">読み込み中...</p>
-              <div id="live-cards"></div>
-              <p id="no-schedule" style="text-align: center; color: var(--muted); font-size: 15px; display: none;">
-                現在予定されているライブはありません。<br>
-                毎晩20時頃から全自動ライブをお届けしています！
-                <a class="btn primary" href="https://www.youtube.com/@%E3%83%88%E3%83%AA%E3%83%A2%E3%83%AD%E3%82%B9TV/streams" target="_blank" rel="noopener noreferrer">全チャンネルをチェック</a>
-              </p>
-            </div>
-          </div>
+            毎晩20時頃から全自動ライブをお届けしています！
+            <a class="btn primary" href="https://www.youtube.com/@%E3%83%88%E3%83%AA%E3%83%A2%E3%83%AD%E3%82%B9TV/streams" target="_blank" rel="noopener noreferrer">全チャンネルをチェック</a>
+          </p>
         </div>
-      </section>
-
-      <section id="tts" class="section">
-        <div class="container">
-          <div class="panel">
-            <div class="panel-header">
-              <h2 class="tts-title">
-                <span class="tts-emoji" aria-hidden="true"></span>
-                <span>安倍AIボイスメーカー</span>
-                <img class="tts-icon" src="images/abe_voice@2x.png" alt="マイクアイコン" aria-hidden="true" width="20" height="20">
-              </h2>
-              <p class="help">安倍ちゃんにあんなことやこんなことを喋らせよう</p>
-            </div>
-            <div class="panel-body">
-              <textarea id="text-input" class="tts-input" placeholder="ここにテキストを入力…"></textarea>
-              <button id="generate-btn" class="btn-primary" type="button">合成生成</button>
-              <div id="loading" class="loading">合成中...（数秒お待ちください）</div>
-              
-              <div class="audio-controls">
-                <audio id="audio-player" controls></audio>
-                <button id="download-btn" class="btn-download" type="button" disabled>
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                    <polyline points="7 10 12 15 17 10"/>
-                    <line x1="12" y1="15" x2="12" y2="3"/>
-                  </svg>
-                  音声をダウンロード
-                </button>
-              </div>
-              
-              <div id="status" aria-live="polite"></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="membership" class="section">
-        <div class="container">
-          <div class="membership">
-            <div class="inner">
-              <h2>メンバーシップ（月額298円）</h2>
-              <p>高速版ボイスメーカー・限定動画・画像・グッズ先行販売など</p>
-              <button id="subscribe-btn" class="btn-secondary">今すぐ参加する</button>
-              <button id="login-btn" class="btn-secondary">ログイン</button>
-              <p id="premium-status" style="margin-top:12px; font-size:14px; color:var(--muted);"></p>
-              <p id="user-email" style="margin-top:8px; font-size:14px; color:var(--ink);"></p>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <section id="sns-section" class="section">
-      <div class="container">
-        <h2 class="section-title">SNSリンク</h2>
-        <p style="text-align: center; color: var(--muted); font-size: 15px; margin-bottom: 20px;">フォローして最新情報をチェック！</p>
-        <ul class="sns-list">
-          <li>
-            <a href="https://x.com/RougaiBarusan" target="_blank" rel="noopener noreferrer">
-              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZFgiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmY0ZDZkIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2ZmYjcwMyIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHBhdGggZmlsbD0idXJsKCNncmFkWCkiIGQ9Ik0xOC45MDEgMS4xNTNoMy42OGwtOC4wNCA5LjE5TDI0IDIyLjg0NmgtNy40MDZsLTUuOC03LjU4NC02LjYzOCA3LjU4NEguNDc0bDguNi05LjgzTDAgMS4xNTRoNy41OTRsNS4yNDMgNy4zNSA2LjA2NC03LjM1ek0xNy42MSAyMC42NDRoMi4wNEw2LjY1IDMuMzU2SDQuNTI3bDEzLjA4MyAxNy4yODh6Ii8+Cjwvc3ZnPg==" alt="X (Twitter)" width="24" height="24">
-              X (Twitter)
-            </a>
-          </li>
-          <li>
-            <a href="https://www.youtube.com/@%E3%83%88%E3%83%AA%E3%83%A2%E3%83%AD%E3%82%B9TV/streams" target="_blank" rel="noopener noreferrer">
-              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZFlUIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmNGQ2ZCIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM0Y2M5ZjAiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxwYXRoIGZpbGw9InVybCgjZ3JhZFlUKSIgZD0iTTIzLjQ5OCA2LjE4NmEzLjAxNiAzLjAxNiAwIDAgMC0yLjEyMi0yLjEzNkMxOS41MDUgMy41NDUgMTIgMy41NDUgMTIgMy41NDVzLTcuNTA1IDAtOS4zNzcuNTA1QTMuMDE2IDMuMDE2IDAgMCAwIC41MDIgNi4xODZDMCA4LjA3IDAgMTIgMCAxMnMwIDMuOTMuNTAyIDUuODE0YTMuMDE2IDMuMDE2IDAgMCAwIDIuMTIyIDIuMTM2YzEuODcyLjUwNSA5LjM3Ny41MDUgOS4zNzcuNTA1czcuNTA1IDAgOS4zNzctLjUwNWEzLjAxNiAzLjAxNiAwIDAgMCAyLjEyMi0yLjEzNkMyNCAxNS45MyAyNCAxMiAyNCAxMnMwLTMuOTMtLjUwMi01LjgxNHpNOS41NDUgMTUuNTY4VjguNDMyTDE1LjgxOCAxMmwtNi4yNzMgMy41Njh6Ii8+Cjwvc3ZnPg==" alt="YouTube" width="24" height="24">
-              YouTube（メイン）
-            </a>
-          </li>
-          <li>
-            <a href="https://www.tiktok.com/@sin3_ai" target="_blank" rel="noopener noreferrer">
-              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZFRUIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmNGQ2ZCIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iIzAwMDAwMCIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM0Y2M5ZjAiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxwYXRoIGZpbGw9InVybCgjZ3JhZFRUKSIgZD0iTTEyIDJhMTAgMTAgMCAxIDAgMCAyMCAxMCAxMCAwIDAgMCAwLTIwem00LjUgNy41Yy0uOCAwLTEuNS0uMy0yLS44djUuNWEzLjUgMy41IDAgMSAxLTMuNS0zLjVjLjIgMCAuNCAwIC42LjF2LTEuOGMtLjIgMC0uNC0uMS0uNi0uMWE1LjUgNS41IDAgMSAwIDUuNSA1LjV2LTYuOGMuOC42IDEuOCAxIDMgMVY3LjdjLTEuMiAwLTIuMi0uNC0zLTEuMnoiLz4KPC9zdmc+" alt="TikTok" width="24" height="24">
-              TikTok（メイン）
-            </a>
-          </li>
-          <li>
-            <a href="https://discord.gg/dXexG8aSds" target="_blank" rel="noopener noreferrer">
-              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZERDIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmNGQ2ZCIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM1ODY1RjIiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxwYXRoIGZpbGw9InVybCgjZ3JhZERDKSIgZD0iTTIwLjMgMy43YTE5LjUgMTkuNSAwIDAgMC00LjktMS41LjA3LjA3IDAgMCAwLS4wNy4wNGMtLjIuNC0uNS45LS43IDEuM2ExOCAxOCAwIDAgMC01LjQgMGMtLjItLjQtLjUtLjktLjctMS4zYS4wNy4wNyAwIDAgMC0uMDctLjA0IDE5LjUgMTkuNSAwIDAgMC00LjkgMS41LjA3LjA3IDAgMCAwLS4wMy4wM0MuOCA5LjcuMyAxNS41LjUgMjEuM2EuMS4xIDAgMCAwIC4wNC4wNyAxOS43IDE5LjcgMCAwIDAgNiAzIC4wNy4wNyAwIDAgMCAuMDgtLjAzYy41LS43IDEtMS40IDEuNC0yLjFhLjA3LjA3IDAgMCAwLS4wNC0uMDggMTMgMTMgMCAwIDEtMS45LTEgLjA3LjA3IDAgMCAxLS4wNC0uMWMuMS0uMS4zLS4yLjQtLjNhLjA3LjA3IDAgMCAxIC4wNC0uMDIgMTQuMyAxNC4zIDAgMCAwIDUuMiAxLjZjMS42IDAgMy4yLS40IDQuNy0xLjIgMS4yLS42IDIuMi0xLjQgMy0yLjQuOC0xIDEuNC0yLjEgMS44LTMuMy4yLS42LjMtMS4yLjQtMS44YS4wNy4wNyAwIDAgMC0uMDQtLjA4Yy0xLjMuOS0yLjcgMS42LTQuMiAyYS4wNy4wNyAwIDAgMS0uMDgtLjAzYy0uNC0uNi0uOS0xLjItMS40LTIuMWEuMDcuMDcgMCAwIDAtLjA4LS4wMyAxOS41IDE5LjUgMCAwIDEtMi44LTEuNC4wNy4wNyAwIDAgMS0uMDQtLjA2VjguM2MwLTEgLjMtMiAuOS0yLjhhLjA3LjA3IDAgMCAxIC4wOC0uMDNjLjkuMyAxLjguNyAyLjcgMS4yYS4wNy4wNyAwIDAgMCAuMDggMGMxLjUtLjkgMy4yLTEuNiA1LTJhLjA3LjA3IDAgMCAxIC4wOC4wM2MuNi44IDEuMSAxLjcgMS41IDIuNi4zLjcuNSAxLjQuNiAyLjFhLjA3LjA3IDAgMCAwIC4wNC4wNmMxLjUtLjQgMy0xLjEgNC40LTJhLjA3LjA3IDAgMCAxIC4wOC4wM2MuNC45LjcgMS44LjkgMi44djYuOGEuMDcuMDcgMCAwIDEtLjA0LjA2Yy0xLjUuOS0zIDEuNi00LjYgMiEuMDcuMDcgMCAwIDAtLjA0LjFjLjEuMS4yLjIuMy4zYS4wNy4wNyAwIDAgMS0uMDQuMSAxMyAxMyAwIDAgMS0xLjkgMSAuMDcuMDcgMCAwIDAtLjA0LjA4Yy40LjcuOSAxLjQgMS40IDIuMWEuMDcuMDcgMCAwIDAgLjA4LjAzIDE5LjcgMTkuNyAwIDAgMCA2LTMgLjEuMSAwIDAgMCAuMDQtLjA3Yy4yLTUuOC0uMy0xMS42LTMtMTYuNmEuMDcuMDcgMCAwIDAtLjAzLS4wM3oiLz4KPC9zdmc+" alt="Discord" width="24" height="24">
-              Discord
-            </a>
-          </li>
-          <li>
-            <a href="https://kick.com/abeshinzoai" target="_blank" rel="noopener noreferrer">
-              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZEtpY2siIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmY0ZDZkIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzUzZmMxOCIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHBvbHlnb24gZmlsbD0idXJsKCNncmFkS2ljaykiIHBvaW50cz0iNSAzIDE5IDEyIDUgMjEgNSAzIi8+Cjwvc3ZnPg==" alt="KICK" width="24" height="24">
-              KICK（配信サイト）
-            </a>
-          </li>
-          <li>
-            <a href="https://rumble.com/playlists/I1lxDg0pS2I" target="_blank" rel="noopener noreferrer">
-              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZFJ1bWJsZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNmZmI3MDMiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjZmY0ZDZkIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8Y2lyY2xlIGZpbGw9InVybCgjZ3JhZFJ1bWJsZSkiIGN4PSIxMiIgY3k9IjEyIiByPSIxMCIvPgogIDxjaXJjbGUgZmlsbD0iI2ZmZiIgY3g9IjEyIiBjeT0iMTIiIHI9IjQiLz4KICA8cGF0aCBmaWxsPSIjZmZmIiBkPSJNMTIgOHY4Ii8+Cjwvc3ZnPg==" alt="Rumble" width="24" height="24">
-              Rumble（長尺動画全編アップロード済み）
-            </a>
-          </li>
-          <li>
-            <a href="https://abeshinzo.wuaze.com" target="_blank" rel="noopener noreferrer">
-              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZE9mZmljaWFsIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzRjYzlmMCIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmZjRkNmQiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxjaXJjbGUgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ1cmwoI2dyYWRPZmZpY2lhbCkiIHN0cm9rZS13aWR0aD0iMiIgY3g9IjEyIiBjeT0iMTIiIHI9IjEwIi8+CiAgPGNpcmNsZSBmaWxsPSJ1cmwoI2dyYWRPZmZpY2lhbCkiIGN4PSI4IiBjeT0iOCIgcj0iMiIvPgogIDxjaXJjbGUgZmlsbD0idXJsKCNncmFkT2ZmaWNpYWwpIiBjeD0iMTYiIGN5PSI4IiByPSIyIi8+CiAgPGNpcmNsZSBmaWxsPSJ1cmwoI2dyYWRPZmZpY2lhbCkiIGN4PSIxMiIgY3k9IjEyIiByPSIyIi8+CiAgPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSJ1cmwoI2dyYWRPZmZpY2lhbCkiIHN0cm9rZS13aWR0aD0iMiIgZD0iTTEyIDJhMTAgMTAgMCAwIDEgMCAyMCIvPgo8L3N2Zz4=" alt="反アベ団体公式" width="24" height="24">
-              反アベ団体公式
-            </a>
-          </li>
-          <li>
-            <a href="https://www.nicovideo.jp/user/52518540" target="_blank" rel="noopener noreferrer">
-              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZE5pY28iIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmY0ZDZkIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iNTAlIiBzdG9wLWNvbG9yPSIjZmZiNzAzIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzRjYzlmMCIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3QgZmlsbD0idXJsKCNncmFkTmljbykiIHg9IjIiIHk9IjQiIHdpZHRoPSIyMCIgaGVpZ2h0PSIxNiIgcng9IjQiLz4KICA8dGV4dCB4PSIxMiIgeT0iMTYiIGZvbnQtc2l6ZT0iMTIiIGZvbnQtd2VpZ2h0PSI5MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiNmZmYiPk5pY288L3RleHQ+Cjwvc3ZnPg==" alt="ニコニコ動画" width="24" height="24">
-              ニコニコ動画
-            </a>
-          </li>
-          <li>
-            <a href="https://www.twitch.tv/abeshinzo_" target="_blank" rel="noopener noreferrer">
-              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZFR3aXRjaCIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM5MTRlZmQiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjZmY0ZDZkIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCBmaWxsPSJ1cmwoI2dyYWRUd2l0Y2gpIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHg9IjIiIHk9IjIiIHJ4PSI1Ii8+CiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTEzIDZoLTN2OGgzbDMgMyAzLTN2LTNoM3YtMnoiLz4KPC9zdmc+" alt="Twitch" width="24" height="24">
-              Twitch
-            </a>
-          </li>
-          <li>
-            <a href="https://huggingface.co/AbeShinzo0708" target="_blank" rel="noopener noreferrer">
-              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZEh1Z2dpbmciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmY0ZDZkIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2ZmYjcwMyIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPGNpcmNsZSBmaWxsPSJ1cmwoI2dyYWRIdWdnaW5nKSIgY3g9IjEyIiBjeT0iMTIiIHI9IjEwIi8+CiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTEyIDhhNCA0IDAgMSAxIDAgOCAzIDMgMCAwIDEgMCA4eiIvPgo8L3N2Zz4=" alt="Hugging Face" width="24" height="24">
-              Hugging Face（AIツール置き場）
-            </a>
-          </li>
-          <li>
-            <a href="https://www.instagram.com/ai_sin3" target="_blank" rel="noopener noreferrer">
-              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNmZjRkNmQiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSI0MCUiIHN0b3AtY29sb3I9IiNmZmI3MDMiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNGNjOWYwIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCBmaWxsPSJ1cmwoI2cpIiB4PSIyIiB5PSIyIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHJ4PSI1IiByeT0iNSIvPgogIDxjaXJjbGUgZmlsbD0iI2ZmZiIgY3g9IjEyIiBjeT0iMTIiIHI9IjQuNSIvPgogIDxjaXJjbGUgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjEiIGN4PSIxNy41IiBjeT0iNy41IiByPSIxLjUiLz4KPC9zdmc+" alt="Instagram" width="24" height="24">
-              Instagram
-            </a>
-          </li>
-          <li>
-            <a href="https://www.youtube.com/@ai-abe-ch" target="_blank" rel="noopener noreferrer">
-              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZFlUMiIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM0Y2M5ZjAiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjZmY0ZDZkIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cGF0aCBmaWxsPSJ1cmwoI2dyYWRZVDIpIiBkPSJNMjMuNDk4IDYuMTg2YTMuMDE2IDMuMDE2IDAgMCAwLTIuMTIyLTIuMTM2QzE5LjUwNSAzLjU0NSAxMiAzLjU0NSAxMiAzLjU0NXMtNy41MDUgMC05LjM3Ny41MDVBMy4wMTYgMy4wMTYgMCAwIDAgLjUwMiA2LjE4NkMwIDguMDcgMCAxMiAwIDEyczAgMy45My41MDIgNS44MTRhMy4wMTYgMy4wMTYgMCAwIDAgMi4xMjIgMi4xMzZjMS44NzIuNTA1IDkuMzc3LjUwNSA5LjM3Ny41MDVzNy41MDUgMCA5LjM3Ny0uNTA1YTMuMDE2IDMuMDE2IDAgMCAwIDIuMTIyLTIuMTM2QzI0IDE1LjkzIDI0IDEyIDI0IDEyczAtMy45My0uNTAyLTUuODE0ek05LjU0NSAxNS41NjhWOC40MzJMMTUuODE4IDEybC02LjI3MyAzLjU2OHoiLz4KPC9zdmc+" alt="YouTube（サブ）" width="24" height="24">
-              YouTube（サブチャンネル）
-            </a>
-          </li>
-          <li>
-            <a href="https://www.tiktok.com/@ai_sin3" target="_blank" rel="noopener noreferrer">
-              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZFRUMiIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM0Y2M5ZjAiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSI1MCUiIHN0b3AtY29sb3I9IiMwMDAwMDAiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjZmY0ZDZkIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cGF0aCBmaWxsPSJ1cmwoI2dyYWRUVDIpIiBkPSJNMTIgMmExMCAxMCAwIDEgMCAwIDIwIDEwIDEwIDAgMCAxIDAgMC0yMG00LjUgNy41Yy0uOCAwLTEuNS0uMy0yLS44djUuNWEzLjUgMy41IDAgMSAxLTMuNS0zLjVjLjIgMCAuNCAwIC42LjF2LTEuOGMtLjIgMC0uNC0uMS0uNi0uMWE1LjUgNS41IDAgMSAwIDUuNSA1LjV2LTYuOGMuOC42IDEuOCAxIDMgMVY3LjdjLTEuMiAwLTIuMi0uNC0zLTEuMnoiLz4KPC9zdmc+" alt="TikTok（サブ）" width="24" height="24">
-              TikTok（サブ）
-            </a>
-          </li>
-          <li>
-            <a href="https://doneru.jp/abeshinzo" target="_blank" rel="noopener noreferrer">
-              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZERvbmVydSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNmZjRkNmQiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNGNjOWYwIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8Y2lyY2xlIGZpbGw9InVybCgjZ3JhZERvbmVydSkiIGN4PSIxMiIgY3k9IjEyIiByPSIxMCIvPgogIDx0ZXh0IHg9IjEyIiB5PSIxNiIgZm9udC1zaXplPSIxMCIgZm9udC13ZWlnaHQ9IjkwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iI2ZmZiI+RG88L3RleHQ+Cjwvc3ZnPg==" alt="Doneru" width="24" height="24">
-              Doneru（投げ銭）
-            </a>
-          </li>
-        </ul>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <footer>
-      <div class="container">
-        <p>&copy; 2025 Abe Artificial Intelligence</p>
+  <section id="tts" class="section">
+    <div class="container">
+      <div class="panel">
+        <div class="panel-header">
+          <h2 class="tts-title">
+            <span class="tts-emoji" aria-hidden="true"></span>
+            <span>安倍AIボイスメーカー</span>
+            <img class="tts-icon" src="images/abe_voice@2x.png" alt="マイクアイコン" aria-hidden="true" width="20" height="20">
+          </h2>
+          <p class="help">安倍ちゃんにあんなことやこんなことを喋らせよう</p>
+        </div>
+        <div class="panel-body">
+          <textarea id="text-input" class="tts-input" placeholder="ここにテキストを入力…"></textarea>
+          <button id="generate-btn" class="btn-primary" type="button">合成生成</button>
+          <div id="loading" class="loading">合成中...（数秒お待ちください）</div>
+          
+          <!-- オーディオプレイヤー＋ダウンロードボタン -->
+          <div class="audio-controls">
+            <audio id="audio-player" controls></audio>
+            <button id="download-btn" class="btn-download" type="button" disabled>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              音声をダウンロード
+            </button>
+          </div>
+          
+          <div id="status" aria-live="polite"></div>
+        </div>
       </div>
-    </footer>
+    </div>
+  </section>
 
-    <script type="module">
-      import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+  <section id="membership" class="section">
+    <div class="container">
+      <div class="membership">
+        <div class="inner">
+          <h2> メンバーシップ（月額298円）</h2>
+          <p>高速版ボイスメーカー・限定動画・画像・グッズ先行販売など</p>
+          <button id="subscribe-btn" class="btn-secondary">今すぐ参加する</button>
+          <button id="login-btn" class="btn-secondary" style="margin-top:10px;">ログイン</button>
+          <p id="premium-status" style="margin-top:12px; font-size:14px; color:var(--muted);"></p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-      const supabaseUrl = "https://fdtaesossfqfhtpoesjn.supabase.co";
-      const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZkdGFlc29zc2ZxZmh0cG9lc2puIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY5Mzc1MzEsImV4cCI6MjA4MjUxMzUzMX0.AJQSaYIhaTBf338f4gfMGGQ-4hRARxcPSWRY3ReCFFk";
-      const stripePriceId = "price_1Sj4iWBoy0CvdEnb2pgIdfry";
-      const checkoutFunctionUrl = "https://fdtaesossfqfhtpoesjn.supabase.co/functions/v1/create-checkout-session";
-      const portalFunctionUrl = "https://fdtaesossfqfhtpoesjn.supabase.co/functions/v1/create-portal-session";
+   <!-- ログイン用マジックリンクモーダル -->
+  <div id="auth-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:1000; align-items:center; justify-content:center;">
+    <div style="background:#fff; padding:30px; border-radius:16px; max-width:400px; width:90%;">
+      <h3 style="margin-top:0;">ログイン / 新規登録</h3>
+      <p style="color:var(--muted); font-size:14px;">メールアドレスにマジックリンクを送信します</p>
+      <input id="auth-email" type="email" placeholder="メールアドレス" style="width:100%; padding:12px; margin:12px 0; border-radius:12px; border:1px solid var(--border);">
+      <button id="auth-magic" class="btn-primary" style="width:100%;">マジックリンクを送信</button>
+      <button id="auth-close" style="margin-top:12px; width:100%; padding:10px; background:transparent; border:1px solid var(--border); border-radius:12px;">閉じる</button>
+    </div>
+  </div>
+</main>  <!-- ===== 新規追加: SNSリンク紹介欄 ===== -->
+  <section id="sns-section" class="section">
+  <div class="container">
+    <h2 class="section-title">SNSリンク</h2>
+    <p style="text-align: center; color: var(--muted); font-size: 15px; margin-bottom: 20px;">フォローして最新情報をチェック！</p>
+    <ul class="sns-list">
+      <!-- 既存 -->
+      <li>
+        <a href="https://x.com/RougaiBarusan" target="_blank" rel="noopener noreferrer">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZFgiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmY0ZDZkIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2ZmYjcwMyIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHBhdGggZmlsbD0idXJsKCNncmFkWCkiIGQ9Ik0xOC45MDEgMS4xNTNoMy42OGwtOC4wNCA5LjE5TDI0IDIyLjg0NmgtNy40MDZsLTUuOC03LjU4NC02LjYzOCA3LjU4NEguNDc0bDguNi05LjgzTDAgMS4xNTRoNy41OTRsNS4yNDMgNy4zNSA2LjA2NC03LjM1ek0xNy42MSAyMC42NDRoMi4wNEw2LjY1IDMuMzU2SDQuNTI3bDEzLjA4MyAxNy4yODh6Ii8+Cjwvc3ZnPg==" alt="X (Twitter)" width="24" height="24">
+          X (Twitter)
+        </a>
+      </li>
+      <li>
+        <a href="https://www.youtube.com/@%E3%83%88%E3%83%AA%E3%83%A2%E3%83%AD%E3%82%B9TV/streams" target="_blank" rel="noopener noreferrer">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZFlUIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmNGQ2ZCIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM0Y2M5ZjAiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxwYXRoIGZpbGw9InVybCgjZ3JhZFlUKSIgZD0iTTIzLjQ5OCA2LjE4NmEzLjAxNiAzLjAxNiAwIDAgMC0yLjEyMi0yLjEzNkMxOS41MDUgMy41NDUgMTIgMy41NDUgMTIgMy41NDVzLTcuNTA1IDAtOS4zNzcuNTA1QTMuMDE2IDMuMDE2IDAgMCAwIC41MDIgNi4xODZDMCA4LjA3IDAgMTIgMCAxMnMwIDMuOTMuNTAyIDUuODE0YTMuMDE2IDMuMDE2IDAgMCAwIDIuMTIyIDIuMTM2YzEuODcyLjUwNSA5LjM3Ny41MDUgOS4zNzcuNTA1czcuNTA1IDAgOS4zNzctLjUwNWEzLjAxNiAzLjAxNiAwIDAgMCAyLjEyMi0yLjEzNkMyNCAxNS45MyAyNCAxMiAyNCAxMnMwLTMuOTMtLjUwMi01LjgxNHpNOS41NDUgMTUuNTY4VjguNDMyTDE1LjgxOCAxMmwtNi4yNzMgMy41Njh6Ii8+Cjwvc3ZnPg==" alt="YouTube" width="24" height="24">
+          YouTube（メイン）
+        </a>
+      </li>
+      <li>
+        <a href="https://www.tiktok.com/@sin3_ai" target="_blank" rel="noopener noreferrer">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZFRUIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmNGQ2ZCIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iIzAwMDAwMCIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM0Y2M5ZjAiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxwYXRoIGZpbGw9InVybCgjZ3JhZFRUKSIgZD0iTTEyIDJhMTAgMTAgMCAxIDAgMCAyMCAxMCAxMCAwIDAgMCAwLTIwem00LjUgNy41Yy0uOCAwLTEuNS0uMy0yLS44djUuNWEzLjUgMy41IDAgMSAxLTMuNS0zLjVjLjIgMCAuNCAwIC42LjF2LTEuOGMtLjIgMC0uNC0uMS0uNi0uMWE1LjUgNS41IDAgMSAwIDUuNSA1LjV2LTYuOGMuOC42IDEuOCAxIDMgMVY3LjdjLTEuMiAwLTIuMi0uNC0zLTEuMnoiLz4KPC9zdmc+" alt="TikTok" width="24" height="24">
+          TikTok（メイン）
+        </a>
+      </li>
+      <li>
+        <a href="https://discord.gg/dXexG8aSds" target="_blank" rel="noopener noreferrer">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZERDIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmNGQ2ZCIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM1ODY1RjIiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxwYXRoIGZpbGw9InVybCgjZ3JhZERDKSIgZD0iTTIwLjMgMy43YTE5LjUgMTkuNSAwIDAgMC00LjktMS41LjA3LjA3IDAgMCAwLS4wNy4wNGMtLjIuNC0uNS45LS43IDEuM2ExOCAxOCAwIDAgMC01LjQgMGMtLjItLjQtLjUtLjktLjctMS4zYS4wNy4wNyAwIDAgMC0uMDctLjA0IDE5LjUgMTkuNSAwIDAgMC00LjkgMS41LjA3LjA3IDAgMCAwLS4wMy4wM0MuOCA5LjcuMyAxNS41LjUgMjEuM2EuMS4xIDAgMCAwIC4wNC4wNyAxOS43IDE5LjcgMCAwIDAgNiAzIC4wNy4wNyAwIDAgMCAuMDgtLjAzYy41LS43IDEtMS40IDEuNC0yLjFhLjA3LjA3IDAgMCAwLS4wNC0uMDggMTMgMTMgMCAwIDEtMS45LTEgLjA3LjA3IDAgMCAxLS4wNC0uMWMuMS0uMS4zLS4yLjQtLjNhLjA3LjA3IDAgMCAxIC4wNC0uMDIgMTQuMyAxNC4zIDAgMCAwIDUuMiAxLjZjMS42IDAgMy4yLS40IDQuNy0xLjIgMS4yLS42IDIuMi0xLjQgMy0yLjQuOC0xIDEuNC0yLjEgMS44LTMuMy4yLS42LjMtMS4yLjQtMS44YS4wNy4wNyAwIDAgMC0uMDQtLjA4Yy0xLjMuOS0yLjcgMS42LTQuMiAyYS4wNy4wNyAwIDAgMS0uMDgtLjAzYy0uNC0uNi0uOS0xLjItMS40LTIuMWEuMDcuMDcgMCAwIDAtLjA4LS4wMyAxOS41IDE5LjUgMCAwIDEtMi44LTEuNC4wNy4wNyAwIDAgMS0uMDQtLjA2VjguM2MwLTEgLjMtMiAuOS0yLjhhLjA3LjA3IDAgMCAxIC4wOC0uMDNjLjkuMyAxLjguNyAyLjcgMS4yYS4wNy4wNyAwIDAgMCAuMDggMGMxLjUtLjkgMy4yLTEuNiA1LTJhLjA3LjA3IDAgMCAxIC4wOC4wM2MuNi44IDEuMSAxLjcgMS41IDIuNi4zLjcuNSAxLjQuNiAyLjFhLjA3LjA3IDAgMCAwIC4wNC4wNmMxLjUtLjQgMy0xLjEgNC40LTJhLjA3LjA3IDAgMCAxIC4wOC4wM2MuNC45LjcgMS44LjkgMi44djYuOGEuMDcuMDcgMCAwIDEtLjA0LjA2Yy0xLjUuOS0zIDEuNi00LjYgMmEuMDcuMDcgMCAwIDAtLjA0LjFjLjEuMS4yLjIuMy4zYS4wNy4wNyAwIDAgMS0uMDQuMSAxMyAxMyAwIDAgMS0xLjkgMSAuMDcuMDcgMCAwIDAtLjA0LjA4Yy40LjcuOSAxLjQgMS40IDIuMWEuMDcuMDcgMCAwIDAgLjA4LjAzIDE5LjcgMTkuNyAwIDAgMCA2LTMgLjEuMSAwIDAgMCAuMDQtLjA3Yy4yLTUuOC0uMy0xMS42LTMtMTYuNmEuMDcuMDcgMCAwIDAtLjAzLS4wM3oiLz4KPC9zdmc+" alt="Discord" width="24" height="24">
+          Discord
+        </a>
+      </li>
+      <li>
+        <a href="https://kick.com/abeshinzoai" target="_blank" rel="noopener noreferrer">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZEtpY2siIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmY0ZDZkIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzUzZmMxOCIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHBvbHlnb24gZmlsbD0idXJsKCNncmFkS2ljaykiIHBvaW50cz0iNSAzIDE5IDEyIDUgMjEgNSAzIi8+Cjwvc3ZnPg==" alt="KICK" width="24" height="24">
+          KICK（配信サイト）
+        </a>
+      </li>
+      <li>
+        <a href="https://rumble.com/playlists/I1lxDg0pS2I" target="_blank" rel="noopener noreferrer">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZFJ1bWJsZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNmZmI3MDMiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjZmY0ZDZkIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8Y2lyY2xlIGZpbGw9InVybCgjZ3JhZFJ1bWJsZSkiIGN4PSIxMiIgY3k9IjEyIiByPSIxMCIvPgogIDxjaXJjbGUgZmlsbD0iI2ZmZiIgY3g9IjEyIiBjeT0iMTIiIHI9IjQiLz4KICA8cGF0aCBmaWxsPSIjZmZmIiBkPSJNMTIgOHY4Ii8+Cjwvc3ZnPg==" alt="Rumble" width="24" height="24">
+          Rumble（長尺動画全編アップロード済み）
+        </a>
+      </li>
+      <li>
+        <a href="https://abeshinzo.wuaze.com" target="_blank" rel="noopener noreferrer">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZE9mZmljaWFsIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzRjYzlmMCIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmZjRkNmQiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxjaXJjbGUgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ1cmwoI2dyYWRPZmZpY2lhbCkiIHN0cm9rZS13aWR0aD0iMiIgY3g9IjEyIiBjeT0iMTIiIHI9IjEwIi8+CiAgPGNpcmNsZSBmaWxsPSJ1cmwoI2dyYWRPZmZpY2lhbCkiIGN4PSI4IiBjeT0iOCIgcj0iMiIvPgogIDxjaXJjbGUgZmlsbD0idXJsKCNncmFkT2ZmaWNpYWwpIiBjeD0iMTYiIGN5PSI4IiByPSIyIi8+CiAgPGNpcmNsZSBmaWxsPSJ1cmwoI2dyYWRPZmZpY2lhbCkiIGN4PSIxMiIgY3k9IjEyIiByPSIyIi8+CiAgPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSJ1cmwoI2dyYWRPZmZpY2lhbCkiIHN0cm9rZS13aWR0aD0iMiIgZD0iTTEyIDJhMTAgMTAgMCAwIDEgMCAyMCIvPgo8L3N2Zz4=" alt="反アベ団体公式" width="24" height="24">
+          反アベ団体公式
+        </a>
+      </li>
+      <li>
+        <a href="https://www.nicovideo.jp/user/52518540" target="_blank" rel="noopener noreferrer">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZE5pY28iIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmY0ZDZkIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iNTAlIiBzdG9wLWNvbG9yPSIjZmZiNzAzIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzRjYzlmMCIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3QgZmlsbD0idXJsKCNncmFkTmljbykiIHg9IjIiIHk9IjQiIHdpZHRoPSIyMCIgaGVpZ2h0PSIxNiIgcng9IjQiLz4KICA8dGV4dCB4PSIxMiIgeT0iMTYiIGZvbnQtc2l6ZT0iMTIiIGZvbnQtd2VpZ2h0PSI5MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiNmZmYiPk5pY288L3RleHQ+Cjwvc3ZnPg==" alt="ニコニコ動画" width="24" height="24">
+          ニコニコ動画
+        </a>
+      </li>
+      <li>
+        <a href="https://www.twitch.tv/abeshinzo_" target="_blank" rel="noopener noreferrer">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZFR3aXRjaCIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM5MTRlZmQiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjZmY0ZDZkIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCBmaWxsPSJ1cmwoI2dyYWRUd2l0Y2gpIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHg9IjIiIHk9IjIiIHJ4PSI1Ii8+CiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTEzIDZoLTN2OGgzbDMgMyAzLTN2LTNoM3YtMnoiLz4KPC9zdmc+" alt="Twitch" width="24" height="24">
+          Twitch
+        </a>
+      </li>
+      <li>
+        <a href="https://huggingface.co/AbeShinzo0708" target="_blank" rel="noopener noreferrer">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZEh1Z2dpbmciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmY0ZDZkIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2ZmYjcwMyIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPGNpcmNsZSBmaWxsPSJ1cmwoI2dyYWRIdWdnaW5nKSIgY3g9IjEyIiBjeT0iMTIiIHI9IjEwIi8+CiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTEyIDhhNCA0IDAgMSAxIDAgOCAzIDMgMCAwIDEgMCA4eiIvPgo8L3N2Zz4=" alt="Hugging Face" width="24" height="24">
+          Hugging Face（AIツール置き場）
+        </a>
+      </li>
+      <li>
+        <a href="https://www.instagram.com/ai_sin3" target="_blank" rel="noopener noreferrer">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNmZjRkNmQiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSI0MCUiIHN0b3AtY29sb3I9IiNmZmI3MDMiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNGNjOWYwIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCBmaWxsPSJ1cmwoI2cpIiB4PSIyIiB5PSIyIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHJ4PSI1IiByeT0iNSIvPgogIDxjaXJjbGUgZmlsbD0iI2ZmZiIgY3g9IjEyIiBjeT0iMTIiIHI9IjQuNSIvPgogIDxjaXJjbGUgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjEiIGN4PSIxNy41IiBjeT0iNy41IiByPSIxLjUiLz4KPC9zdmc+" alt="Instagram" width="24" height="24">
+          Instagram
+        </a>
+      </li>
+      <li>
+        <a href="https://www.youtube.com/@ai-abe-ch" target="_blank" rel="noopener noreferrer">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZFlUMiIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM0Y2M5ZjAiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjZmY0ZDZkIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cGF0aCBmaWxsPSJ1cmwoI2dyYWRZVDIpIiBkPSJNMjMuNDk4IDYuMTg2YTMuMDE2IDMuMDE2IDAgMCAwLTIuMTIyLTIuMTM2QzE5LjUwNSAzLjU0NSAxMiAzLjU0NSAxMiAzLjU0NXMtNy41MDUgMC05LjM3Ny41MDVBMy4wMTYgMy4wMTYgMCAwIDAgLjUwMiA2LjE4NkMwIDguMDcgMCAxMiAwIDEyczAgMy45My41MDIgNS44MTRhMy4wMTYgMy4wMTYgMCAwIDAgMi4xMjIgMi4xMzZjMS44NzIuNTA1IDkuMzc3LjUwNSA5LjM3Ny41MDVzNy41MDUgMCA5LjM3Ny0uNTA1YTMuMDE2IDMuMDE2IDAgMCAwIDIuMTIyLTIuMTM2QzI0IDE1LjkzIDI0IDEyIDI0IDEyczAtMy45My0uNTAyLTUuODE0ek05LjU0NSAxNS41NjhWOC40MzJMMTUuODE4IDEybC02LjI3MyAzLjU2OHoiLz4KPC9zdmc+" alt="YouTube（サブ）" width="24" height="24">
+          YouTube（サブチャンネル）
+        </a>
+      </li>
+      <li>
+        <a href="https://www.tiktok.com/@ai_sin3" target="_blank" rel="noopener noreferrer">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZFRUMiIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM0Y2M5ZjAiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSI1MCUiIHN0b3AtY29sb3I9IiMwMDAwMDAiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjZmY0ZDZkIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cGF0aCBmaWxsPSJ1cmwoI2dyYWRUVDIpIiBkPSJNMTIgMmExMCAxMCAwIDEgMCAwIDIwIDEwIDEwIDAgMCAxIDAgMC0yMG00LjUgNy41Yy0uOCAwLTEuNS0uMy0yLS44djUuNWEzLjUgMy41IDAgMSAxLTMuNS0zLjVjLjIgMCAuNCAwIC42LjF2LTEuOGMtLjIgMC0uNC0uMS0uNi0uMWE1LjUgNS41IDAgMSAwIDUuNSA1LjV2LTYuOGMuOC42IDEuOCAxIDMgMVY3LjdjLTEuMiAwLTIuMi0uNC0zLTEuMnoiLz4KPC9zdmc+" alt="TikTok（サブ）" width="24" height="24">
+          TikTok（サブ）
+        </a>
+      </li>
+      <li>
+        <a href="https://doneru.jp/abeshinzo" target="_blank" rel="noopener noreferrer">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZERvbmVydSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNmZjRkNmQiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNGNjOWYwIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8Y2lyY2xlIGZpbGw9InVybCgjZ3JhZERvbmVydSkiIGN4PSIxMiIgY3k9IjEyIiByPSIxMCIvPgogIDx0ZXh0IHg9IjEyIiB5PSIxNiIgZm9udC1zaXplPSIxMCIgZm9udC13ZWlnaHQ9IjkwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iI2ZmZiI+RG88L3RleHQ+Cjwvc3ZnPg==" alt="Doneru" width="24" height="24">
+          Doneru（投げ銭）
+        </a>
+      </li>
+    </ul>
+  </div>
+  </section>
 
-      const supabase = createClient(supabaseUrl, supabaseAnonKey);
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Abe Artificial Intelligence</p>
+    </div>
+  </footer>
 
-      async function updateUI() {
-        const { data: { user } } = await supabase.auth.getUser();
-        const isLoggedIn = !!user;
-        const email = user?.email || '';
+  <script type="module">
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
-        document.getElementById('user-email').textContent = isLoggedIn ? `${email}でログインしています` : '';
+    // === ここをあなたの値に変更してください ===
+    const supabaseUrl = "https://fdtaesossfqfhtpoesjn.supabase.co";  // Supabase Dashboard → Settings → API
+    const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZkdGFlc29zc2ZxZmh0cG9lc2puIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY5Mzc1MzEsImV4cCI6MjA4MjUxMzUzMX0.AJQSaYIhaTBf338f4gfMGGQ-4hRARxcPSWRY3ReCFFk";           // 同上 → Project API keys → anon
+    const stripePriceId = "price_1Sj4iWBoy0CvdEnb2pgIdfry";   // Stripe Dashboard → Products → 298円のPrice ID
+    //const stripePriceId = "price_1Sj3ppB20VFjVTK97a2DhgTU";
+    const checkoutFunctionUrl = "https://fdtaesossfqfhtpoesjn.supabase.co/functions/v1/create-checkout-session";
+    // ============================================
 
-        const pcBtn = document.getElementById('auth-btn-pc');
-        const mobileBtn = document.getElementById('auth-btn-mobile');
-        if (isLoggedIn) {
-          pcBtn.textContent = 'ログアウト';
-          mobileBtn.textContent = 'ログアウト';
-          pcBtn.onclick = mobileBtn.onclick = async () => {
-            await supabase.auth.signOut();
-            location.reload();
-          };
-        } else {
-          pcBtn.textContent = 'ログイン';
-          mobileBtn.textContent = 'ログイン';
-          pcBtn.onclick = mobileBtn.onclick = () => {
-            alert('ログイン機能は現在メンテナンス中です。ご不便をおかけします。');
-          };
-        }
+    const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-        let isPremium = false;
-        if (isLoggedIn) {
-          const { data, error } = await supabase
-            .from('subscriptions')
-            .select('status, current_period_end')
-            .eq('user_id', user.id)
-            .in('status', ['active', 'trialing'])
-            .order('created_at', { ascending: false })
-            .limit(1)
-            .single();
-
-          if (!error && data) {
-            isPremium = ['active', 'trialing'].includes(data.status);
-            const endDate = new Date(data.current_period_end * 1000).toLocaleDateString('ja-JP');
-            document.getElementById('premium-status').textContent = `プレミアム会員です（次回更新: ${endDate}）`;
-            document.getElementById('premium-status').style.color = "var(--p)";
-          } else {
-            document.getElementById('premium-status').textContent = "プレミアム会員ではありません";
-          }
-        } else {
-          document.getElementById('premium-status').textContent = "ログインしていません";
-        }
-
-        const subscribeBtn = document.getElementById('subscribe-btn');
-        const loginBtn = document.getElementById('login-btn');
-        const inner = document.querySelector('.membership .inner');
-
-        inner.querySelectorAll('.premium-only-btn').forEach(el => el.remove());
-
-        if (isPremium) {
-          subscribeBtn.style.display = 'none';
-          loginBtn.style.display = 'none';
-
-          const premiumLink = document.createElement('a');
-          premiumLink.href = 'premium.html';
-          premiumLink.className = 'btn-secondary premium-only-btn';
-          premiumLink.textContent = 'プレミアムコンテンツへ';
-          inner.appendChild(premiumLink);
-
-          const cancelBtn = document.createElement('button');
-          cancelBtn.className = 'btn-secondary premium-only-btn';
-          cancelBtn.textContent = '解約する';
-          cancelBtn.onclick = async () => {
-            try {
-              const response = await fetch(portalFunctionUrl, {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`,
-                },
-                body: JSON.stringify({ return_url: window.location.href }),
-              });
-              if (!response.ok) throw new Error(await response.text());
-              const { url } = await response.json();
-              window.location.href = url;
-            } catch (err) {
-              alert("解約ページの起動に失敗しました: " + err.message);
-            }
-          };
-          inner.appendChild(cancelBtn);
-        } else {
-          subscribeBtn.style.display = 'block';
-          if (isLoggedIn) {
-            loginBtn.textContent = 'ログイン中';
-            loginBtn.disabled = true;
-            loginBtn.style.opacity = '0.7';
-          } else {
-            loginBtn.textContent = 'ログイン';
-            loginBtn.disabled = false;
-            loginBtn.onclick = () => {
-              alert('ログイン機能は現在メンテナンス中です。ご不便をおかけします。');
-            };
-          }
-        }
-      }
-
-      window.addEventListener('load', updateUI);
-      supabase.auth.onAuthStateChange(updateUI);
-
-      supabase
-        .channel('subscriptions-changes')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'subscriptions' }, updateUI)
-        .subscribe();
-
-      document.getElementById('subscribe-btn')?.addEventListener('click', async () => {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) {
-          alert("ログインが必要です");
-          return;
-        }
-
-        try {
-          const response = await fetch(checkoutFunctionUrl, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`,
-            },
-            body: JSON.stringify({
-              priceId: stripePriceId,
-              userId: user.id,
-              success_url: window.location.href,
-              cancel_url: window.location.href,
-            }),
-          });
-
-          if (!response.ok) throw new Error(await response.text());
-
-          const { url } = await response.json();
-          window.location.href = url;
-        } catch (err) {
-          alert("決済開始に失敗しました: " + err.message);
-        }
-      });
-
-      const SCHEDULE_JSON_URL = 'schedule.json';
-
-      async function fetchSchedule() {
-        try {
-          const response = await fetch(SCHEDULE_JSON_URL + '?t=' + Date.now());
-          if (!response.ok) throw new Error('ファイルが見つかりません');
-          const events = await response.json();
-
-          const statusEl = document.getElementById('live-status');
-          const cardsContainer = document.getElementById('live-cards');
-          const noScheduleEl = document.getElementById('no-schedule');
-          cardsContainer.innerHTML = '';
-          statusEl.style.display = 'none';
-          noScheduleEl.style.display = 'none';
-
-          const now = new Date();
-
-          const sortedEvents = events
-            .sort((a, b) => new Date(b.date) - new Date(a.date));
-
-          if (sortedEvents.length === 0) {
-            noScheduleEl.style.display = 'block';
-            return;
-          }
-
-          statusEl.textContent = '近日中の配信スケジュール';
-          statusEl.style.display = 'block';
-
-          sortedEvents.forEach(event => {
-            if (!event.title && !event.date) return;
-
-            const startTime = new Date(event.date);
-            const hoursSinceStart = (now - startTime) / (1000 * 60 * 60);
-            const isClearlyPast = hoursSinceStart >= 48;
-
-            const timeStr = startTime.toLocaleString('ja-JP', {
-              month: 'numeric',
-              day: 'numeric',
-              weekday: 'short',
-              hour: '2-digit',
-              minute: '2-digit'
-            });
-
-            const platform = event.platform || 'ライブ';
-            const url = event.url || 'https://www.youtube.com/@%E3%83%88%E3%83%AA%E3%83%A2%E3%83%AD%E3%82%B9TV/streams';
-
-            const card = document.createElement('a');
-            card.className = `live-card ${isClearlyPast ? 'past' : ''}`;
-            card.href = url;
-            card.target = '_blank';
-            card.rel = 'noopener noreferrer';
-
-            card.innerHTML = `
-              <div class="live-card-header">
-                <h3 class="live-card-title">${event.title || '無題の配信'}</h3>
-                <span class="live-card-platform">${platform}</span>
-              </div>
-              <div class="live-card-body">
-                <p class="live-card-time">${timeStr}</p>
-                <p class="live-card-status">クリックで視聴ページへ</p>
-              </div>
-            `;
-
-            cardsContainer.appendChild(card);
-          });
-
-        } catch (err) {
-          document.getElementById('live-status').textContent = ' スケジュール取得失敗（schedule.jsonを確認）';
-          document.getElementById('live-status').style.color = '#e11d48';
-          console.error(err);
-        }
-      }
-
-      window.addEventListener('load', fetchSchedule);
-
-      const menuToggle = document.getElementById('menu-toggle');
-      const navScroller = document.getElementById('nav-scroller');
-      const navLinks = navScroller.querySelectorAll('a');
-      let scrollPosition = 0;
-
-      function preventScroll(e) {
-        e.preventDefault();
-        e.stopPropagation();
+    // プレミアムステータスチェック（改善: テーブル名を'subscriptions'に修正、metadata.supabase_user_idでクエリ。リアルタイム購読追加）
+    async function checkPremiumStatus() {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        document.getElementById('premium-status').textContent = "ログインしていません";
         return false;
       }
 
-      function openMenu() {
-        scrollPosition = window.pageYOffset;
-        
-        navScroller.classList.add('open');
-        menuToggle.classList.add('active');
-        menuToggle.setAttribute('aria-expanded', 'true');
-        menuToggle.setAttribute('aria-label', 'メニューを閉じる');
-        document.body.classList.add('menu-open');
-        document.documentElement.classList.add('menu-open');
-        
-        document.body.style.top = `-${scrollPosition}px`;
-        
-        document.addEventListener('touchmove', preventScroll, { passive: false });
-        document.addEventListener('wheel', preventScroll, { passive: false });
+      const { data, error } = await supabase
+        .from('subscriptions')
+        .select('status, current_period_end')
+        .eq('user_id', user.id)
+        .in('status', ['active', 'trialing'])  // activeまたはtrialingを許可
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single();
+
+      if (error && error.code !== 'PGRST116') {  // PGRST116 = no rows
+        console.error('Subscription check error:', error);
+        document.getElementById('premium-status').textContent = "ステータス確認エラー";
+        return false;
       }
 
-      function closeMenu() {
-        navScroller.classList.remove('open');
-        menuToggle.classList.remove('active');
-        menuToggle.setAttribute('aria-expanded', 'false');
-        menuToggle.setAttribute('aria-label', 'メニューを開く');
-        document.body.classList.remove('menu-open');
-        document.documentElement.classList.remove('menu-open');
-        
-        document.body.style.top = '';
-        window.scrollTo(0, scrollPosition);
-        
-        document.removeEventListener('touchmove', preventScroll);
-        document.removeEventListener('wheel', preventScroll);
+      const isPremium = data && ['active', 'trialing'].includes(data.status);
+      const statusEl = document.getElementById('premium-status');
+      
+      if (isPremium) {
+        const endDate = new Date(data.current_period_end).toLocaleDateString('ja-JP');
+        statusEl.textContent = `✨ プレミアム会員です（次回更新: ${endDate}）`;
+        statusEl.style.color = "var(--p)";
+        document.querySelectorAll('.premium-only').forEach(el => el.style.display = 'block');
+      } else {
+        statusEl.textContent = "プレミアム会員ではありません";
+      }
+      return isPremium;
+    }
+
+    // リアルタイムでsubscriptionsテーブルを監視（決済後即時反映）
+    function subscribeToSubscriptions() {
+      supabase
+        .channel('subscriptions-changes')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'subscriptions' }, () => {
+          checkPremiumStatus();
+        })
+        .subscribe();
+    }
+
+    // 決済ボタン（改善: success_urlを現在のページに設定し、ポーリング追加）
+    document.getElementById('subscribe-btn')?.addEventListener('click', async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        alert("ログインしてください");
+        document.getElementById('auth-modal').style.display = 'flex';
+        return;
       }
 
-      menuToggle.addEventListener('click', () => {
-        const isOpen = navScroller.classList.contains('open');
-        if (isOpen) {
-          closeMenu();
-        } else {
-          openMenu();
-        }
-      });
-
-      navLinks.forEach(link => {
-        link.addEventListener('click', () => {
-          closeMenu();
+      try {
+        const response = await fetch(checkoutFunctionUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`,
+          },
+          body: JSON.stringify({
+            priceId: stripePriceId,
+            userId: user.id,
+            success_url: window.location.href,  // 決済成功後、このページに戻る
+            cancel_url: window.location.href,
+          }),
         });
-      });
 
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && navScroller.classList.contains('open')) {
-          closeMenu();
-          menuToggle.focus();
+        if (!response.ok) throw new Error(await response.text());
+
+        const { url } = await response.json();
+        window.location.href = url;
+      } catch (err) {
+        console.error(err);
+        alert("決済開始に失敗しました: " + err.message);
+      }
+    });
+
+    // 決済成功後のポーリング（専用ページで「確認中...」の場合を想定し、このページでポーリング）
+    async function pollSubscriptionStatus(maxAttempts = 30, interval = 2000) {
+      let attempts = 0;
+      const statusEl = document.getElementById('premium-status');
+      statusEl.textContent = "確認中...";
+
+      const poll = setInterval(async () => {
+        attempts++;
+        const isPremium = await checkPremiumStatus();
+        if (isPremium || attempts >= maxAttempts) {
+          clearInterval(poll);
+          if (!isPremium) {
+            statusEl.textContent = "プレミアムステータスの確認に失敗しました。ページをリロードしてください。";
+          }
         }
+      }, interval);
+    }
+
+    // URLにsession_idがあればポーリング開始（Stripeから戻ってきた場合）
+    window.addEventListener('load', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has('session_id')) {
+        pollSubscriptionStatus();
+      }
+      checkPremiumStatus();
+      subscribeToSubscriptions();  // リアルタイム購読開始
+    });
+
+    // ログインボタン・モーダル制御
+    document.getElementById('login-btn')?.addEventListener('click', () => {
+      document.getElementById('auth-modal').style.display = 'flex';
+    });
+
+    document.getElementById('auth-close')?.addEventListener('click', () => {
+      document.getElementById('auth-modal').style.display = 'none';
+    });
+
+    document.getElementById('auth-magic')?.addEventListener('click', async () => {
+      const email = document.getElementById('auth-email').value.trim();
+      if (!email) return alert("メールアドレスを入力してください");
+
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: { emailRedirectTo: window.location.origin }
       });
 
-      const API_URL = '/api/tts';
-      let currentAudioUrl = null;
-      let currentAudioBlob = null;
+      if (error) alert("エラー: " + error.message);
+      else {
+        alert("メールを確認してリンクをクリックしてください！");
+        document.getElementById('auth-modal').style.display = 'none';
+      }
+    });
 
-      document.getElementById('generate-btn').addEventListener('click', async () => {
-        const text = document.getElementById('text-input').value.trim();
-        if (!text) return alert('テキストを入力してください');
-        const btn = document.getElementById('generate-btn');
-        const loading = document.getElementById('loading');
-        const status = document.getElementById('status');
-        const player = document.getElementById('audio-player');
-        const downloadBtn = document.getElementById('download-btn');
+    // 認証状態変化時にもチェック（ログイン/ログアウト対応）
+    supabase.auth.onAuthStateChange((event, session) => {
+      checkPremiumStatus();
+    });
+  </script>
+
+  <script>
+    const SCHEDULE_JSON_URL = 'schedule.json';
+
+    async function fetchSchedule() {
+      try {
+        const response = await fetch(SCHEDULE_JSON_URL + '?t=' + Date.now());
+        if (!response.ok) throw new Error('ファイルが見つかりません');
+        const events = await response.json();
+
+        const statusEl = document.getElementById('live-status');
+        const cardsContainer = document.getElementById('live-cards');
+        const noScheduleEl = document.getElementById('no-schedule');
+        cardsContainer.innerHTML = '';
+        statusEl.style.display = 'none';
+        noScheduleEl.style.display = 'none';
+
+        const now = new Date();
+
+        const sortedEvents = events
+          .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        if (sortedEvents.length === 0) {
+          noScheduleEl.style.display = 'block';
+          return;
+        }
+
+        statusEl.textContent = '近日中の配信スケジュール';
+        statusEl.style.display = 'block';
+
+        sortedEvents.forEach(event => {
+          if (!event.title && !event.date) return;
+
+          const startTime = new Date(event.date);
+          const hoursSinceStart = (now - startTime) / (1000 * 60 * 60);
+          const isClearlyPast = hoursSinceStart >= 48;
+
+          const timeStr = startTime.toLocaleString('ja-JP', {
+            month: 'numeric',
+            day: 'numeric',
+            weekday: 'short',
+            hour: '2-digit',
+            minute: '2-digit'
+          });
+
+          const platform = event.platform || 'ライブ';
+          const url = event.url || 'https://www.youtube.com/@%E3%83%88%E3%83%AA%E3%83%A2%E3%83%AD%E3%82%B9TV/streams';
+
+          const card = document.createElement('a');
+          card.className = `live-card ${isClearlyPast ? 'past' : ''}`;
+          card.href = url;
+          card.target = '_blank';
+          card.rel = 'noopener noreferrer';
+
+          card.innerHTML = `
+            <div class="live-card-header">
+              <h3 class="live-card-title">${event.title || '無題の配信'}</h3>
+              <span class="live-card-platform">${platform}</span>
+            </div>
+            <div class="live-card-body">
+              <p class="live-card-time">${timeStr}</p>
+              <p class="live-card-status">クリックで視聴ページへ</p>
+            </div>
+          `;
+
+          cardsContainer.appendChild(card);
+        });
+
+      } catch (err) {
+        document.getElementById('live-status').textContent = ' スケジュール取得失敗（schedule.jsonを確認）';
+        document.getElementById('live-status').style.color = '#e11d48';
+        console.error(err);
+      }
+    }
+
+    window.addEventListener('load', fetchSchedule);
+
+    // ===== ハンバーガーメニュー（スクロール完全無効化） =====
+    const menuToggle = document.getElementById('menu-toggle');
+    const navScroller = document.getElementById('nav-scroller');
+    const navLinks = navScroller.querySelectorAll('a');
+    let scrollPosition = 0;
+
+    function preventScroll(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    }
+
+    function openMenu() {
+      scrollPosition = window.pageYOffset;
+      
+      navScroller.classList.add('open');
+      menuToggle.classList.add('active');
+      menuToggle.setAttribute('aria-expanded', 'true');
+      menuToggle.setAttribute('aria-label', 'メニューを閉じる');
+      document.body.classList.add('menu-open');
+      document.documentElement.classList.add('menu-open');
+      
+      document.body.style.top = `-${scrollPosition}px`;
+      
+      document.addEventListener('touchmove', preventScroll, { passive: false });
+      document.addEventListener('wheel', preventScroll, { passive: false });
+    }
+
+    function closeMenu() {
+      navScroller.classList.remove('open');
+      menuToggle.classList.remove('active');
+      menuToggle.setAttribute('aria-expanded', 'false');
+      menuToggle.setAttribute('aria-label', 'メニューを開く');
+      document.body.classList.remove('menu-open');
+      document.documentElement.classList.remove('menu-open');
+      
+      document.body.style.top = '';
+      window.scrollTo(0, scrollPosition);
+      
+      document.removeEventListener('touchmove', preventScroll);
+      document.removeEventListener('wheel', preventScroll);
+    }
+
+    menuToggle.addEventListener('click', () => {
+      const isOpen = navScroller.classList.contains('open');
+      if (isOpen) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    });
+
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        closeMenu();
+      });
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && navScroller.classList.contains('open')) {
+        closeMenu();
+        menuToggle.focus();
+      }
+    });
+
+    // ===== TTS（ダウンロード機能付き） =====
+    const API_URL = '/api/tts';
+    let currentAudioUrl = null;
+    let currentAudioBlob = null;
+
+    document.getElementById('generate-btn').addEventListener('click', async () => {
+      const text = document.getElementById('text-input').value.trim();
+      if (!text) return alert('テキストを入力してください');
+      const btn = document.getElementById('generate-btn');
+      const loading = document.getElementById('loading');
+      const status = document.getElementById('status');
+      const player = document.getElementById('audio-player');
+      const downloadBtn = document.getElementById('download-btn');
+      
+      btn.disabled = true;
+      downloadBtn.disabled = true;
+      loading.style.display = 'block';
+      status.textContent = '';
+      
+      if (currentAudioUrl) {
+        URL.revokeObjectURL(currentAudioUrl);
+      }
+      
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            text,
+            speaker: 1099527840,
+            speed: 1.0,
+            pitch: 0.0
+          })
+        });
+        if (!response.ok) throw new Error(`APIエラー: ${response.status}`);
         
-        btn.disabled = true;
+        currentAudioBlob = await response.blob();
+        currentAudioUrl = URL.createObjectURL(currentAudioBlob);
+        
+        player.src = currentAudioUrl;
+        player.play();
+        
+        downloadBtn.disabled = false;
+        
+        status.textContent = ' 合成完了！';
+      } catch (error) {
+        status.textContent = ` エラー: ${error.message}`;
         downloadBtn.disabled = true;
-        loading.style.display = 'block';
-        status.textContent = '';
-        
-        if (currentAudioUrl) {
-          URL.revokeObjectURL(currentAudioUrl);
-        }
-        
-        try {
-          const response = await fetch(API_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              text,
-              speaker: 1099527840,
-              speed: 1.0,
-              pitch: 0.0
-            })
-          });
-          if (!response.ok) throw new Error(`APIエラー: ${response.status}`);
-          
-          currentAudioBlob = await response.blob();
-          currentAudioUrl = URL.createObjectURL(currentAudioBlob);
-          
-          player.src = currentAudioUrl;
-          player.play();
-          
-          downloadBtn.disabled = false;
-          
-          status.textContent = ' 合成完了！';
-        } catch (error) {
-          status.textContent = ` エラー: ${error.message}`;
-          downloadBtn.disabled = true;
-        } finally {
-          btn.disabled = false;
-          loading.style.display = 'none';
-        }
-      });
-
-      document.getElementById('download-btn').addEventListener('click', () => {
-        if (!currentAudioBlob) return;
-        
-        const timestamp = new Date().toISOString().slice(0, 19).replace(/[:-]/g, '');
-        const filename = `abe_voice_${timestamp}.wav`;
-        
-        const a = document.createElement('a');
-        a.href = currentAudioUrl;
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-      });
-
-      const track = document.getElementById('gallery-track');
-      const dotsWrap = document.getElementById('gallery-dots');
-      const prevBtn = document.querySelector('.gallery-prev');
-      const nextBtn = document.querySelector('.gallery-next');
-
-      let autoplayTimer = null;
-      let pauseTimer = null;
-
-      let index = 0;
-      let originals = [];
-      let originalCount = 0;
-
-      let firstClone = null;
-      let lastClone = null;
-      let allSlides = [];
-
-      function buildDots(){
-        dotsWrap.innerHTML = '';
-        for (let i = 0; i < originalCount; i++){
-          const b = document.createElement('button');
-          b.className = 'dot';
-          b.type = 'button';
-          b.setAttribute('aria-label', `スライド ${i + 1}`);
-          b.addEventListener('click', () => {
-            pauseAutoplay(7000);
-            goTo(i, true);
-          });
-          dotsWrap.appendChild(b);
-        }
-        setActiveDot(0);
+      } finally {
+        btn.disabled = false;
+        loading.style.display = 'none';
       }
+    });
 
-      function setActiveDot(i){
-        const dots = Array.from(dotsWrap.querySelectorAll('.dot'));
-        dots.forEach((d, di) => d.setAttribute('aria-current', String(di === i)));
-      }
+    document.getElementById('download-btn').addEventListener('click', () => {
+      if (!currentAudioBlob) return;
+      
+      const timestamp = new Date().toISOString().slice(0, 19).replace(/[:-]/g, '');
+      const filename = `abe_voice_${timestamp}.wav`;
+      
+      const a = document.createElement('a');
+      a.href = currentAudioUrl;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    });
 
-      function scrollToSlide(el, smooth){
-        track.scrollTo({
-          left: el.offsetLeft,
-          behavior: smooth ? 'smooth' : 'auto'
+    // ===== Gallery =====
+    const track = document.getElementById('gallery-track');
+    const dotsWrap = document.getElementById('gallery-dots');
+    const prevBtn = document.querySelector('.gallery-prev');
+    const nextBtn = document.querySelector('.gallery-next');
+
+    let autoplayTimer = null;
+    let pauseTimer = null;
+
+    let index = 0;
+    let originals = [];
+    let originalCount = 0;
+
+    let firstClone = null;
+    let lastClone = null;
+    let allSlides = [];
+
+    function buildDots(){
+      dotsWrap.innerHTML = '';
+      for (let i = 0; i < originalCount; i++){
+        const b = document.createElement('button');
+        b.className = 'dot';
+        b.type = 'button';
+        b.setAttribute('aria-label', `スライド ${i + 1}`);
+        b.addEventListener('click', () => {
+          pauseAutoplay(7000);
+          goTo(i, true);
         });
+        dotsWrap.appendChild(b);
       }
+      setActiveDot(0);
+    }
 
-      function jumpTo(el){
-        track.scrollTo({ left: el.offsetLeft, behavior: 'auto' });
-      }
+    function setActiveDot(i){
+      const dots = Array.from(dotsWrap.querySelectorAll('.dot'));
+      dots.forEach((d, di) => d.setAttribute('aria-current', String(di === i)));
+    }
 
-      function goTo(i, smooth = true){
-        index = i;
+    function scrollToSlide(el, smooth){
+      track.scrollTo({
+        left: el.offsetLeft,
+        behavior: smooth ? 'smooth' : 'auto'
+      });
+    }
+
+    function jumpTo(el){
+      track.scrollTo({ left: el.offsetLeft, behavior: 'auto' });
+    }
+
+    function goTo(i, smooth = true){
+      index = i;
+      setActiveDot(index);
+      scrollToSlide(originals[index], smooth);
+    }
+
+    function goNext(){
+      if (index === originalCount - 1){
+        index = 0;
         setActiveDot(index);
-        scrollToSlide(originals[index], smooth);
+        scrollToSlide(firstClone, true);
+        return;
       }
+      goTo(index + 1, true);
+    }
 
-      function goNext(){
-        if (index === originalCount - 1){
+    function goPrev(){
+      if (index === 0){
+        index = originalCount - 1;
+        setActiveDot(index);
+        scrollToSlide(lastClone, true);
+        return;
+      }
+      goTo(index - 1, true);
+    }
+
+    function startAutoplay(){
+      stopAutoplay();
+      autoplayTimer = setInterval(goNext, 3500);
+    }
+
+    function stopAutoplay(){
+      if (autoplayTimer) clearInterval(autoplayTimer);
+      autoplayTimer = null;
+    }
+
+    function pauseAutoplay(ms = 7000){
+      stopAutoplay();
+      if (pauseTimer) clearTimeout(pauseTimer);
+      pauseTimer = setTimeout(startAutoplay, ms);
+    }
+
+    ['pointerdown','touchstart','wheel','keydown','mouseenter','focusin'].forEach(ev => {
+      track.addEventListener(ev, () => pauseAutoplay(7000), { passive: true });
+    });
+
+    prevBtn.addEventListener('click', () => {
+      pauseAutoplay(7000);
+      goPrev();
+    });
+    nextBtn.addEventListener('click', () => {
+      pauseAutoplay(7000);
+      goNext();
+    });
+
+    function setupInfiniteLoop(){
+      originals = Array.from(track.querySelectorAll('.shot'));
+      originalCount = originals.length;
+
+      lastClone = originals[originalCount - 1].cloneNode(true);
+      firstClone = originals[0].cloneNode(true);
+
+      lastClone.dataset.clone = 'last';
+      firstClone.dataset.clone = 'first';
+      lastClone.setAttribute('aria-hidden', 'true');
+      firstClone.setAttribute('aria-hidden', 'true');
+
+      track.insertBefore(lastClone, originals[0]);
+      track.appendChild(firstClone);
+
+      allSlides = Array.from(track.querySelectorAll('.shot'));
+    }
+
+    let scrollDebounce = null;
+    track.addEventListener('scroll', () => {
+      if (scrollDebounce) clearTimeout(scrollDebounce);
+
+      scrollDebounce = setTimeout(() => {
+        const x = track.scrollLeft;
+
+        let bestEl = allSlides[0];
+        let bestDist = Infinity;
+        for (const s of allSlides){
+          const d = Math.abs(s.offsetLeft - x);
+          if (d < bestDist){
+            bestDist = d;
+            bestEl = s;
+          }
+        }
+
+        if (bestEl.dataset.clone === 'first'){
           index = 0;
           setActiveDot(index);
-          scrollToSlide(firstClone, true);
+          jumpTo(originals[0]);
           return;
         }
-        goTo(index + 1, true);
-      }
-
-      function goPrev(){
-        if (index === 0){
+        if (bestEl.dataset.clone === 'last'){
           index = originalCount - 1;
           setActiveDot(index);
-          scrollToSlide(lastClone, true);
+          jumpTo(originals[originalCount - 1]);
           return;
         }
-        goTo(index - 1, true);
-      }
 
-      function startAutoplay(){
-        stopAutoplay();
-        autoplayTimer = setInterval(goNext, 3500);
-      }
+        const slideIndex = Number(bestEl.dataset.slide);
+        if (!Number.isNaN(slideIndex)){
+          index = slideIndex;
+          setActiveDot(index);
+        }
+      }, 80);
+    }, { passive: true });
 
-      function stopAutoplay(){
-        if (autoplayTimer) clearInterval(autoplayTimer);
-        autoplayTimer = null;
-      }
+    window.addEventListener('load', () => {
+      setupInfiniteLoop();
+      buildDots();
+      goTo(0, false);
+      startAutoplay();
+    });
 
-      function pauseAutoplay(ms = 7000){
-        stopAutoplay();
-        if (pauseTimer) clearTimeout(pauseTimer);
-        pauseTimer = setTimeout(startAutoplay, ms);
-      }
+    window.addEventListener('resize', () => {
+      goTo(index, false);
+    });
 
-      ['pointerdown','touchstart','wheel','keydown','mouseenter','focusin'].forEach(ev => {
-        track.addEventListener(ev, () => pauseAutoplay(7000), { passive: true });
+    // ===== ナビのスムーススクロール =====
+    document.querySelectorAll('nav a').forEach(anchor => {
+      anchor.addEventListener('click', (e) => {
+        const href = anchor.getAttribute('href');
+        if (!href || !href.startsWith('#')) return;
+        e.preventDefault();
+        document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
       });
-
-      prevBtn.addEventListener('click', () => {
-        pauseAutoplay(7000);
-        goPrev();
-      });
-      nextBtn.addEventListener('click', () => {
-        pauseAutoplay(7000);
-        goNext();
-      });
-
-      function setupInfiniteLoop(){
-        originals = Array.from(track.querySelectorAll('.shot'));
-        originalCount = originals.length;
-
-        lastClone = originals[originalCount - 1].cloneNode(true);
-        firstClone = originals[0].cloneNode(true);
-
-        lastClone.dataset.clone = 'last';
-        firstClone.dataset.clone = 'first';
-        lastClone.setAttribute('aria-hidden', 'true');
-        firstClone.setAttribute('aria-hidden', 'true');
-
-        track.insertBefore(lastClone, originals[0]);
-        track.appendChild(firstClone);
-
-        allSlides = Array.from(track.querySelectorAll('.shot'));
-      }
-
-      let scrollDebounce = null;
-      track.addEventListener('scroll', () => {
-        if (scrollDebounce) clearTimeout(scrollDebounce);
-
-        scrollDebounce = setTimeout(() => {
-          const x = track.scrollLeft;
-
-          let bestEl = allSlides[0];
-          let bestDist = Infinity;
-          for (const s of allSlides){
-            const d = Math.abs(s.offsetLeft - x);
-            if (d < bestDist){
-              bestDist = d;
-              bestEl = s;
-            }
-          }
-
-          if (bestEl.dataset.clone === 'first'){
-            index = 0;
-            setActiveDot(index);
-            jumpTo(originals[0]);
-            return;
-          }
-          if (bestEl.dataset.clone === 'last'){
-            index = originalCount - 1;
-            setActiveDot(index);
-            jumpTo(originals[originalCount - 1]);
-            return;
-          }
-
-          const slideIndex = Number(bestEl.dataset.slide);
-          if (!Number.isNaN(slideIndex)){
-            index = slideIndex;
-            setActiveDot(index);
-          }
-        }, 80);
-      }, { passive: true });
-
-      window.addEventListener('load', () => {
-        setupInfiniteLoop();
-        buildDots();
-        goTo(0, false);
-        startAutoplay();
-      });
-
-      window.addEventListener('resize', () => {
-        goTo(index, false);
-      });
-
-      document.querySelectorAll('nav a').forEach(anchor => {
-        anchor.addEventListener('click', (e) => {
-          const href = anchor.getAttribute('href');
-          if (!href || !href.startsWith('#')) return;
-          e.preventDefault();
-          document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
-        });
-      });
-    </script>
-  </body>
+    });
+  </script>
+</body>
 </html>
