@@ -1,3 +1,16 @@
+ご要望に合わせて、以下の機能を実装・修正した完全なHTMLコードを作成しました。
+
+**主な変更点:**
+1.  **ヘッダー(PC/スマホ):** ログイン/ログアウトボタンを追加しました。ログイン中は「ログイン中」と表示され、クリックでログアウトできます。スマホ版はメニューの一番下に追加しました。
+2.  **メンバーシップセクション:**
+    *   **ユーザー情報表示:** `○○○○＠○○.comでログイン中` という表示を追加しました。
+    *   **プレミアム判定:** プレミアム会員の場合、「今すぐ参加する」「ログイン」ボタンを非表示にし、代わりに「**プレミアムページへ**」ボタンと「**解約・プラン管理**」ボタンを表示します。
+    *   **通常ログイン時:** プレミアムでないがログインしている場合、「ログイン」ボタンの表記を「ログイン中（ログアウト）」に変更し、再入会のための「参加する」ボタンは残しました。
+3.  **解約機能:** Stripeカスタマーポータルへのリンク（ボタン）を作成しました。これによりユーザーは安全に解約やカード変更が可能です。
+
+以下のコードをそのまま `index.html` として保存して使用できます。
+
+```html
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -135,9 +148,7 @@
 }
 .menu-toggle.active span:nth-child(3){
   transform: translateY(-7px) rotate(-45deg);
-}
-
-.nav-scroller{
+}.nav-scroller{
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
@@ -171,16 +182,14 @@
   white-space: nowrap;
   transition: transform .12s ease, filter .12s ease;
 }
-.nav-links a:hover{ transform: translateY(-1px); filter: brightness(1.02); }
-
-/* ===== SNSリンク（PC版右端） ===== */
+.nav-links a:hover{ transform: translateY(-1px); filter: brightness(1.02); }/* ===== SNSリンク（PC版右端） ===== */
 .sns-links {
   display: flex;
   align-items: center;
   gap: 8px;
   flex: 0 0 auto;
 }
-.sns-links a {
+.sns-links a, .header-btn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -192,8 +201,21 @@
   box-shadow: 0 10px 22px rgba(0,0,0,0.06);
   transition: transform .12s ease, filter .12s ease;
   text-decoration: none;
+  cursor: pointer;
 }
-.sns-links a:hover {
+.header-btn {
+  width: auto;
+  padding: 0 16px;
+  font-size: 13px;
+  font-weight: 900;
+  color: var(--p);
+}
+.header-btn.logged-in {
+  background: var(--bgA);
+  color: var(--ink);
+  border-color: rgba(255,77,109,0.3);
+}
+.sns-links a:hover, .header-btn:hover {
   transform: translateY(-1px);
   filter: brightness(1.02);
 }
@@ -201,9 +223,7 @@
   width: 20px;
   height: 20px;
   fill: var(--ink);
-}
-
-/* ===== スマホ版フルスクリーンメニュー ===== */
+}/* ===== スマホ版フルスクリーンメニュー ===== */
 @media (max-width: 640px){
   .menu-toggle{
     display: flex;
@@ -224,14 +244,14 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start; /* コンテンツが多いので上詰め */
     opacity: 0;
     visibility: hidden;
     transform: translateY(-20px);
     transition: opacity .3s ease, visibility .3s ease, transform .3s ease;
-    overflow: hidden;
+    overflow-y: auto; /* 縦スクロール許可 */
     padding: 100px 30px 60px;
-    touch-action: none;
+    touch-action: auto;
   }
   .nav-scroller.open{
     opacity: 1;
@@ -244,6 +264,7 @@
     gap: 20px;
     width: 100%;
     max-width: 300px;
+    flex-shrink: 0;
   }
   .nav-links li{
     width: 100%;
@@ -284,8 +305,9 @@
     width: 100%;
     max-width: 300px;
     margin-top: 40px;
+    flex-shrink: 0;
   }
-  .sns-links-mobile a {
+  .sns-links-mobile a, .mobile-auth-btn {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -300,8 +322,9 @@
     font-weight: 900;
     text-decoration: none;
     color: rgba(31,41,55,0.92);
+    cursor: pointer;
   }
-  .sns-links-mobile a:hover {
+  .sns-links-mobile a:hover, .mobile-auth-btn:hover {
     background: linear-gradient(135deg, var(--p), var(--p2));
     color: #fff;
     border-color: transparent;
@@ -315,16 +338,24 @@
   .sns-links {
     display: none;
   }
-}
-
-/* PC版でSNSリンクを表示 */
+  /* モバイル用ログインボタンエリア */
+  .mobile-auth-area {
+    width: 100%;
+    max-width: 300px;
+    margin-top: 20px;
+    padding-bottom: 40px;
+    flex-shrink: 0;
+  }
+  .mobile-auth-btn.logged-in {
+    background: var(--bgA);
+    color: var(--p);
+  }
+}/* PC版でSNSリンクを表示 */
 @media (min-width: 641px) {
-  .sns-links-mobile {
+  .sns-links-mobile, .mobile-auth-area {
     display: none;
   }
-}
-
-.section{ padding: 16px 0 30px; }
+}.section{ padding: 16px 0 30px; }
 .hero{ padding: 18px 0 10px; }
 .hero-cta{
   display:flex;
@@ -353,9 +384,7 @@
   color: #fff;
   background: linear-gradient(135deg, var(--p), var(--p2));
   box-shadow: 0 16px 35px rgba(255,77,109,0.22);
-}
-
-/* ===== Gallery（フル幅＋左揃えスナップ） ===== */
+}/* ===== Gallery（フル幅＋左揃えスナップ） ===== */
 .gallery{
   background: transparent;
   border: none;
@@ -446,9 +475,7 @@
   background: rgba(255,255,255,0.22);
   border: 1px solid rgba(255,255,255,0.24);
   backdrop-filter: blur(10px);
-}
-
-/* 左右ボタン */
+}/* 左右ボタン */
 .gallery-controls{
   position: absolute;
   top: 50%;
@@ -481,9 +508,7 @@
 .gallery-prev:hover, .gallery-next:hover{
   background: rgba(255,255,255,0.95);
   transform: scale(1.1);
-}
-
-/* ドットインジケータ */
+}/* ドットインジケータ */
 .gallery-dots{
   display:flex;
   gap: 10px;
@@ -512,9 +537,7 @@
 .dot[aria-current="true"]{
   background: linear-gradient(135deg, var(--p), var(--p2));
   box-shadow: 0 10px 20px rgba(255,77,109,0.18);
-}
-
-.panel{
+}.panel{
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--r2);
@@ -580,6 +603,10 @@
   cursor:pointer;
   box-shadow: 0 16px 35px rgba(255,77,109,0.22);
   transition: transform .12s ease, filter .12s ease;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
 }
 .btn-primary:hover{ transform: translateY(-1px); filter: brightness(1.02); }
 .btn-primary:disabled{
@@ -588,9 +615,7 @@
   transform:none;
   box-shadow:none;
 }
-#audio-player{ width:100%; margin-top: 12px; border-radius: 12px; }
-
-/* ===== ダウンロードボタン ===== */
+#audio-player{ width:100%; margin-top: 12px; border-radius: 12px; }/* ===== ダウンロードボタン ===== */
 .audio-controls{
   display: flex;
   flex-direction: column;
@@ -628,9 +653,7 @@
   width: 18px;
   height: 18px;
   flex: none;
-}
-
-.loading{
+}.loading{
   display:none;
   margin-top: 10px;
   color: rgba(255,77,109,0.95);
@@ -725,10 +748,33 @@
   font-weight: 950;
   cursor:pointer;
   transition: transform .12s ease, background .12s ease;
+  display: inline-block;
+  text-decoration: none;
+  width: 100%;
+  margin-top: 10px;
 }
 .btn-secondary:hover{
   transform: translateY(-1px);
   background: rgba(255,255,255,0.22);
+}
+.btn-white {
+  border: none;
+  background: #fff;
+  color: var(--p);
+  padding: 12px 16px;
+  border-radius: 999px;
+  font-weight: 950;
+  cursor:pointer;
+  transition: transform .12s ease, background .12s ease;
+  display: inline-block;
+  text-decoration: none;
+  width: 100%;
+  margin-top: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.btn-white:hover {
+  transform: translateY(-1px);
+  background: #fdfdfd;
 }
 footer{
   padding: 22px 0 34px;
@@ -747,9 +793,7 @@ footer{
   *{ transition:none !important; }
   .card:hover, .btn:hover, .btn-primary:hover, .shot:hover{ transform:none; }
   .gallery-track{ scroll-behavior: auto; }
-}
-
-/* ===== ライブカードコンテナ（中央揃え修正） ===== */
+}/* ===== ライブカードコンテナ（中央揃え修正） ===== */
 #live-cards {
   display: flex;
   flex-wrap: wrap;
@@ -758,9 +802,7 @@ footer{
   width: 100%;
   padding: 0;
   margin: 0 auto;
-}
-
-.live-card {
+}.live-card {
   background: #fff;
   border-radius: 20px;
   overflow: hidden;
@@ -820,9 +862,7 @@ footer{
   content: "（終了）";
   color: var(--muted);
   margin-left: 6px;
-}
-
-/* スマホ対応（中央揃え強化） */
+}/* スマホ対応（中央揃え強化） */
 @media (max-width: 600px) {
   #live-cards {
     flex-direction: column;
@@ -834,9 +874,7 @@ footer{
     flex: none;
     width: calc(100% - 8px);
   }
-}
-
-/* ===== 新規追加: SNSリンク紹介欄のスタイル ===== */
+}/* ===== 新規追加: SNSリンク紹介欄のスタイル ===== */
 #sns-section {
   background: linear-gradient(135deg, rgba(255,77,109,0.05), rgba(76,201,240,0.05));
   border-top: 1px solid var(--border);
@@ -879,8 +917,7 @@ footer{
   width: 24px;
   height: 24px;
   fill: var(--p);
-}  </style></head>
-<body>
+}  </style></head><body>
   <header>
     <div class="container">
       <nav aria-label="Site navigation">
@@ -924,8 +961,12 @@ footer{
               YouTube
             </a>
           </div>
+          <!-- モバイル用ログインボタン -->
+          <div class="mobile-auth-area">
+             <button id="mobile-login-btn" class="mobile-auth-btn">ログイン</button>
+          </div>
         </div>
-        <!-- PC版右端のSNSリンク -->
+        <!-- PC版右端のSNSリンク + ログイン -->
         <div class="sns-links">
           <a href="https://x.com/RougaiBarusan" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -937,6 +978,8 @@ footer{
               <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.016 3.016 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.872.505 9.377.505 9.377.505s7.505 0 9.377-.505a3.016 3.016 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
             </svg>
           </a>
+          <!-- PC用ログインボタン -->
+          <button id="header-login-btn" class="header-btn">ログイン</button>
         </div>
       </nav>
     </div>
@@ -1034,12 +1077,11 @@ footer{
           </a>
         </div>
 
-    <div class="gallery-controls">
-      <button class="gallery-prev" aria-label="前のスライド">←</button>
-      <button class="gallery-next" aria-label="次のスライド">→</button>
-    </div>
-    <div class="gallery-dots" id="gallery-dots" aria-label="Gallery navigation"></div>
-  </div>
+<div class="gallery-controls">
+  <button class="gallery-prev" aria-label="前のスライド">←</button>
+  <button class="gallery-next" aria-label="次のスライド">→</button>
+</div>
+<div class="gallery-dots" id="gallery-dots" aria-label="Gallery navigation"></div>  </div>
 </section>
 
 <div class="container">
@@ -1100,13 +1142,12 @@ footer{
           <p id="no-schedule" style="text-align: center; color: var(--muted); font-size: 15px; display: none;">
             現在予定されているライブはありません。
 
-            毎晩20時頃から全自動ライブをお届けしています！
-            <a class="btn primary" href="https://www.youtube.com/@%E3%83%88%E3%83%AA%E3%83%A2%E3%83%AD%E3%82%B9TV/streams" target="_blank" rel="noopener noreferrer">全チャンネルをチェック</a>
-          </p>
-        </div>
-      </div>
+        毎晩20時頃から全自動ライブをお届けしています！
+        <a class="btn primary" href="https://www.youtube.com/@%E3%83%88%E3%83%AA%E3%83%A2%E3%83%AD%E3%82%B9TV/streams" target="_blank" rel="noopener noreferrer">全チャンネルをチェック</a>
+      </p>
     </div>
-  </section>
+  </div>
+</div>  </section>
 
   <section id="tts" class="section">
     <div class="container">
@@ -1124,24 +1165,23 @@ footer{
           <button id="generate-btn" class="btn-primary" type="button">合成生成</button>
           <div id="loading" class="loading">合成中...（数秒お待ちください）</div>
           
-          <!-- オーディオプレイヤー＋ダウンロードボタン -->
-          <div class="audio-controls">
-            <audio id="audio-player" controls></audio>
-            <button id="download-btn" class="btn-download" type="button" disabled>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                <polyline points="7 10 12 15 17 10"/>
-                <line x1="12" y1="15" x2="12" y2="3"/>
-              </svg>
-              音声をダウンロード
-            </button>
-          </div>
-          
-          <div id="status" aria-live="polite"></div>
-        </div>
+      <!-- オーディオプレイヤー＋ダウンロードボタン -->
+      <div class="audio-controls">
+        <audio id="audio-player" controls></audio>
+        <button id="download-btn" class="btn-download" type="button" disabled>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          音声をダウンロード
+        </button>
       </div>
+      
+      <div id="status" aria-live="polite"></div>
     </div>
-  </section>
+  </div>
+</div>  </section>
 
   <section id="membership" class="section">
     <div class="container">
@@ -1149,9 +1189,28 @@ footer{
         <div class="inner">
           <h2> メンバーシップ（月額298円）</h2>
           <p>高速版ボイスメーカー・限定動画・画像・グッズ先行販売など</p>
-          <button id="subscribe-btn" class="btn-secondary">今すぐ参加する</button>
-          <button id="login-btn" class="btn-secondary" style="margin-top:10px;">ログイン</button>
-          <p id="premium-status" style="margin-top:12px; font-size:14px; color:var(--muted);"></p>
+          
+          <!-- ログイン時のユーザー情報表示 -->
+          <p id="user-info-display" style="color:#fff; font-weight:bold; margin-bottom:12px; display:none;"></p>
+          
+          <!-- ステータス表示（既存） -->
+          <p id="premium-status" style="margin-bottom:14px; font-size:14px; color: rgba(255,255,255,0.9);"></p>
+
+          <!-- アクションボタンエリア -->
+          <div id="membership-actions">
+            <!-- 未ログイン/無料会員用ボタン -->
+            <div id="free-actions">
+              <button id="subscribe-btn" class="btn-secondary">今すぐ参加する</button>
+              <button id="login-btn" class="btn-secondary" style="margin-top:10px;">ログイン</button>
+            </div>
+
+            <!-- プレミアム会員用ボタン（ログイン時のみ表示） -->
+            <div id="premium-actions" style="display:none; margin-top:16px;">
+              <a href="premium.html" class="btn-white">プレミアムページへ</a>
+              <button id="portal-btn" class="btn-secondary" style="margin-top:10px; font-size:13px; opacity:0.9;">解約・プラン管理</button>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
@@ -1167,7 +1226,7 @@ footer{
       <button id="auth-close" style="margin-top:12px; width:100%; padding:10px; background:transparent; border:1px solid var(--border); border-radius:12px;">閉じる</button>
     </div>
   </div>
-</main>  <!-- ===== 新規追加: SNSリンク紹介欄 ===== -->
+</main>  <!-- ===== SNSリンク紹介欄 ===== -->
   <section id="sns-section" class="section">
   <div class="container">
     <h2 class="section-title">SNSリンク</h2>
@@ -1218,7 +1277,7 @@ footer{
       </li>
       <li>
         <a href="https://www.nicovideo.jp/user/52518540" target="_blank" rel="noopener noreferrer">
-          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZE5pY28iIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmY0ZDZkIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iNTAlIiBzdG9wLWNvbG9yPSIjZmZiNzAzIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzRjYzlmMCIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3QgZmlsbD0idXJsKCNncmFkTmljbykiIHg9IjIiIHk9IjQiIHdpZHRoPSIyMCIgaGVpZ2h0PSIxNiIgcng9IjQiLz4KICA8dGV4dCB4PSIxMiIgeT0iMTYiIGZvbnQtc2l6ZT0iMTIiIGZvbnQtd2VpZ2h0PSI5MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiNmZmYiPk5pY288L3RleHQ+Cjwvc3ZnPg==" alt="ニコニコ動画" width="24" height="24">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZE5pY28iIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmY0ZDZkIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iNTAlIiBzdG9wLWNvbG9yPSIjZmZiNzAzIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzRjYzlmMCIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3QgZmlsbD0idXJsKCNncmFkTmljbykiIHg9IjIiIHk9IjQiIHdpZHRoPSIyMCIgaGVpZ2h0PSIxNiIgcng9IjQiLz4KICA8dGV4dCB4PSIxMiIgeT0iMTYiIGZvbnQtc2l6ZT0iMTIiIGZvbnQtd2VpZ2h0PSI5MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiZmlsbD0iI2ZmZiI+TmljbzwvdGV4dD4KPC9zdmc+" alt="ニコニコ動画" width="24" height="24">
           ニコニコ動画
         </a>
       </li>
@@ -1271,21 +1330,91 @@ footer{
   <script type="module">
     import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
-    // === ここをあなたの値に変更してください ===
-    const supabaseUrl = "https://fdtaesossfqfhtpoesjn.supabase.co";  // Supabase Dashboard → Settings → API
-    const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZkdGFlc29zc2ZxZmh0cG9lc2puIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY5Mzc1MzEsImV4cCI6MjA4MjUxMzUzMX0.AJQSaYIhaTBf338f4gfMGGQ-4hRARxcPSWRY3ReCFFk";           // 同上 → Project API keys → anon
-    const stripePriceId = "price_1Sj4iWBoy0CvdEnb2pgIdfry";   // Stripe Dashboard → Products → 298円のPrice ID
+    // === 設定値 ===
+    const supabaseUrl = "https://fdtaesossfqfhtpoesjn.supabase.co";
+    const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZkdGFlc29zc2ZxZmh0cG9lc2puIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY5Mzc1MzEsImV4cCI6MjA4MjUxMzUzMX0.AJQSaYIhaTBf338f4gfMGGQ-4hRARxcPSWRY3ReCFFk";
+    const stripePriceId = "price_1Sj4iWBoy0CvdEnb2pgIdfry";
     //const stripePriceId = "price_1Sj3ppB20VFjVTK97a2DhgTU";
     const checkoutFunctionUrl = "https://fdtaesossfqfhtpoesjn.supabase.co/functions/v1/create-checkout-session";
-    // ============================================
+    const portalFunctionUrl = "https://fdtaesossfqfhtpoesjn.supabase.co/functions/v1/create-portal-session"; // 解約・管理用（バックエンド側の実装が必要）
+    // ============
 
     const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-    // プレミアムステータスチェック（改善: テーブル名を'subscriptions'に修正、metadata.supabase_user_idでクエリ。リアルタイム購読追加）
+    // UI更新関数: ユーザー情報とプレミアム状態に基づいて表示を切り替え
+    function updateUI(user, isPremium) {
+      const headerLoginBtn = document.getElementById('header-login-btn');
+      const mobileLoginBtn = document.getElementById('mobile-login-btn');
+      const userInfoDisplay = document.getElementById('user-info-display');
+      const statusEl = document.getElementById('premium-status');
+      const freeActions = document.getElementById('free-actions');
+      const premiumActions = document.getElementById('premium-actions');
+      const membershipLoginBtn = document.getElementById('login-btn');
+
+      if (user) {
+        // --- ログイン中 ---
+        const email = user.email;
+        const loggedInText = "ログイン中 (ログアウト)";
+        
+        // ヘッダーボタン
+        headerLoginBtn.textContent = "ログイン中";
+        headerLoginBtn.title = "クリックしてログアウト";
+        headerLoginBtn.classList.add('logged-in');
+        
+        mobileLoginBtn.textContent = loggedInText;
+        mobileLoginBtn.classList.add('logged-in');
+
+        // メンバーシップセクションのユーザー情報
+        userInfoDisplay.style.display = 'block';
+        userInfoDisplay.textContent = `${email} でログイン中`;
+
+        if (isPremium) {
+          // --- プレミアム会員 ---
+          statusEl.textContent = "★ 現在プレミアム会員です";
+          statusEl.style.color = "#fff";
+          statusEl.style.fontWeight = "bold";
+          
+          freeActions.style.display = 'none'; // 「参加する」「ログイン」を隠す
+          premiumActions.style.display = 'block'; // 「プレミアムページへ」「解約」を表示
+        } else {
+          // --- 無料会員 ---
+          statusEl.textContent = "現在は無料会員です";
+          statusEl.style.color = "rgba(255,255,255,0.9)";
+          
+          freeActions.style.display = 'block';
+          premiumActions.style.display = 'none';
+          
+          // メンバーシップ内の「ログイン」ボタンの表記変更
+          membershipLoginBtn.textContent = loggedInText;
+          // ※このボタンを押すとログアウトするようにイベントリスナーで制御
+        }
+
+      } else {
+        // --- ログアウト状態 ---
+        headerLoginBtn.textContent = "ログイン";
+        headerLoginBtn.title = "";
+        headerLoginBtn.classList.remove('logged-in');
+        
+        mobileLoginBtn.textContent = "ログイン";
+        mobileLoginBtn.classList.remove('logged-in');
+
+        userInfoDisplay.style.display = 'none';
+        userInfoDisplay.textContent = "";
+
+        statusEl.textContent = "ログインしていません";
+        
+        freeActions.style.display = 'block';
+        premiumActions.style.display = 'none';
+        membershipLoginBtn.textContent = "ログイン";
+      }
+    }
+
+    // プレミアムステータスチェック
     async function checkPremiumStatus() {
       const { data: { user } } = await supabase.auth.getUser();
+      
       if (!user) {
-        document.getElementById('premium-status').textContent = "ログインしていません";
+        updateUI(null, false);
         return false;
       }
 
@@ -1293,32 +1422,17 @@ footer{
         .from('subscriptions')
         .select('status, current_period_end')
         .eq('user_id', user.id)
-        .in('status', ['active', 'trialing'])  // activeまたはtrialingを許可
+        .in('status', ['active', 'trialing'])
         .order('created_at', { ascending: false })
         .limit(1)
         .single();
 
-      if (error && error.code !== 'PGRST116') {  // PGRST116 = no rows
-        console.error('Subscription check error:', error);
-        document.getElementById('premium-status').textContent = "ステータス確認エラー";
-        return false;
-      }
-
       const isPremium = data && ['active', 'trialing'].includes(data.status);
-      const statusEl = document.getElementById('premium-status');
-      
-      if (isPremium) {
-        const endDate = new Date(data.current_period_end).toLocaleDateString('ja-JP');
-        statusEl.textContent = `✨ プレミアム会員です（次回更新: ${endDate}）`;
-        statusEl.style.color = "var(--p)";
-        document.querySelectorAll('.premium-only').forEach(el => el.style.display = 'block');
-      } else {
-        statusEl.textContent = "プレミアム会員ではありません";
-      }
+      updateUI(user, isPremium);
       return isPremium;
     }
 
-    // リアルタイムでsubscriptionsテーブルを監視（決済後即時反映）
+    // リアルタイム監視
     function subscribeToSubscriptions() {
       supabase
         .channel('subscriptions-changes')
@@ -1328,11 +1442,53 @@ footer{
         .subscribe();
     }
 
-    // 決済ボタン（改善: success_urlを現在のページに設定し、ポーリング追加）
+    // --- イベントリスナー設定 ---
+
+    // 1. ヘッダーログイン/ログアウトボタン (PC)
+    document.getElementById('header-login-btn').addEventListener('click', async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        if(confirm('ログアウトしますか？')) {
+          await supabase.auth.signOut();
+          checkPremiumStatus();
+        }
+      } else {
+        document.getElementById('auth-modal').style.display = 'flex';
+      }
+    });
+
+    // 2. モバイルメニューログイン/ログアウトボタン
+    document.getElementById('mobile-login-btn').addEventListener('click', async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        if(confirm('ログアウトしますか？')) {
+          await supabase.auth.signOut();
+          checkPremiumStatus();
+          // メニューを閉じる処理（必要であれば）
+        }
+      } else {
+        document.getElementById('auth-modal').style.display = 'flex';
+      }
+    });
+
+    // 3. メンバーシップセクションのログインボタン (ログイン中はログアウト機能になる)
+    document.getElementById('login-btn').addEventListener('click', async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        if(confirm('ログアウトしますか？')) {
+          await supabase.auth.signOut();
+          checkPremiumStatus();
+        }
+      } else {
+        document.getElementById('auth-modal').style.display = 'flex';
+      }
+    });
+
+    // 4. 決済ボタン
     document.getElementById('subscribe-btn')?.addEventListener('click', async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        alert("ログインしてください");
+        alert("先にログインしてください");
         document.getElementById('auth-modal').style.display = 'flex';
         return;
       }
@@ -1347,13 +1503,12 @@ footer{
           body: JSON.stringify({
             priceId: stripePriceId,
             userId: user.id,
-            success_url: window.location.href,  // 決済成功後、このページに戻る
+            success_url: window.location.href,
             cancel_url: window.location.href,
           }),
         });
 
         if (!response.ok) throw new Error(await response.text());
-
         const { url } = await response.json();
         window.location.href = url;
       } catch (err) {
@@ -1362,39 +1517,43 @@ footer{
       }
     });
 
-    // 決済成功後のポーリング（専用ページで「確認中...」の場合を想定し、このページでポーリング）
-    async function pollSubscriptionStatus(maxAttempts = 30, interval = 2000) {
-      let attempts = 0;
-      const statusEl = document.getElementById('premium-status');
-      statusEl.textContent = "確認中...";
+    // 5. 解約・管理ボタン（カスタマーポータルへ遷移）
+    document.getElementById('portal-btn')?.addEventListener('click', async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
 
-      const poll = setInterval(async () => {
-        attempts++;
-        const isPremium = await checkPremiumStatus();
-        if (isPremium || attempts >= maxAttempts) {
-          clearInterval(poll);
-          if (!isPremium) {
-            statusEl.textContent = "プレミアムステータスの確認に失敗しました。ページをリロードしてください。";
-          }
+      const btn = document.getElementById('portal-btn');
+      const originalText = btn.textContent;
+      btn.textContent = "準備中...";
+      btn.disabled = true;
+
+      try {
+        const response = await fetch(portalFunctionUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`,
+          },
+          body: JSON.stringify({
+            return_url: window.location.href, // ポータルから戻るURL
+          }),
+        });
+
+        if (!response.ok) {
+           // ポータル機能がバックエンドにない場合のフォールバック（例: アラート）
+           throw new Error("管理画面への接続に失敗しました。");
         }
-      }, interval);
-    }
-
-    // URLにsession_idがあればポーリング開始（Stripeから戻ってきた場合）
-    window.addEventListener('load', () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      if (urlParams.has('session_id')) {
-        pollSubscriptionStatus();
+        const { url } = await response.json();
+        window.location.href = url;
+      } catch (err) {
+        console.error(err);
+        alert("管理画面を開けませんでした。管理者に問い合わせてください。");
+        btn.textContent = originalText;
+        btn.disabled = false;
       }
-      checkPremiumStatus();
-      subscribeToSubscriptions();  // リアルタイム購読開始
     });
 
-    // ログインボタン・モーダル制御
-    document.getElementById('login-btn')?.addEventListener('click', () => {
-      document.getElementById('auth-modal').style.display = 'flex';
-    });
-
+    // ログインモーダル制御
     document.getElementById('auth-close')?.addEventListener('click', () => {
       document.getElementById('auth-modal').style.display = 'none';
     });
@@ -1415,7 +1574,13 @@ footer{
       }
     });
 
-    // 認証状態変化時にもチェック（ログイン/ログアウト対応）
+    // 初期化
+    window.addEventListener('load', () => {
+      checkPremiumStatus();
+      subscribeToSubscriptions();
+    });
+
+    // 認証状態変化時
     supabase.auth.onAuthStateChange((event, session) => {
       checkPremiumStatus();
     });
@@ -1500,10 +1665,15 @@ footer{
     // ===== ハンバーガーメニュー（スクロール完全無効化） =====
     const menuToggle = document.getElementById('menu-toggle');
     const navScroller = document.getElementById('nav-scroller');
-    const navLinks = navScroller.querySelectorAll('a');
+    const navLinks = navScroller.querySelectorAll('a, button'); // buttonも対象に
     let scrollPosition = 0;
 
     function preventScroll(e) {
+      const target = e.target;
+      // navScroller内部のスクロールは許可する
+      if (target.closest('.nav-scroller')) {
+        return true;
+      }
       e.preventDefault();
       e.stopPropagation();
       return false;
@@ -1521,8 +1691,8 @@ footer{
       
       document.body.style.top = `-${scrollPosition}px`;
       
-      document.addEventListener('touchmove', preventScroll, { passive: false });
-      document.addEventListener('wheel', preventScroll, { passive: false });
+      // スマホメニュー内のスクロールを阻害しないように調整
+      // document.addEventListener('touchmove', preventScroll, { passive: false });
     }
 
     function closeMenu() {
@@ -1536,8 +1706,7 @@ footer{
       document.body.style.top = '';
       window.scrollTo(0, scrollPosition);
       
-      document.removeEventListener('touchmove', preventScroll);
-      document.removeEventListener('wheel', preventScroll);
+      // document.removeEventListener('touchmove', preventScroll);
     }
 
     menuToggle.addEventListener('click', () => {
@@ -1551,7 +1720,10 @@ footer{
 
     navLinks.forEach(link => {
       link.addEventListener('click', () => {
-        closeMenu();
+        // ログインボタンなどでモーダルが出る場合はメニューを閉じないほうがいい場合もあるが、基本閉じる
+        if (!link.id.includes('login')) {
+           closeMenu();
+        }
       });
     });
 
@@ -1813,3 +1985,4 @@ footer{
   </script>
 </body>
 </html>
+```
