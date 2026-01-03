@@ -371,15 +371,6 @@
 
     // ページ読み込み時
     window.addEventListener('load', async () => {
-      // === テストモード：常にプレミアム会員として扱う ===
-      statusEl.textContent = "✅ プレミアム会員認証完了！（テストモード）";
-      statusEl.className = "status premium";
-      membershipInfoEl.textContent = "テスト用にプレミアムコンテンツを強制表示中";
-      
-      showState('premium');
-
-      // 本番時は以下をコメントアウト解除
-      /*
       const urlParams = new URLSearchParams(window.location.search);
 
       if (urlParams.has('session_id')) {
@@ -391,7 +382,6 @@
       }
       
       subscribeToChanges();
-      */
     });
 
     // 認証状態変化時もチェック
