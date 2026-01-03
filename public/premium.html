@@ -412,7 +412,7 @@
       pitchValue.textContent = parseFloat(pitchSlider.value).toFixed(2);
     });
 
-    const MAX_CHARS = 300;
+    const MAX_CHARS = 200;
     const textArea = document.getElementById('premium-text');
     const charCount = document.getElementById('char-count');
     const generateBtn = document.getElementById('premium-generate');
@@ -425,7 +425,7 @@
       if (length > MAX_CHARS) {
         charCount.style.color = '#ef4444'; // 赤で警告
         generateBtn.disabled = true;
-        generateBtn.textContent = "❌ 文字数超過（300文字以内）";
+        generateBtn.textContent = "❌ 文字数超過（200文字以内）";
       } else {
         charCount.style.color = 'var(--muted)';
         generateBtn.disabled = false;
@@ -438,7 +438,7 @@
     if (textArea.value.length > MAX_CHARS) {
       charCount.style.color = '#ef4444';
       generateBtn.disabled = true;
-      generateBtn.textContent = "❌ 文字数超過（300文字以内）";
+      generateBtn.textContent = "❌ 文字数超過（200文字以内）";
     }
 
     document.getElementById('premium-generate')?.addEventListener('click', async () => {
