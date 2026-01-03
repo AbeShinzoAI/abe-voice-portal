@@ -111,6 +111,14 @@ export default async function handler(req, res) {
 
   if (!text) return res.status(400).json({ error: 'text is required' });
 
+  const MAX_TEXT_LENGTH = 300;  // 制限文字数（クライアント側と統一）
+
+  if (text.length > MAX_TEXT_LENGTH) {
+    return res.status(400).json({
+      error: `テキストは${MAX_TEXT_LENGTH}文字以内にしてください（現在${text.length}文字）`
+    });
+  }
+
   // HF Space が private / token必須なら Vercel に HF_TOKEN を設定
   const HF_TOKEN = process.env.HF_TOKEN;
   const authHeaders = HF_TOKEN ? { Authorization: `Bearer ${HF_TOKEN}` } : {};
