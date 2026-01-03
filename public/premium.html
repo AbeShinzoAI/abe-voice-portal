@@ -131,6 +131,29 @@
       opacity: 0.5;
       cursor: not-allowed;
     }
+    /* スライダー用スタイル */
+    .slider-container {
+      margin: 20px 0;
+    }
+    .slider-label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .slider-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .slider-wrapper input[type="range"] {
+      flex: 1;
+    }
+    .slider-value {
+      min-width: 60px;
+      font-weight: 900;
+      color: var(--p);
+    }
   </style>
 </head>
 <body>
@@ -149,6 +172,25 @@
           <h3 style="text-align:center;">🚀 高速安倍AIボイスメーカー（プレミアム専用）</h3>
           <p style="text-align:center; color:var(--muted); font-size:14px;">通常版より高速・高品質な音声合成</p>
           <textarea id="premium-text" placeholder="ここにテキストを入力（高速・高品質合成）"></textarea>
+
+          <!-- 新規追加：速度・ピッチ調整スライダー -->
+          <div class="slider-container">
+            <div>
+              <label class="slider-label">速度</label>
+              <div class="slider-wrapper">
+                <input type="range" id="speed-slider" min="0.5" max="2.0" step="0.05" value="1.0">
+                <span id="speed-value" class="slider-value">1.00</span>
+              </div>
+            </div>
+            <div style="margin-top:16px;">
+              <label class="slider-label">ピッチ</label>
+              <div class="slider-wrapper">
+                <input type="range" id="pitch-slider" min="-0.5" max="0.5" step="0.05" value="0.0">
+                <span id="pitch-value" class="slider-value">0.00</span>
+              </div>
+            </div>
+          </div>
+
           <button id="premium-generate" class="btn-primary" style="margin-top:12px;">🎤 高速合成生成</button>
           <div id="premium-tts-status" style="margin-top:12px; font-weight:900; color:var(--p); text-align:center;"></div>
           <audio id="premium-audio" controls style="display:none;"></audio>
@@ -239,7 +281,6 @@
         return false;
       }
 
-      // 改善版クエリ: active または trialing を許可、期限も取得
       const { data, error } = await supabase
         .from('subscriptions')
         .select('status, current_period_end')
@@ -247,7 +288,7 @@
         .in('status', ['active', 'trialing'])
         .order('created_at', { ascending: false })
         .limit(1)
-        .maybeSingle();  // single() の代わりに maybeSingle() を使用（行がなくてもエラーにならない）
+        .maybeSingle();
 
       if (error) {
         console.error('Subscription check error:', error);
@@ -264,7 +305,6 @@
         statusEl.textContent = "✅ プレミアム会員認証完了！";
         statusEl.className = "status premium";
         
-        // 次回更新日を表示
         if (data.current_period_end) {
           const endDate = new Date(data.current_period_end).toLocaleDateString('ja-JP', {
             year: 'numeric',
@@ -331,12 +371,18 @@
 
     // ページ読み込み時
     window.addEventListener('load', async () => {
+      // === テストモード：常にプレミアム会員として扱う ===
+      statusEl.textContent = "✅ プレミアム会員認証完了！（テストモード）";
+      statusEl.className = "status premium";
+      membershipInfoEl.textContent = "テスト用にプレミアムコンテンツを強制表示中";
+      
+      showState('premium');
 
+      // 本番時は以下をコメントアウト解除
+      /*
       const urlParams = new URLSearchParams(window.location.search);
 
       if (urlParams.has('session_id')) {
-        // Stripeから戻ってきた場合 → ポーリング開始
-        // URLからsession_idを削除（リロード時の再ポーリング防止）
         const newUrl = window.location.pathname;
         history.replaceState({}, '', newUrl);
         await startPolling();
@@ -345,6 +391,7 @@
       }
       
       subscribeToChanges();
+      */
     });
 
     // 認証状態変化時もチェック
@@ -353,13 +400,30 @@
       checkPremiumStatus();
     });
 
-    // ===== 高速TTS =====
+    // ===== 高速TTS（フォールバック付き） =====
     let currentAudioUrl = null;
     let currentAudioBlob = null;
+
+    // スライダーの値表示更新
+    const speedSlider = document.getElementById('speed-slider');
+    const speedValue = document.getElementById('speed-value');
+    const pitchSlider = document.getElementById('pitch-slider');
+    const pitchValue = document.getElementById('pitch-value');
+
+    speedSlider.addEventListener('input', () => {
+      speedValue.textContent = parseFloat(speedSlider.value).toFixed(2);
+    });
+    pitchSlider.addEventListener('input', () => {
+      pitchValue.textContent = parseFloat(pitchSlider.value).toFixed(2);
+    });
 
     document.getElementById('premium-generate')?.addEventListener('click', async () => {
       const text = document.getElementById('premium-text').value.trim();
       if (!text) return alert("テキストを入力してください");
+
+      const speaker = 1099527840;
+      const speed = parseFloat(speedSlider.value);
+      const pitch = parseFloat(pitchSlider.value);
 
       const btn = document.getElementById('premium-generate');
       const ttsStatus = document.getElementById('premium-tts-status');
@@ -368,35 +432,41 @@
 
       btn.disabled = true;
       btn.textContent = "🔄 合成中...";
-      ttsStatus.textContent = "高速合成処理中...";
+      ttsStatus.textContent = "合成処理中...";
       downloadBtn.disabled = true;
 
-      // 前の音声URLを解放
       if (currentAudioUrl) {
         URL.revokeObjectURL(currentAudioUrl);
       }
 
       try {
-        // 注意: 実際のプレミアムTTS APIエンドポイントに合わせて変更してください
-        // 既存の /api/tts を使う場合は premium パラメータを追加するなど
-        const response = await fetch('/api/tts_premium', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
-            text, 
-            speaker: 1099527840,
-            speed: 1.0,
-            pitch: 0.0,
-            premium: true  // プレミアムフラグ（API側で対応が必要）
-          })
-        });
+        // フォールバック処理：まずプレミアム → 失敗したら標準
+        const endpoints = ['/api/tts_premium', '/api/tts'];
+        let usedEndpoint = null;
 
-        if (!response.ok) {
-          const errorText = await response.text();
-          throw new Error(errorText || `APIエラー: ${response.status}`);
+        for (const endpoint of endpoints) {
+          try {
+            const response = await fetch(endpoint, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ text, speaker, speed, pitch })
+            });
+
+            if (response.ok) {
+              usedEndpoint = endpoint;
+              currentAudioBlob = await response.blob();
+              break;
+            }
+          } catch (err) {
+            // このエンドポイントは失敗 → 次へ
+            console.warn(`Endpoint ${endpoint} failed:`, err);
+          }
         }
 
-        currentAudioBlob = await response.blob();
+        if (!currentAudioBlob) {
+          throw new Error("両方のAPIで合成に失敗しました（サーバーエラー）");
+        }
+
         currentAudioUrl = URL.createObjectURL(currentAudioBlob);
         
         audioEl.src = currentAudioUrl;
@@ -405,8 +475,13 @@
         
         downloadBtn.style.display = 'block';
         downloadBtn.disabled = false;
-        
-        ttsStatus.textContent = "✅ 高速合成完了！";
+
+        // 使用したエンドポイントに応じてメッセージ変更
+        if (usedEndpoint === '/api/tts_premium') {
+          ttsStatus.textContent = "✅ 高速合成完了！";
+        } else {
+          ttsStatus.textContent = "✅ 合成完了（プレミアムサーバーエラーで標準モードにフォールバック）";
+        }
       } catch (err) {
         console.error('TTS Error:', err);
         ttsStatus.textContent = "❌ エラー: " + err.message;
