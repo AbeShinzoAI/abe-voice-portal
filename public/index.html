@@ -640,7 +640,8 @@
   width: 18px;
   height: 18px;
   flex: none;
-}.loading{
+}
+.loading{
   display:none;
   margin-top: 10px;
   color: rgba(255,77,109,0.95);
@@ -652,6 +653,16 @@
   font-size: 14px;
   color: rgba(31,41,55,0.92);
   word-break: break-word;
+}
+/* 文字数制限表示 */
+.char-count-wrapper {
+  text-align: right;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 14px;
+}
+.char-count-wrapper .warning {
+  color: #ef4444;
 }
 .section-title{
   margin: 0 0 14px;
@@ -1145,10 +1156,16 @@ footer{
             <span>安倍AIボイスメーカー</span>
             <img class="tts-icon" src="images/abe_voice@2x.png" alt="マイクアイコン" aria-hidden="true" width="20" height="20">
           </h2>
-          <p class="help">安倍ちゃんにあんなことやこんなことを喋らせよう</p>
+          <p class="help">安倍ちゃんにあんなことやこんなことを喋らせよう（無料版は50文字まで）</p>
         </div>
         <div class="panel-body">
-          <textarea id="text-input" class="tts-input" placeholder="ここにテキストを入力…"></textarea>
+          <textarea id="text-input" class="tts-input" placeholder="ここにテキストを入力…" maxlength="50"></textarea>
+          
+          <!-- 文字数制限表示 -->
+          <div class="char-count-wrapper">
+            <span id="char-count">0</span> / 50 文字（超過すると生成できません）
+          </div>
+          
           <button id="generate-btn" class="btn-primary" type="button">合成生成</button>
           <div id="loading" class="loading">合成中...（数秒お待ちください）</div>
           
@@ -1240,7 +1257,7 @@ footer{
       </li>
       <li>
         <a href="https://discord.gg/dXexG8aSds" target="_blank" rel="noopener noreferrer">
-          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZERDIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmNGQ2ZCIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM1ODY1RjIiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxwYXRoIGZpbGw9InVybCgjZ3JhZERDKSIgZD0iTTIwLjMgMy43YTE5LjUgMTkuNSAwIDAgMC00LjktMS41LjA3LjA3IDAgMCAwLS4wNy4wNGMtLjIuNC0uNS45LS43IDEuM2ExOCAxOCAwIDAgMC01LjQgMGMtLjItLjQtLjUtLjktLjctMS4zYS4wNy4wNyAwIDAgMC0uMDctLjA0IDE5LjUgMTkuNSAwIDAgMC00LjkgMS41LjA3LjA3IDAgMCAwLS4wMy4wM0MuOCA5LjcuMyAxNS41LjUgMjEuM2EuMS4xIDAgMCAwIC4wNC4wNyAxOS43IDE5LjcgMCAwIDAgNiAzIC4wNy4wNyAwIDAgMCAuMDgtLjAzYy41LS43IDEtMS40IDEuNC0yLjFhLjA3LjA3IDAgMCAwLS4wNC0uMDggMTMgMTMgMCAwIDEtMS45LTEgLjA3LjA3IDAgMCAxLS4wNC0uMWMuMS0uMS4zLS4yLjQtLjNhLjA3LjA3IDAgMCAxIC4wNC0uMDIgMTQuMyAxNC4zIDAgMCAwIDUuMiAxLjZjMS42IDAgMy4yLS40IDQuNy0xLjIgMS4yLS42IDIuMi0xLjQgMy0yLjQuOC0xIDEuNC0yLjEgMS44LTMuMy4yLS42LjMtMS4yLjQtMS44YS4wNy4wNyAwIDAgMC0uMDQtLjA4Yy0xLjMuOS0yLjcgMS42LTQuMiAyYS4wNy4wNyAwIDAgMS0uMDgtLjAzYy0uNC0uNi0uOS0xLjItMS40LTIuMWEuMDcuMDcgMCAwIDAtLjA4LS4wMyAxOS41IDE5LjUgMCAwIDEtMi44LTEuNC4wNy4wNyAwIDAgMS0uMDQtLjA2VjguM2MwLTEgLjMtMiAuOS0yLjhhLjA3LjA3IDAgMCAxIC4wOC0uMDNjLjkuMyAxLjguNyAyLjcgMS4yYS4wNy4wNyAwIDAgMCAuMDggMGMxLjUtLjkgMy4yLTEuNiA1LTJhLjA3LjA3IDAgMCAxIC4wOC4wM2MuNi44IDEuMSAxLjcgMS41IDIuNi4zLjcuNSAxLjQuNiAyLjFhLjA3LjA3IDAgMCAwIC4wNC4wNmMxLjUtLjQgMy0xLjEgNC40LTJhLjA3LjA3IDAgMCAxIC4wOC4wM2MuNC45LjcgMS44LjkgMi44djYuOGEuMDcuMDcgMCAwIDEtLjA0LjA2Yy0xLjUuOS0zIDEuNi00LjYgMmEuMDcuMDcgMCAwIDAtLjA0LjFjLjEuMS4yLjIuMy4zYS4wNy4wNyAwIDAgMS0uMDQuMSAxMyAxMyAwIDAgMS0xLjkgMSAuMDcuMDcgMCAwIDAtLjA0LjA4Yy40LjcuOSAxLjQgMS40IDIuMWEuMDcuMDcgMCAwIDAgLjA4LjAzIDE5LjcgMTkuNyAwIDAgMCA2LTMgLjEuMSAwIDAgMCAuMDQtLjA3Yy4yLTUuOC0uMy0xMS42LTMtMTYuNmEuMDcuMDcgMCAwIDAtLjAzLS4wM3oiLz4KPC9zdmc+" alt="Discord" width="24" height="24">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZERDIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmNGQ2ZCIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM1ODY1RjIiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxwYXRoIGZpbGw9InVybCgjZ3JhZERDKSIgZD0iTTIwLjMgMy43YTE5LjUgMTkuNSAwIDAgMC00LjktMS41LjA3LjA3IDAgMCAwLS4wNy4wNGMtLjIuNC0uNS45LS43IDEuM2ExOCAxOCAwIDAgMC01LjQgMGMtLjItLjQtLjUtLjktLjctMS4zYS4wNy4wNyAwIDAgMC0uMDctLjA0IDE5LjUgMTkuNSAwIDAgMC00LjkgMS41LjA3LjA3IDAgMCAwLS4wMy4wM0MuOCA5LjcuMyAxNS41LjUgMjEuM2EuMS4xIDAgMCAwIC4wNC4wNyAxOS43IDE5LjcgMCAwIDAgNiAzIC4wNy4wNyAwIDAgMCAuMDgtLjAzYy41LS43IDEtMS40IDEuNC0yLjFhLjA3LjA3IDAgMCAwLS4wNC0uMDggMTMgMTMgMCAwIDEtMS45LTEgLjA3LjA3IDAgMCAxLS4wNC0uMWMuMS0uMS4zLS4yLjQtLjNhLjA3LjA3IDAgMCAxIC4wNC0uMDIgMTQuMyAxNC4zIDAgMCAwIDUuMiAxLjZjMS42IDAgMy4yLS40IDQuNy0xLjIgMS4yLS42IDIuMi0xLjQgMy0yLjQuOC0xIDEuNC0yLjEgMS44LTMuMy4yLS42LjMtMS4yLjQtMS44YS4wNy4wNyAwIDAgMC0uMDQtLjA4Yy0xLjMuOS0yLjcgMS42LTQuMiAyYS4wNy4wNyAwIDAgMS0uMDgtLjAzYy0uNC0uNi0uOS0xLjItMS40LTIuMWEuMDcuMDcgMCAwIDAtLjA4LS4wMyAxOS41IDE5LjUgMCAwIDEtMi44LTEuNC4wNy4wNyAwIDAgMS0uMDQtLjA2VjguM2MwLTEgLjMtMiAuOS0yLjhhLjA3LjA3IDAgMCAxIC4wOC0uMDNjLjkuMyAxLjguNyAyLjcgMS4yYS4wNy4wNyAwIDAgMCAuMDggMGMxLjUtLjkgMy4yLTEuNiA1LTJhLjA3LjA3IDAgMCAxIC4wOC4wM2MuNi44IDEuMSAxLjcgMS41IDIuNi4zLjcuNSAxLjQuNiAyLjFhLjA3LjA3IDAgMCAwIC4wNC4wNmMxLjUtLjQgMy0xLjEgNC40LTJhLjA3LjA3IDAgMCAxIC4wOC4wM2MuNC45LjcgMS44LjkgMi44djYuOGEuMDcuMDcgMCAwIDEtLjA0LjA2Yy0xLjUuOS0zIDEuNi00LjYgMjEuMDcuMDcgMCAwIDAtLjA0LjFjLjEuMS4yLjIuMy4zYS4wNy4wNyAwIDAgMS0uMDQuMSAxMyAxMyAwIDAgMS0xLjkgMSAuMDcuMDcgMCAwIDAtLjA0LjA4Yy40LjcuOSAxLjQgMS40IDIuMWEuMDcuMDcgMCAwIDAgLjA4LjAzIDE5LjcgMTkuNyAwIDAgMCA2LTMgLjEuMSAwIDAgMCAuMDQtLjA3Yy4yLTUuOC0uMy0xMS42LTMtMTYuNmEuMDcuMDcgMCAwIDAtLjAzLS4wM3oiLz4KPC9zdmc+" alt="Discord" width="24" height="24">
           Discord
         </a>
       </li>
@@ -1721,14 +1738,44 @@ footer{
       }
     });
 
-    // ===== TTS（ダウンロード機能付き） =====
+    // ===== TTS（ダウンロード機能付き + 50文字制限） =====
     const API_URL = '/api/tts';
     let currentAudioUrl = null;
     let currentAudioBlob = null;
 
+    const MAX_CHARS_INDEX = 50;
+    const textInput = document.getElementById('text-input');
+    const charCount = document.getElementById('char-count');
+    const generateBtn = document.getElementById('generate-btn');
+
+    // 文字数カウント＆制限
+    textInput.addEventListener('input', () => {
+      const length = textInput.value.length;
+      charCount.textContent = length;
+
+      if (length > MAX_CHARS_INDEX) {
+        charCount.classList.add('warning');
+        generateBtn.disabled = true;
+        generateBtn.textContent = "❌ 文字数超過（50文字以内）";
+      } else {
+        charCount.classList.remove('warning');
+        generateBtn.disabled = false;
+        generateBtn.textContent = "合成生成";
+      }
+    });
+
+    // ページ読み込み時の初期チェック
+    charCount.textContent = textInput.value.length;
+    if (textInput.value.length > MAX_CHARS_INDEX) {
+      charCount.classList.add('warning');
+      generateBtn.disabled = true;
+      generateBtn.textContent = "❌ 文字数超過（50文字以内）";
+    }
+
     document.getElementById('generate-btn').addEventListener('click', async () => {
-      const text = document.getElementById('text-input').value.trim();
+      const text = textInput.value.trim();
       if (!text) return alert('テキストを入力してください');
+      
       const btn = document.getElementById('generate-btn');
       const loading = document.getElementById('loading');
       const status = document.getElementById('status');
