@@ -228,6 +228,7 @@
     }
 
     async function checkPremiumStatus() {
+
       const { data: { user } } = await supabase.auth.getUser();
 
       if (!user) {
@@ -330,8 +331,9 @@
 
     // ページ読み込み時
     window.addEventListener('load', async () => {
+
       const urlParams = new URLSearchParams(window.location.search);
-      
+
       if (urlParams.has('session_id')) {
         // Stripeから戻ってきた場合 → ポーリング開始
         // URLからsession_idを削除（リロード時の再ポーリング防止）
@@ -377,7 +379,7 @@
       try {
         // 注意: 実際のプレミアムTTS APIエンドポイントに合わせて変更してください
         // 既存の /api/tts を使う場合は premium パラメータを追加するなど
-        const response = await fetch('/api/tts', {
+        const response = await fetch('/api/tts_premium', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ 
