@@ -171,7 +171,12 @@
         <section style="margin-top:40px;">
           <h3 style="text-align:center;">🚀 高速安倍AIボイスメーカー（プレミアム専用）</h3>
           <p style="text-align:center; color:var(--muted); font-size:14px;">通常版より高速・高品質な音声合成</p>
-          <textarea id="premium-text" placeholder="ここにテキストを入力（高速・高品質合成）"></textarea>
+          <textarea id="premium-text" placeholder="ここにテキストを入力（高速・高品質合成）" maxlength="200"></textarea>
+
+        <!-- 文字数カウント表示を追加 -->
+        <div style="text-align:right; margin-top:4px; color:var(--muted); font-size:14px;">
+          <span id="char-count">0</span> / 200 文字（超過すると生成できません）
+        </div>
 
           <!-- 新規追加：速度・ピッチ調整スライダー -->
           <div class="slider-container">
@@ -406,6 +411,35 @@
     pitchSlider.addEventListener('input', () => {
       pitchValue.textContent = parseFloat(pitchSlider.value).toFixed(2);
     });
+
+    const MAX_CHARS = 300;
+    const textArea = document.getElementById('premium-text');
+    const charCount = document.getElementById('char-count');
+    const generateBtn = document.getElementById('premium-generate');
+
+    // リアルタイム文字数カウント＆ボタン制御
+    textArea.addEventListener('input', () => {
+      const length = textArea.value.length;
+      charCount.textContent = length;
+
+      if (length > MAX_CHARS) {
+        charCount.style.color = '#ef4444'; // 赤で警告
+        generateBtn.disabled = true;
+        generateBtn.textContent = "❌ 文字数超過（300文字以内）";
+      } else {
+        charCount.style.color = 'var(--muted)';
+        generateBtn.disabled = false;
+        generateBtn.textContent = "🎤 高速合成生成";
+      }
+    });
+
+    // ページ読み込み時の初期表示（超過状態を反映）
+    charCount.textContent = textArea.value.length;
+    if (textArea.value.length > MAX_CHARS) {
+      charCount.style.color = '#ef4444';
+      generateBtn.disabled = true;
+      generateBtn.textContent = "❌ 文字数超過（300文字以内）";
+    }
 
     document.getElementById('premium-generate')?.addEventListener('click', async () => {
       const text = document.getElementById('premium-text').value.trim();
